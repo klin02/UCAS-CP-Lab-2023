@@ -4,9 +4,9 @@ if [ $# == 0];then
 	exit
 fi
 
-git checkout $1
-git pull origin $1
 git checkout master
-git merge $1
-git push origin master
+git pull origin master
+git checkout $1
+git merge master
+git push origin $1
 
