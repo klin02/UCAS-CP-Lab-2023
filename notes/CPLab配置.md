@@ -79,7 +79,7 @@ unset color_prompt force_color_prompt
 
   + 注意：先执行`sh ignore-deps.sh`
   + 原理：实验一在服务器目录下执行的cmake使用了绝对路径，使得本机的依赖路径不同。该脚本在本机路径下执行cmake和make，使得本机可以编译cact项目。
-  + 测试：将cact项目复制后删除build文件夹和grammar文件夹中除Hello.g4文件，然后重复PR001实验说明的其他步骤跑通demo
+  + 测试：将cact项目删除build文件夹和grammar文件夹中除Hello.g4外文件，然后重复PR001实验说明的第三步跑通demo。注意，由于后续实验需要修改代码，不再保留demo的分支，请另外clone一个项目，并使用`git checkout fb8aaf2abb33e7aff031529c89db7206f309a60d`切换到之前的提交。测试完毕后删除该项目即可。
   + 见上一点，deps更改不会上传到仓库，每个人执行该脚本对其他人没有影响
 
 + 查看打了标识的文件
