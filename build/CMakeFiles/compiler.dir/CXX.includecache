@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -1158,71 +1158,71 @@ antlr4-runtime.h
 HelloParser.h
 ../grammar/HelloParser.h
 
-/home/compiler16/cact/grammar/HelloBaseVisitor.cpp
+/home/stu/CPLab/cact/grammar/HelloBaseVisitor.cpp
 vector
 -
 HelloBaseVisitor.h
-/home/compiler16/cact/grammar/HelloBaseVisitor.h
+/home/stu/CPLab/cact/grammar/HelloBaseVisitor.h
 
-/home/compiler16/cact/grammar/HelloBaseVisitor.h
+/home/stu/CPLab/cact/grammar/HelloBaseVisitor.h
 vector
 -
 antlr4-runtime.h
-/home/compiler16/cact/grammar/antlr4-runtime.h
+/home/stu/CPLab/cact/grammar/antlr4-runtime.h
 HelloVisitor.h
-/home/compiler16/cact/grammar/HelloVisitor.h
+/home/stu/CPLab/cact/grammar/HelloVisitor.h
 
-/home/compiler16/cact/grammar/HelloLexer.cpp
+/home/stu/CPLab/cact/grammar/HelloLexer.cpp
 vector
 -
 HelloLexer.h
-/home/compiler16/cact/grammar/HelloLexer.h
+/home/stu/CPLab/cact/grammar/HelloLexer.h
 
-/home/compiler16/cact/grammar/HelloLexer.h
+/home/stu/CPLab/cact/grammar/HelloLexer.h
 vector
 -
 antlr4-runtime.h
-/home/compiler16/cact/grammar/antlr4-runtime.h
+/home/stu/CPLab/cact/grammar/antlr4-runtime.h
 
-/home/compiler16/cact/grammar/HelloParser.cpp
+/home/stu/CPLab/cact/grammar/HelloParser.cpp
 vector
 -
 HelloVisitor.h
-/home/compiler16/cact/grammar/HelloVisitor.h
+/home/stu/CPLab/cact/grammar/HelloVisitor.h
 HelloParser.h
-/home/compiler16/cact/grammar/HelloParser.h
+/home/stu/CPLab/cact/grammar/HelloParser.h
 
-/home/compiler16/cact/grammar/HelloParser.h
+/home/stu/CPLab/cact/grammar/HelloParser.h
 vector
 -
 antlr4-runtime.h
-/home/compiler16/cact/grammar/antlr4-runtime.h
+/home/stu/CPLab/cact/grammar/antlr4-runtime.h
 
-/home/compiler16/cact/grammar/HelloVisitor.cpp
+/home/stu/CPLab/cact/grammar/HelloVisitor.cpp
 vector
 -
 HelloVisitor.h
-/home/compiler16/cact/grammar/HelloVisitor.h
+/home/stu/CPLab/cact/grammar/HelloVisitor.h
 
-/home/compiler16/cact/grammar/HelloVisitor.h
+/home/stu/CPLab/cact/grammar/HelloVisitor.h
 vector
 -
 antlr4-runtime.h
-/home/compiler16/cact/grammar/antlr4-runtime.h
+/home/stu/CPLab/cact/grammar/antlr4-runtime.h
 HelloParser.h
-/home/compiler16/cact/grammar/HelloParser.h
+/home/stu/CPLab/cact/grammar/HelloParser.h
 
-/home/compiler16/cact/src/main.cpp
+/home/stu/CPLab/cact/src/main.cpp
 iostream
 -
 antlr4-runtime.h
-/home/compiler16/cact/src/antlr4-runtime.h
+/home/stu/CPLab/cact/src/antlr4-runtime.h
 tree/ErrorNode.h
-/home/compiler16/cact/src/tree/ErrorNode.h
+/home/stu/CPLab/cact/src/tree/ErrorNode.h
 HelloLexer.h
-/home/compiler16/cact/src/HelloLexer.h
+/home/stu/CPLab/cact/src/HelloLexer.h
 HelloParser.h
-/home/compiler16/cact/src/HelloParser.h
+/home/stu/CPLab/cact/src/HelloParser.h
 HelloVisitor.h
-/home/compiler16/cact/src/HelloVisitor.h
+/home/stu/CPLab/cact/src/HelloVisitor.h
 

@@ -10,5 +10,7 @@ do
  fi
 done
 }
+
+cd ../
 read_dir_file deps/antlr4-runtime/dist
 read_dir_file deps/antlr4-runtime/build

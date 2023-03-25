@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd deps/antlr4-runtime
+cd ../deps/antlr4-runtime
 rm -rf build
 mkdir build
 cd build

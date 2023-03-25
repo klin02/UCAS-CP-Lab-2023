@@ -4,11 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/compiler16/cact/grammar/HelloBaseVisitor.cpp" "/home/compiler16/cact/build/CMakeFiles/compiler.dir/grammar/HelloBaseVisitor.cpp.o"
-  "/home/compiler16/cact/grammar/HelloLexer.cpp" "/home/compiler16/cact/build/CMakeFiles/compiler.dir/grammar/HelloLexer.cpp.o"
-  "/home/compiler16/cact/grammar/HelloParser.cpp" "/home/compiler16/cact/build/CMakeFiles/compiler.dir/grammar/HelloParser.cpp.o"
-  "/home/compiler16/cact/grammar/HelloVisitor.cpp" "/home/compiler16/cact/build/CMakeFiles/compiler.dir/grammar/HelloVisitor.cpp.o"
-  "/home/compiler16/cact/src/main.cpp" "/home/compiler16/cact/build/CMakeFiles/compiler.dir/src/main.cpp.o"
+  "/home/stu/CPLab/cact/grammar/HelloBaseVisitor.cpp" "/home/stu/CPLab/cact/build/CMakeFiles/compiler.dir/grammar/HelloBaseVisitor.cpp.o"
+  "/home/stu/CPLab/cact/grammar/HelloLexer.cpp" "/home/stu/CPLab/cact/build/CMakeFiles/compiler.dir/grammar/HelloLexer.cpp.o"
+  "/home/stu/CPLab/cact/grammar/HelloParser.cpp" "/home/stu/CPLab/cact/build/CMakeFiles/compiler.dir/grammar/HelloParser.cpp.o"
+  "/home/stu/CPLab/cact/grammar/HelloVisitor.cpp" "/home/stu/CPLab/cact/build/CMakeFiles/compiler.dir/grammar/HelloVisitor.cpp.o"
+  "/home/stu/CPLab/cact/src/main.cpp" "/home/stu/CPLab/cact/build/CMakeFiles/compiler.dir/src/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
