@@ -2,52 +2,52 @@
     #include <vector>
 
 
-// Generated from ./Hello.g4 by ANTLR 4.8
+// Generated from CACT.g4 by ANTLR 4.8
 
 
-#include "HelloLexer.h"
+#include "CACTLexer.h"
 
 
 using namespace antlr4;
 
 
-HelloLexer::HelloLexer(CharStream *input) : Lexer(input) {
+CACTLexer::CACTLexer(CharStream *input) : Lexer(input) {
   _interpreter = new atn::LexerATNSimulator(this, _atn, _decisionToDFA, _sharedContextCache);
 }
 
-HelloLexer::~HelloLexer() {
+CACTLexer::~CACTLexer() {
   delete _interpreter;
 }
 
-std::string HelloLexer::getGrammarFileName() const {
-  return "Hello.g4";
+std::string CACTLexer::getGrammarFileName() const {
+  return "CACT.g4";
 }
 
-const std::vector<std::string>& HelloLexer::getRuleNames() const {
+const std::vector<std::string>& CACTLexer::getRuleNames() const {
   return _ruleNames;
 }
 
-const std::vector<std::string>& HelloLexer::getChannelNames() const {
+const std::vector<std::string>& CACTLexer::getChannelNames() const {
   return _channelNames;
 }
 
-const std::vector<std::string>& HelloLexer::getModeNames() const {
+const std::vector<std::string>& CACTLexer::getModeNames() const {
   return _modeNames;
 }
 
-const std::vector<std::string>& HelloLexer::getTokenNames() const {
+const std::vector<std::string>& CACTLexer::getTokenNames() const {
   return _tokenNames;
 }
 
-dfa::Vocabulary& HelloLexer::getVocabulary() const {
+dfa::Vocabulary& CACTLexer::getVocabulary() const {
   return _vocabulary;
 }
 
-const std::vector<uint16_t> HelloLexer::getSerializedATN() const {
+const std::vector<uint16_t> CACTLexer::getSerializedATN() const {
   return _serializedATN;
 }
 
-const atn::ATN& HelloLexer::getATN() const {
+const atn::ATN& CACTLexer::getATN() const {
   return _atn;
 }
 
@@ -55,38 +55,38 @@ const atn::ATN& HelloLexer::getATN() const {
 
 
 // Static vars and initialization.
-std::vector<dfa::DFA> HelloLexer::_decisionToDFA;
-atn::PredictionContextCache HelloLexer::_sharedContextCache;
+std::vector<dfa::DFA> CACTLexer::_decisionToDFA;
+atn::PredictionContextCache CACTLexer::_sharedContextCache;
 
 // We own the ATN which in turn owns the ATN states.
-atn::ATN HelloLexer::_atn;
-std::vector<uint16_t> HelloLexer::_serializedATN;
+atn::ATN CACTLexer::_atn;
+std::vector<uint16_t> CACTLexer::_serializedATN;
 
-std::vector<std::string> HelloLexer::_ruleNames = {
+std::vector<std::string> CACTLexer::_ruleNames = {
   u8"T__0", u8"ID", u8"WS"
 };
 
-std::vector<std::string> HelloLexer::_channelNames = {
+std::vector<std::string> CACTLexer::_channelNames = {
   "DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 };
 
-std::vector<std::string> HelloLexer::_modeNames = {
+std::vector<std::string> CACTLexer::_modeNames = {
   u8"DEFAULT_MODE"
 };
 
-std::vector<std::string> HelloLexer::_literalNames = {
+std::vector<std::string> CACTLexer::_literalNames = {
   "", u8"'hello'"
 };
 
-std::vector<std::string> HelloLexer::_symbolicNames = {
+std::vector<std::string> CACTLexer::_symbolicNames = {
   "", "", u8"ID", u8"WS"
 };
 
-dfa::Vocabulary HelloLexer::_vocabulary(_literalNames, _symbolicNames);
+dfa::Vocabulary CACTLexer::_vocabulary(_literalNames, _symbolicNames);
 
-std::vector<std::string> HelloLexer::_tokenNames;
+std::vector<std::string> CACTLexer::_tokenNames;
 
-HelloLexer::Initializer::Initializer() {
+CACTLexer::Initializer::Initializer() {
   // This code could be in a static initializer lambda, but VS doesn't allow access to private class members from there.
 	for (size_t i = 0; i < _symbolicNames.size(); ++i) {
 		std::string name = _vocabulary.getLiteralName(i);
@@ -134,4 +134,4 @@ HelloLexer::Initializer::Initializer() {
   }
 }
 
-HelloLexer::Initializer HelloLexer::_init;
+CACTLexer::Initializer CACTLexer::_init;

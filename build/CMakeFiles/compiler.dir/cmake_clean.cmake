@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/compiler.dir/grammar/HelloBaseVisitor.cpp.o"
-  "CMakeFiles/compiler.dir/grammar/HelloLexer.cpp.o"
-  "CMakeFiles/compiler.dir/grammar/HelloParser.cpp.o"
-  "CMakeFiles/compiler.dir/grammar/HelloVisitor.cpp.o"
+  "CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.o"
+  "CMakeFiles/compiler.dir/grammar/CACTLexer.cpp.o"
+  "CMakeFiles/compiler.dir/grammar/CACTParser.cpp.o"
+  "CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.o"
   "CMakeFiles/compiler.dir/src/main.cpp.o"
   "compiler"
   "compiler.pdb"

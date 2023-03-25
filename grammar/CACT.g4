@@ -1,4 +1,4 @@
-grammar Hello;
+grammar CACT;
 
 @header {
     #include <vector>

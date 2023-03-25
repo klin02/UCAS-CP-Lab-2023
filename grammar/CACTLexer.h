@@ -2,7 +2,7 @@
     #include <vector>
 
 
-// Generated from ./Hello.g4 by ANTLR 4.8
+// Generated from CACT.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -12,14 +12,14 @@
 
 
 
-class  HelloLexer : public antlr4::Lexer {
+class  CACTLexer : public antlr4::Lexer {
 public:
   enum {
     T__0 = 1, ID = 2, WS = 3
   };
 
-  HelloLexer(antlr4::CharStream *input);
-  ~HelloLexer();
+  CACTLexer(antlr4::CharStream *input);
+  ~CACTLexer();
 
   virtual std::string getGrammarFileName() const override;
   virtual const std::vector<std::string>& getRuleNames() const override;

@@ -2,64 +2,64 @@
     #include <vector>
 
 
-// Generated from ./Hello.g4 by ANTLR 4.8
+// Generated from CACT.g4 by ANTLR 4.8
 
 
-#include "HelloVisitor.h"
+#include "CACTVisitor.h"
 
-#include "HelloParser.h"
+#include "CACTParser.h"
 
 
 using namespace antlrcpp;
 using namespace antlr4;
 
-HelloParser::HelloParser(TokenStream *input) : Parser(input) {
+CACTParser::CACTParser(TokenStream *input) : Parser(input) {
   _interpreter = new atn::ParserATNSimulator(this, _atn, _decisionToDFA, _sharedContextCache);
 }
 
-HelloParser::~HelloParser() {
+CACTParser::~CACTParser() {
   delete _interpreter;
 }
 
-std::string HelloParser::getGrammarFileName() const {
-  return "Hello.g4";
+std::string CACTParser::getGrammarFileName() const {
+  return "CACT.g4";
 }
 
-const std::vector<std::string>& HelloParser::getRuleNames() const {
+const std::vector<std::string>& CACTParser::getRuleNames() const {
   return _ruleNames;
 }
 
-dfa::Vocabulary& HelloParser::getVocabulary() const {
+dfa::Vocabulary& CACTParser::getVocabulary() const {
   return _vocabulary;
 }
 
 
 //----------------- RContext ------------------------------------------------------------------
 
-HelloParser::RContext::RContext(ParserRuleContext *parent, size_t invokingState)
+CACTParser::RContext::RContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* HelloParser::RContext::ID() {
-  return getToken(HelloParser::ID, 0);
+tree::TerminalNode* CACTParser::RContext::ID() {
+  return getToken(CACTParser::ID, 0);
 }
 
 
-size_t HelloParser::RContext::getRuleIndex() const {
-  return HelloParser::RuleR;
+size_t CACTParser::RContext::getRuleIndex() const {
+  return CACTParser::RuleR;
 }
 
 
-antlrcpp::Any HelloParser::RContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<HelloVisitor*>(visitor))
+antlrcpp::Any CACTParser::RContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<CACTVisitor*>(visitor))
     return parserVisitor->visitR(this);
   else
     return visitor->visitChildren(this);
 }
 
-HelloParser::RContext* HelloParser::r() {
+CACTParser::RContext* CACTParser::r() {
   RContext *_localctx = _tracker.createInstance<RContext>(_ctx, getState());
-  enterRule(_localctx, 0, HelloParser::RuleR);
+  enterRule(_localctx, 0, CACTParser::RuleR);
 
   auto onExit = finally([=] {
     exitRule();
@@ -67,9 +67,9 @@ HelloParser::RContext* HelloParser::r() {
   try {
     enterOuterAlt(_localctx, 1);
     setState(2);
-    match(HelloParser::T__0);
+    match(CACTParser::T__0);
     setState(3);
-    match(HelloParser::ID);
+    match(CACTParser::ID);
    
   }
   catch (RecognitionException &e) {
@@ -82,30 +82,30 @@ HelloParser::RContext* HelloParser::r() {
 }
 
 // Static vars and initialization.
-std::vector<dfa::DFA> HelloParser::_decisionToDFA;
-atn::PredictionContextCache HelloParser::_sharedContextCache;
+std::vector<dfa::DFA> CACTParser::_decisionToDFA;
+atn::PredictionContextCache CACTParser::_sharedContextCache;
 
 // We own the ATN which in turn owns the ATN states.
-atn::ATN HelloParser::_atn;
-std::vector<uint16_t> HelloParser::_serializedATN;
+atn::ATN CACTParser::_atn;
+std::vector<uint16_t> CACTParser::_serializedATN;
 
-std::vector<std::string> HelloParser::_ruleNames = {
+std::vector<std::string> CACTParser::_ruleNames = {
   "r"
 };
 
-std::vector<std::string> HelloParser::_literalNames = {
+std::vector<std::string> CACTParser::_literalNames = {
   "", "'hello'"
 };
 
-std::vector<std::string> HelloParser::_symbolicNames = {
+std::vector<std::string> CACTParser::_symbolicNames = {
   "", "", "ID", "WS"
 };
 
-dfa::Vocabulary HelloParser::_vocabulary(_literalNames, _symbolicNames);
+dfa::Vocabulary CACTParser::_vocabulary(_literalNames, _symbolicNames);
 
-std::vector<std::string> HelloParser::_tokenNames;
+std::vector<std::string> CACTParser::_tokenNames;
 
-HelloParser::Initializer::Initializer() {
+CACTParser::Initializer::Initializer() {
 	for (size_t i = 0; i < _symbolicNames.size(); ++i) {
 		std::string name = _vocabulary.getLiteralName(i);
 		if (name.empty()) {
@@ -137,4 +137,4 @@ HelloParser::Initializer::Initializer() {
   }
 }
 
-HelloParser::Initializer HelloParser::_init;
+CACTParser::Initializer CACTParser::_init;

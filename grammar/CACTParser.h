@@ -2,7 +2,7 @@
     #include <vector>
 
 
-// Generated from ./Hello.g4 by ANTLR 4.8
+// Generated from CACT.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -12,7 +12,7 @@
 
 
 
-class  HelloParser : public antlr4::Parser {
+class  CACTParser : public antlr4::Parser {
 public:
   enum {
     T__0 = 1, ID = 2, WS = 3
@@ -22,8 +22,8 @@ public:
     RuleR = 0
   };
 
-  HelloParser(antlr4::TokenStream *input);
-  ~HelloParser();
+  CACTParser(antlr4::TokenStream *input);
+  ~CACTParser();
 
   virtual std::string getGrammarFileName() const override;
   virtual const antlr4::atn::ATN& getATN() const override { return _atn; };

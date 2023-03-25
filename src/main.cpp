@@ -3,17 +3,17 @@
 #include "antlr4-runtime.h"
 #include "tree/ErrorNode.h"
 
-#include "HelloLexer.h"
-#include "HelloParser.h"
-#include "HelloVisitor.h"
+#include "CACTLexer.h"
+#include "CACTParser.h"
+#include "CACTVisitor.h"
 
 using namespace antlr4;
 
-class Analysis : public HelloVisitor {
+class Analysis : public CACTVisitor {
 public:
-    antlrcpp::Any visitR(HelloParser::RContext *context) {
+    antlrcpp::Any visitR(CACTParser::RContext *context) {
         visitChildren( context );
-        
+
         std::cout << "enter rule [r]!" << std::endl;
         std::cout << "the ID is: " << context->ID()->getText().c_str() << std::endl;
         return nullptr;
@@ -21,18 +21,20 @@ public:
 
     antlrcpp::Any visitErrorNode(tree::ErrorNode * node) override {
         std::cout << "visit error node!" << std::endl;
+        exit(1);
         return nullptr;
     }
 };
 
 int main(int argc, const char* argv[]) {
   std::ifstream stream;
-  stream.open("test.hello");
+//   stream.open("test.CACT");
+  stream.open(argv[1]);
 
   ANTLRInputStream   input(stream);
-  HelloLexer         lexer(&input);
+  CACTLexer          lexer(&input);
   CommonTokenStream  tokens(&lexer);
-  HelloParser        parser(&tokens);
+  CACTParser         parser(&tokens);
 
   Analysis visitor;
   visitor.visit( parser.r() );

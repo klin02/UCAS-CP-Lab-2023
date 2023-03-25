@@ -3,6 +3,7 @@
 ### 个人分支和master分支的同步
 
 1. 创建分支
+
    ```shell
    git checkout -b xxx
    //第一次提交为本地分支创建相应远程分支
@@ -63,7 +64,8 @@ unset color_prompt force_color_prompt
   notes目录下执行
 
   ```shell
-  sh ignore-deps.sh
+  chmod +x ignores-deps.sh
+  ./ignore-deps.sh
   ```
 
   + 原理：通过`git update-index --skip-worktree <filename>`可以让git认为这个文件始终处于最新提交状态（跟踪文件状态，不跟踪具体状态）。因此，不会在checkout切换分支或者git push 提交时产生影响。
@@ -74,10 +76,11 @@ unset color_prompt force_color_prompt
   notes目录下执行
 
   ```shell
-  sh myenv.sh
+  chmod +x myenv.sh
+  ./myenv.sh
   ```
 
-  + 注意：先执行`sh ignore-deps.sh`
+  + 注意：先执行`./ignore-deps.sh`
   + 原理：实验一在服务器目录下执行的cmake使用了绝对路径，使得本机的依赖路径不同。该脚本在本机路径下执行cmake和make，使得本机可以编译cact项目。
   + 测试：将cact项目删除build文件夹和grammar文件夹中除Hello.g4外文件，然后重复PR001实验说明的第三步跑通demo。注意，由于后续实验需要修改代码，不再保留demo的分支，请另外clone一个项目，并使用`git checkout f533f581afb3941115249836187a86655a978f5a`切换到之前的提交。测试完毕后删除该项目即可。
   + 见上一点，deps更改不会上传到仓库，每个人执行该脚本对其他人没有影响
