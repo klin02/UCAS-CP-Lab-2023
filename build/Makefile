@@ -123,113 +123,113 @@ compiler/fast:
 	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/build
 .PHONY : compiler/fast
 
-grammar/HelloBaseVisitor.o: grammar/HelloBaseVisitor.cpp.o
+grammar/CACTBaseVisitor.o: grammar/CACTBaseVisitor.cpp.o
 
-.PHONY : grammar/HelloBaseVisitor.o
-
-# target to build an object file
-grammar/HelloBaseVisitor.cpp.o:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/HelloBaseVisitor.cpp.o
-.PHONY : grammar/HelloBaseVisitor.cpp.o
-
-grammar/HelloBaseVisitor.i: grammar/HelloBaseVisitor.cpp.i
-
-.PHONY : grammar/HelloBaseVisitor.i
-
-# target to preprocess a source file
-grammar/HelloBaseVisitor.cpp.i:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/HelloBaseVisitor.cpp.i
-.PHONY : grammar/HelloBaseVisitor.cpp.i
-
-grammar/HelloBaseVisitor.s: grammar/HelloBaseVisitor.cpp.s
-
-.PHONY : grammar/HelloBaseVisitor.s
-
-# target to generate assembly for a file
-grammar/HelloBaseVisitor.cpp.s:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/HelloBaseVisitor.cpp.s
-.PHONY : grammar/HelloBaseVisitor.cpp.s
-
-grammar/HelloLexer.o: grammar/HelloLexer.cpp.o
-
-.PHONY : grammar/HelloLexer.o
+.PHONY : grammar/CACTBaseVisitor.o
 
 # target to build an object file
-grammar/HelloLexer.cpp.o:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/HelloLexer.cpp.o
-.PHONY : grammar/HelloLexer.cpp.o
+grammar/CACTBaseVisitor.cpp.o:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.o
+.PHONY : grammar/CACTBaseVisitor.cpp.o
 
-grammar/HelloLexer.i: grammar/HelloLexer.cpp.i
+grammar/CACTBaseVisitor.i: grammar/CACTBaseVisitor.cpp.i
 
-.PHONY : grammar/HelloLexer.i
+.PHONY : grammar/CACTBaseVisitor.i
 
 # target to preprocess a source file
-grammar/HelloLexer.cpp.i:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/HelloLexer.cpp.i
-.PHONY : grammar/HelloLexer.cpp.i
+grammar/CACTBaseVisitor.cpp.i:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.i
+.PHONY : grammar/CACTBaseVisitor.cpp.i
 
-grammar/HelloLexer.s: grammar/HelloLexer.cpp.s
+grammar/CACTBaseVisitor.s: grammar/CACTBaseVisitor.cpp.s
 
-.PHONY : grammar/HelloLexer.s
+.PHONY : grammar/CACTBaseVisitor.s
 
 # target to generate assembly for a file
-grammar/HelloLexer.cpp.s:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/HelloLexer.cpp.s
-.PHONY : grammar/HelloLexer.cpp.s
+grammar/CACTBaseVisitor.cpp.s:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.s
+.PHONY : grammar/CACTBaseVisitor.cpp.s
 
-grammar/HelloParser.o: grammar/HelloParser.cpp.o
+grammar/CACTLexer.o: grammar/CACTLexer.cpp.o
 
-.PHONY : grammar/HelloParser.o
+.PHONY : grammar/CACTLexer.o
 
 # target to build an object file
-grammar/HelloParser.cpp.o:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/HelloParser.cpp.o
-.PHONY : grammar/HelloParser.cpp.o
+grammar/CACTLexer.cpp.o:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTLexer.cpp.o
+.PHONY : grammar/CACTLexer.cpp.o
 
-grammar/HelloParser.i: grammar/HelloParser.cpp.i
+grammar/CACTLexer.i: grammar/CACTLexer.cpp.i
 
-.PHONY : grammar/HelloParser.i
+.PHONY : grammar/CACTLexer.i
 
 # target to preprocess a source file
-grammar/HelloParser.cpp.i:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/HelloParser.cpp.i
-.PHONY : grammar/HelloParser.cpp.i
+grammar/CACTLexer.cpp.i:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTLexer.cpp.i
+.PHONY : grammar/CACTLexer.cpp.i
 
-grammar/HelloParser.s: grammar/HelloParser.cpp.s
+grammar/CACTLexer.s: grammar/CACTLexer.cpp.s
 
-.PHONY : grammar/HelloParser.s
+.PHONY : grammar/CACTLexer.s
 
 # target to generate assembly for a file
-grammar/HelloParser.cpp.s:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/HelloParser.cpp.s
-.PHONY : grammar/HelloParser.cpp.s
+grammar/CACTLexer.cpp.s:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTLexer.cpp.s
+.PHONY : grammar/CACTLexer.cpp.s
 
-grammar/HelloVisitor.o: grammar/HelloVisitor.cpp.o
+grammar/CACTParser.o: grammar/CACTParser.cpp.o
 
-.PHONY : grammar/HelloVisitor.o
+.PHONY : grammar/CACTParser.o
 
 # target to build an object file
-grammar/HelloVisitor.cpp.o:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/HelloVisitor.cpp.o
-.PHONY : grammar/HelloVisitor.cpp.o
+grammar/CACTParser.cpp.o:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTParser.cpp.o
+.PHONY : grammar/CACTParser.cpp.o
 
-grammar/HelloVisitor.i: grammar/HelloVisitor.cpp.i
+grammar/CACTParser.i: grammar/CACTParser.cpp.i
 
-.PHONY : grammar/HelloVisitor.i
+.PHONY : grammar/CACTParser.i
 
 # target to preprocess a source file
-grammar/HelloVisitor.cpp.i:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/HelloVisitor.cpp.i
-.PHONY : grammar/HelloVisitor.cpp.i
+grammar/CACTParser.cpp.i:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTParser.cpp.i
+.PHONY : grammar/CACTParser.cpp.i
 
-grammar/HelloVisitor.s: grammar/HelloVisitor.cpp.s
+grammar/CACTParser.s: grammar/CACTParser.cpp.s
 
-.PHONY : grammar/HelloVisitor.s
+.PHONY : grammar/CACTParser.s
 
 # target to generate assembly for a file
-grammar/HelloVisitor.cpp.s:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/HelloVisitor.cpp.s
-.PHONY : grammar/HelloVisitor.cpp.s
+grammar/CACTParser.cpp.s:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTParser.cpp.s
+.PHONY : grammar/CACTParser.cpp.s
+
+grammar/CACTVisitor.o: grammar/CACTVisitor.cpp.o
+
+.PHONY : grammar/CACTVisitor.o
+
+# target to build an object file
+grammar/CACTVisitor.cpp.o:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.o
+.PHONY : grammar/CACTVisitor.cpp.o
+
+grammar/CACTVisitor.i: grammar/CACTVisitor.cpp.i
+
+.PHONY : grammar/CACTVisitor.i
+
+# target to preprocess a source file
+grammar/CACTVisitor.cpp.i:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.i
+.PHONY : grammar/CACTVisitor.cpp.i
+
+grammar/CACTVisitor.s: grammar/CACTVisitor.cpp.s
+
+.PHONY : grammar/CACTVisitor.s
+
+# target to generate assembly for a file
+grammar/CACTVisitor.cpp.s:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.s
+.PHONY : grammar/CACTVisitor.cpp.s
 
 src/main.o: src/main.cpp.o
 
@@ -267,18 +267,18 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... compiler"
-	@echo "... grammar/HelloBaseVisitor.o"
-	@echo "... grammar/HelloBaseVisitor.i"
-	@echo "... grammar/HelloBaseVisitor.s"
-	@echo "... grammar/HelloLexer.o"
-	@echo "... grammar/HelloLexer.i"
-	@echo "... grammar/HelloLexer.s"
-	@echo "... grammar/HelloParser.o"
-	@echo "... grammar/HelloParser.i"
-	@echo "... grammar/HelloParser.s"
-	@echo "... grammar/HelloVisitor.o"
-	@echo "... grammar/HelloVisitor.i"
-	@echo "... grammar/HelloVisitor.s"
+	@echo "... grammar/CACTBaseVisitor.o"
+	@echo "... grammar/CACTBaseVisitor.i"
+	@echo "... grammar/CACTBaseVisitor.s"
+	@echo "... grammar/CACTLexer.o"
+	@echo "... grammar/CACTLexer.i"
+	@echo "... grammar/CACTLexer.s"
+	@echo "... grammar/CACTParser.o"
+	@echo "... grammar/CACTParser.i"
+	@echo "... grammar/CACTParser.s"
+	@echo "... grammar/CACTVisitor.o"
+	@echo "... grammar/CACTVisitor.i"
+	@echo "... grammar/CACTVisitor.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
