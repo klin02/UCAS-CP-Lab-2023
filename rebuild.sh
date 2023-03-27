@@ -1,3 +1,5 @@
+#!/bin/bash
+
 keep_file="CACT.g4"  # 指定要保留的文件
 
 cd grammar
