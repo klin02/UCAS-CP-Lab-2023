@@ -1,0 +1,485 @@
+//从AST中获取，并删除额外包裹子树的括号
+//以下的标点符号都是文法终结符
+
+compUnit 
+  // const int a = 0;
+  decl 
+    constDecl 
+      const 
+      bType 
+        int
+      constDef 
+        a 
+        = 
+        constInitVal 
+          constExp 
+            number 
+              0
+      ;              
+  //right 
+  
+
+  // int b = 1;
+  decl 
+    varDecl 
+      bType 
+        int
+      varDef 
+        b 
+        = 
+        constInitVal 
+          constExp 
+            number 
+              1
+      ;
+  //right
+  
+
+  // int func1(int a)
+  // {
+  //   int b = 3;
+  //   int c[4] = {0x1, 012, 0xF3, 4};
+  //   return a + b + c[2];
+  // }
+  funcDef 
+    funcType 
+      int 
+    func1 
+    ( //LeftParen
+    funcFParams 
+      funcFParam 
+          bType 
+            int 
+          a
+    ) 
+    block 
+      { //LeftBrace
+      //int b = 3;
+      blockItem 
+        decl 
+          varDecl 
+            bType 
+              int 
+            varDef 
+              b 
+              = 
+              constInitVal 
+                constExp 
+                  number 
+                    3
+            ; 
+
+      // int c[4] = {0x1, 012, 0xF3, 4};
+      blockItem 
+        decl 
+          varDecl 
+            bType 
+              int 
+            varDef 
+              c 
+              [ //LeftBracket 
+              4 
+              ] 
+              = 
+              constInitVal 
+                { 
+                constInitVal 
+                    constExp 
+                      number 
+                        0x1
+                , 
+                constInitVal 
+                  constExp 
+                    number 
+                      012
+                , 
+                constInitVal 
+                  constExp 
+                    number 
+                      0xF3
+                , 
+                constInitVal 
+                  constExp 
+                    number 
+                      4
+                }
+            ;
+
+      //return a + b + c[2];
+      blockItem 
+        stmt 
+          return 
+          exp 
+            addExp 
+              addExp //a+b
+                addExp 
+                  mulExp 
+                    unaryExp 
+                      primaryExp 
+                        lVal 
+                          a
+                + 
+                mulExp 
+                  unaryExp 
+                    primaryExp 
+                      lVal 
+                        b
+              + 
+              mulExp //c[2]
+                unaryExp 
+                  primaryExp 
+                    lVal 
+                      c 
+                      [ 
+                      exp 
+                        addExp 
+                          mulExp 
+                            unaryExp 
+                              primaryExp 
+                                number 
+                                  2
+                      ]
+          ;
+      }
+  //right
+  
+  // bool func2(double a)
+  // {
+  //   if(a == 0.0)
+  //     return true;
+  //   else 
+  //     return false;
+  // }
+  funcDef 
+    funcType 
+      bool 
+    func2 
+    ( 
+    funcFParams 
+      funcFParam 
+        bType 
+          double 
+        a
+    ) 
+    block 
+      { 
+      blockItem 
+        stmt 
+          if 
+          ( 
+          cond 
+            lOrExp 
+              lAndExp 
+                eqExp 
+                  eqExp 
+                    relExp 
+                      addExp 
+                        mulExp 
+                          unaryExp 
+                            primaryExp 
+                              lVal 
+                                a 
+                  == 
+                  relExp 
+                    addExp 
+                      mulExp 
+                        unaryExp 
+                          primaryExp 
+                            number 0.0
+          ) 
+          stmt 
+            return 
+            exp 
+              true 
+            ; 
+          else 
+          stmt 
+            return 
+            exp 
+              false 
+            ; 
+      }
+  //right
+  
+
+  // int main()
+  // {
+  // 	int c = 8;
+  // 	int d = 9;
+  // 	d = func1(c);
+  // 	double e[8] = {};
+  // 	double f[8] = {1.0, 2.0, 4.5e-2, 3E2, .5e3};
+  // 	double g[8];
+  // 	g = e + f;
+  // 	if(func2(g[0]))
+  // 		print_double(g[0]);
+  // 	else
+  // 		print_bool(false);
+  // 	return 0;
+  // }
+  funcDef 
+    funcType 
+      int
+    main 
+    ( 
+    ) 
+    block 
+      {
+
+      //  int c = 8;
+      blockItem 
+        decl 
+          varDecl 
+            bType 
+              int 
+            varDef 
+              c 
+              = 
+              constInitVal 
+                constExp 
+                  number 
+                    8 
+            ;
+      //right
+      
+      //  int d = 9;
+      blockItem 
+        decl 
+          varDecl 
+            bType 
+              int 
+            varDef 
+              d 
+              = 
+              constInitVal 
+                constExp 
+                  number 
+                    9 
+            ; 
+      //right
+
+      // 	d = func1(c);
+      blockItem 
+        stmt 
+          lVal 
+            d 
+          = 
+          exp 
+            addExp 
+              mulExp 
+                unaryExp 
+                  func1 
+                  ( 
+                  funcRParams 
+                    exp 
+                      addExp 
+                        mulExp 
+                          unaryExp 
+                            primaryExp 
+                              lVal 
+                                c 
+                  ) 
+          ;
+      //right
+
+      // 	double e[8] = {};
+      blockItem 
+        decl 
+          varDecl 
+            bType 
+              double 
+            varDef 
+              e 
+              [ 
+              8 
+              ] 
+              = 
+              constInitVal 
+                { 
+                } 
+            ; 
+      //right
+
+      // 	double f[8] = {1.0, 2.0, 4.5e-2, 3E2, .5e3};
+      blockItem 
+        decl 
+          varDecl 
+            bType 
+              double 
+            varDef 
+              f 
+              [ 
+              8 
+              ] 
+              = 
+              constInitVal 
+                { 
+                constInitVal 
+                  constExp 
+                    number 
+                      1.0
+                , 
+                constInitVal 
+                  onstExp 
+                    number 2.0 
+                , 
+                constInitVal 
+                  constExp  
+                    number 
+                      4.5e-2 
+                , 
+                constInitVal 
+                  constExp 
+                    number 3E2 
+                , 
+                constInitVal 
+                  constExp 
+                    number .5e3 
+                } 
+            ; 
+      //right
+      
+      // double g[8];
+      blockItem 
+        decl 
+          varDecl 
+            bType 
+              double 
+            varDef 
+              g 
+              [ 
+              8 
+              ] 
+            ; 
+      //right
+
+      // 	g = e + f;
+      blockItem 
+        stmt 
+          lVal 
+            g
+          = 
+          exp 
+            addExp 
+              addExp 
+                mulExp 
+                  unaryExp 
+                    primaryExp 
+                      lVal 
+                        e 
+              + 
+              mulExp 
+                unaryExp 
+                  primaryExp 
+                    lVal 
+                      f 
+          ; 
+      //right
+
+      // 	if(func2(g[0]))
+      // 		print_double(g[0]);
+      // 	else
+      // 		print_bool(false);
+      blockItem 
+        stmt 
+          if 
+          ( 
+          cond 
+            lOrExp 
+              lAndExp 
+                eqExp 
+                  relExp 
+                    addExp 
+                      mulExp 
+                        unaryExp 
+                          func2 
+                          ( 
+                          funcRParams 
+                            exp 
+                              addExp 
+                                mulExp 
+                                  unaryExp 
+                                    primaryExp 
+                                      lVal 
+                                        g 
+                                        [ 
+                                        exp 
+                                          addExp 
+                                            mulExp 
+                                              unaryExp 
+                                                primaryExp 
+                                                  number 
+                                                    0 
+                                        ]
+                          )
+          ) 
+          stmt 
+            exp 
+              addExp 
+                mulExp 
+                  unaryExp 
+                    print_double 
+                    ( 
+                    funcRParams 
+                      exp 
+                        addExp 
+                          mulExp 
+                            unaryExp 
+                              primaryExp 
+                                lVal 
+                                  g 
+                                  [ 
+                                  exp 
+                                    addExp 
+                                      mulExp 
+                                        unaryExp 
+                                          primaryExp 
+                                            number 
+                                              0 
+                                  ] 
+                    ) 
+            ; 
+          //right if
+          else 
+          stmt 
+            exp 
+              addExp 
+                mulExp 
+                  unaryExp 
+                    print_bool 
+                    ( 
+                    false  //wrong here
+                    ) 
+            ; 
+      
+      //!!!!!!
+      //此处正确的推导应当为
+      >>>>>>>>>>>>
+      unaryExp
+        print_bool
+        (
+        funcRParams
+          exp 
+            false
+        )
+      <<<<<<<<<<<<
+
+      // return 0;
+      blockItem 
+        stmt 
+          return 
+          exp 
+            addExp 
+              mulExp 
+                unaryExp 
+                  primaryExp 
+                    number 
+                      0 
+          ; 
+      }
+      //right
+  //end with one err
+
+
+  <EOF>
+  //right
