@@ -2,13 +2,14 @@ grammar CACT;
 
 @header {
     #include <vector>
+    #include <string>
 }
 
 /****** parser ******/
 
 /*** 声明&定义 ***/
 compUnit
-    : (decl | funcDef)+ EOF ;
+    : (decl | funcDef)+ EOF;
 
 decl
     : constDecl
@@ -27,7 +28,7 @@ bType
     ;
 
 constDef
-    : Ident (LeftBracket IntConst RightBracket)* '=' constInitVal
+    : Ident (LeftBracket IntConst RightBracket)* ASSIGN constInitVal
     ;
 
 constInitVal
@@ -40,11 +41,11 @@ varDecl
     ;
 
 varDef
-    : Ident (LeftBracket IntConst RightBracket)* ('=' constInitVal)?
+    : Ident (LeftBracket IntConst RightBracket)* (ASSIGN constInitVal)?
     ;
 
 funcDef
-    : funcType Ident LeftParen (funcFParams)? RightParen block
+    : funcType Ident LeftParen funcFParams? RightParen block
     ;
 
 funcType
@@ -65,7 +66,7 @@ funcFParam
 
 /*** 语句&表达式 ***/
 block
-    : LeftBrace (blockItem)* RightBrace
+    : LeftBrace blockItem* RightBrace
     ;
 
 blockItem
@@ -74,17 +75,17 @@ blockItem
     ;
 
 stmt
-    : block
-    | lVal ASSIGN exp SEMICOLON
+    : lVal ASSIGN exp SEMICOLON
     | (exp)? SEMICOLON
+    | block
     | IF LeftParen cond RightParen stmt (ELSE stmt)?
     | WHILE LeftParen cond RightParen stmt
     | (BREAK | CONTINUE | RETURN exp) SEMICOLON
     ;
 
 exp 
-    : addExp 
-    | BoolConst
+    : BoolConst
+    | addExp 
     ;
 
 constExp
@@ -136,6 +137,7 @@ addExp
 relExp
     : addExp
     | relExp (LEQ | GEQ | LT | GT) addExp
+    | BoolConst
     ;
 
 eqExp
@@ -145,63 +147,15 @@ eqExp
 
 lAndExp
     : eqExp
-    | lAndExp (AND) eqExp
+    | lAndExp AND eqExp
     ;
 
 lOrExp
     : lAndExp
-    | lOrExp (OR) lAndExp
+    | lOrExp OR lAndExp
     ;
 
 /****** lexer  ******/
-/* 终结符 */
-Ident
-    : [a-zA-Z_] [a-zA-Z_0-9]*
-    ;
-
-BoolConst
-    : TRUE
-    | FALSE
-    ;
-
-IntConst 
-    : DecimalConst 
-    | OctalConst 
-    | HexadecConst
-    ;
-
-fragment DecimalConst
-    : '0'
-    | [1-9] [0-9]*
-    ;
-
-fragment OctalConst
-    : '0' [0-7]+
-    ;
-
-fragment HexadecConst
-    : ('0x' | '0X') [0-9a-fA-F]+
-    ;
-
-FloatConst
-    : DoubleConst ('f' | 'F')
-    ;
-
-DoubleConst 
-    : Fraction Exponent?
-    | [0-9]+ Exponent
-    ;
-
-fragment Fraction
-    : [0-9]+ '.' [0-9]+
-    | [0-9]+ '.'
-    | '.' [0-9]+
-    ;
-
-fragment Exponent
-    : ('E' | 'e') (ADD | SUB)? [0-9]+
-    ;
-
 /* 标点 */
 LeftParen   : '('       ;
 RightParen  : ')'       ;
@@ -213,8 +167,8 @@ SEMICOLON   : ';'       ;
 COMMA       : ','       ;
 
 /* 关键字 */
-TRUE        : 'true'    ;
-FALSE       : 'false'   ;
+fragment TRUE        : 'true'    ;
+fragment FALSE       : 'false'   ;
 
 CONST       : 'const'   ;
 VOID        : 'void'    ;
@@ -247,10 +201,67 @@ NEQ         : '!='      ;
 AND         : '&&'      ;
 OR          : '||'      ;
 
+/* 终结符 */
+BoolConst
+    : TRUE
+    | FALSE
+    ;
+
+Ident
+    : [a-zA-Z_] [a-zA-Z_0-9]*
+    ;
+
+IntConst 
+    : DecimalConst 
+    | OctalConst 
+    | HexadecConst
+    ;
+
+fragment DecimalConst
+    : '0'
+    | [1-9] [0-9]*
+    ;
+
+fragment OctalConst
+    : '0' [0-7]+
+    ;
+
+fragment HexadecConst
+    : HexPrefix [0-9a-fA-F]+
+    ;
+
+fragment HexPrefix
+    : '0x'
+    | '0X'
+    ;
+
+FloatConst
+    : PreFloatDouble ('f' | 'F')
+    ;
+
+DoubleConst 
+    : PreFloatDouble
+    ;
+
+fragment PreFloatDouble
+    : Fraction Exponent?
+    | [0-9]+ Exponent
+    ;
+fragment Fraction
+    : [0-9]+ '.' [0-9]+
+    | [0-9]+ '.'
+    | '.' [0-9]+
+    ;
+
+fragment Exponent
+    : ('E' | 'e') (ADD | SUB)? [0-9]+
+    ;
+
+
 /****** skips  ******/
 NewLine
     :(
-        '\r' ('\n')?
+        '\r' '\n'?
         | '\n'
     )
     -> skip
@@ -258,16 +269,15 @@ NewLine
 
 WhiteSpace
     :(
-        ' '
-        | '\t'
-    )
+        [ \t]+
+    ) 
     -> skip
     ;
 
 //检查是否\r\n要放在一起
 LineComment
     :(
-        '//' (~('\r' | '\n'))*
+        '//' ~[\r\n]*
     )
     -> skip
     ;

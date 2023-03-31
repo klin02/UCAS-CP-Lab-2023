@@ -1,5 +1,6 @@
 
     #include <vector>
+    #include <string>
 
 
 // Generated from CACT.g4 by ANTLR 4.8
@@ -15,14 +16,14 @@
 class  CACTParser : public antlr4::Parser {
 public:
   enum {
-    Ident = 1, BoolConst = 2, IntConst = 3, FloatConst = 4, DoubleConst = 5, 
-    LeftParen = 6, RightParen = 7, LeftBracket = 8, RightBracket = 9, LeftBrace = 10, 
-    RightBrace = 11, SEMICOLON = 12, COMMA = 13, TRUE = 14, FALSE = 15, 
-    CONST = 16, VOID = 17, INT = 18, BOOL = 19, FLOAT = 20, DOUBLE = 21, 
-    IF = 22, ELSE = 23, WHILE = 24, BREAK = 25, CONTINUE = 26, RETURN = 27, 
-    ASSIGN = 28, ADD = 29, SUB = 30, NOT = 31, MUL = 32, DIV = 33, MOD = 34, 
-    LEQ = 35, GEQ = 36, LT = 37, GT = 38, EQ = 39, NEQ = 40, AND = 41, OR = 42, 
-    NewLine = 43, WhiteSpace = 44, LineComment = 45, BlockComment = 46
+    LeftParen = 1, RightParen = 2, LeftBracket = 3, RightBracket = 4, LeftBrace = 5, 
+    RightBrace = 6, SEMICOLON = 7, COMMA = 8, CONST = 9, VOID = 10, INT = 11, 
+    BOOL = 12, FLOAT = 13, DOUBLE = 14, IF = 15, ELSE = 16, WHILE = 17, 
+    BREAK = 18, CONTINUE = 19, RETURN = 20, ASSIGN = 21, ADD = 22, SUB = 23, 
+    NOT = 24, MUL = 25, DIV = 26, MOD = 27, LEQ = 28, GEQ = 29, LT = 30, 
+    GT = 31, EQ = 32, NEQ = 33, AND = 34, OR = 35, BoolConst = 36, Ident = 37, 
+    IntConst = 38, FloatConst = 39, DoubleConst = 40, NewLine = 41, WhiteSpace = 42, 
+    LineComment = 43, BlockComment = 44
   };
 
   enum {
@@ -325,11 +326,11 @@ public:
   public:
     StmtContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    BlockContext *block();
     LValContext *lVal();
     antlr4::tree::TerminalNode *ASSIGN();
     ExpContext *exp();
     antlr4::tree::TerminalNode *SEMICOLON();
+    BlockContext *block();
     antlr4::tree::TerminalNode *IF();
     antlr4::tree::TerminalNode *LeftParen();
     CondContext *cond();
@@ -353,8 +354,8 @@ public:
   public:
     ExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    AddExpContext *addExp();
     antlr4::tree::TerminalNode *BoolConst();
+    AddExpContext *addExp();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -516,6 +517,7 @@ public:
     RelExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     AddExpContext *addExp();
+    antlr4::tree::TerminalNode *BoolConst();
     RelExpContext *relExp();
     antlr4::tree::TerminalNode *LEQ();
     antlr4::tree::TerminalNode *GEQ();

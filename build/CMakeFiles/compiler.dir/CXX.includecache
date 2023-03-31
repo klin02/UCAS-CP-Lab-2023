@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -1141,11 +1141,15 @@ XPathElement.h
 ../grammar/CACTLexer.h
 vector
 -
+string
+-
 antlr4-runtime.h
 ../grammar/antlr4-runtime.h
 
 ../grammar/CACTParser.h
 vector
+-
+string
 -
 antlr4-runtime.h
 ../grammar/antlr4-runtime.h
@@ -1153,76 +1157,94 @@ antlr4-runtime.h
 ../grammar/CACTVisitor.h
 vector
 -
+string
+-
 antlr4-runtime.h
 ../grammar/antlr4-runtime.h
 CACTParser.h
 ../grammar/CACTParser.h
 
-/home/compiler16/cact/grammar/CACTBaseVisitor.cpp
+/home/stu/CPLab/cact/grammar/CACTBaseVisitor.cpp
 vector
+-
+string
 -
 CACTBaseVisitor.h
-/home/compiler16/cact/grammar/CACTBaseVisitor.h
+/home/stu/CPLab/cact/grammar/CACTBaseVisitor.h
 
-/home/compiler16/cact/grammar/CACTBaseVisitor.h
+/home/stu/CPLab/cact/grammar/CACTBaseVisitor.h
 vector
 -
+string
+-
 antlr4-runtime.h
-/home/compiler16/cact/grammar/antlr4-runtime.h
+/home/stu/CPLab/cact/grammar/antlr4-runtime.h
 CACTVisitor.h
-/home/compiler16/cact/grammar/CACTVisitor.h
+/home/stu/CPLab/cact/grammar/CACTVisitor.h
 
-/home/compiler16/cact/grammar/CACTLexer.cpp
+/home/stu/CPLab/cact/grammar/CACTLexer.cpp
 vector
+-
+string
 -
 CACTLexer.h
-/home/compiler16/cact/grammar/CACTLexer.h
+/home/stu/CPLab/cact/grammar/CACTLexer.h
 
-/home/compiler16/cact/grammar/CACTLexer.h
+/home/stu/CPLab/cact/grammar/CACTLexer.h
 vector
 -
+string
+-
 antlr4-runtime.h
-/home/compiler16/cact/grammar/antlr4-runtime.h
+/home/stu/CPLab/cact/grammar/antlr4-runtime.h
 
-/home/compiler16/cact/grammar/CACTParser.cpp
+/home/stu/CPLab/cact/grammar/CACTParser.cpp
 vector
+-
+string
 -
 CACTVisitor.h
-/home/compiler16/cact/grammar/CACTVisitor.h
+/home/stu/CPLab/cact/grammar/CACTVisitor.h
 CACTParser.h
-/home/compiler16/cact/grammar/CACTParser.h
+/home/stu/CPLab/cact/grammar/CACTParser.h
 
-/home/compiler16/cact/grammar/CACTParser.h
+/home/stu/CPLab/cact/grammar/CACTParser.h
 vector
 -
+string
+-
 antlr4-runtime.h
-/home/compiler16/cact/grammar/antlr4-runtime.h
+/home/stu/CPLab/cact/grammar/antlr4-runtime.h
 
-/home/compiler16/cact/grammar/CACTVisitor.cpp
+/home/stu/CPLab/cact/grammar/CACTVisitor.cpp
 vector
+-
+string
 -
 CACTVisitor.h
-/home/compiler16/cact/grammar/CACTVisitor.h
+/home/stu/CPLab/cact/grammar/CACTVisitor.h
 
-/home/compiler16/cact/grammar/CACTVisitor.h
+/home/stu/CPLab/cact/grammar/CACTVisitor.h
 vector
 -
+string
+-
 antlr4-runtime.h
-/home/compiler16/cact/grammar/antlr4-runtime.h
+/home/stu/CPLab/cact/grammar/antlr4-runtime.h
 CACTParser.h
-/home/compiler16/cact/grammar/CACTParser.h
+/home/stu/CPLab/cact/grammar/CACTParser.h
 
-/home/compiler16/cact/src/main.cpp
+/home/stu/CPLab/cact/src/main.cpp
 iostream
 -
 antlr4-runtime.h
-/home/compiler16/cact/src/antlr4-runtime.h
+/home/stu/CPLab/cact/src/antlr4-runtime.h
 tree/ErrorNode.h
-/home/compiler16/cact/src/tree/ErrorNode.h
+/home/stu/CPLab/cact/src/tree/ErrorNode.h
 CACTLexer.h
-/home/compiler16/cact/src/CACTLexer.h
+/home/stu/CPLab/cact/src/CACTLexer.h
 CACTParser.h
-/home/compiler16/cact/src/CACTParser.h
+/home/stu/CPLab/cact/src/CACTParser.h
 CACTVisitor.h
-/home/compiler16/cact/src/CACTVisitor.h
+/home/stu/CPLab/cact/src/CACTVisitor.h
 

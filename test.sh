@@ -7,6 +7,7 @@ command="./compiler"
 
 total_cnt=0
 pass_cnt=0
+fail_list=()
 # 遍历目录中的所有文件
 for file in "$dir"/*
 do
@@ -35,8 +36,12 @@ do
                 ((pass_cnt=pass_cnt+1))
         else
                 echo "Fail"
+                substr=$(echo $file | awk -F"/" '{print $NF}' | awk -F"_" '{print $1}')
+                fail_list+=($substr)
         fi
         echo -e "\n"
     fi
 done
+
+echo "Fail list: ${fail_list[@]}"
 echo "Pass rate: $pass_cnt / $total_cnt "
