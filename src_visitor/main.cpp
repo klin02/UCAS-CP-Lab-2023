@@ -17,7 +17,7 @@ public:
     exit(1);
   }
   virtual antlrcpp::Any visitCompUnit(CACTParser::CompUnitContext *ctx) override {
-    return visitChildren(ctx);;
+    return visitChildren(ctx);
   }
 
   virtual antlrcpp::Any visitDecl(CACTParser::DeclContext *ctx) override {
