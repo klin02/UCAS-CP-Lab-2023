@@ -2,7 +2,7 @@
 
 # 指定目录和命令
 dir="samples/samples_lex_and_syntax"
-# dir="samples/demo"
+# dir="samples/added_samples"
 command="./compiler"
 
 total_cnt=0
