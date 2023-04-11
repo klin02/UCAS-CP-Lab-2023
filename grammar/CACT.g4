@@ -217,23 +217,23 @@ IntConst
     | HexadecConst
     ;
 
+fragment Sign
+    : (ADD | SUB)
+    ;
+
 fragment DecimalConst
-    : '0'
-    | [1-9] [0-9]*
+    : Sign? '0'
+    | Sign? [1-9] [0-9]*
     ;
 
 fragment OctalConst
-    : '0' [0-7]+
+    : Sign? '0' [0-7]+
     ;
 
 fragment HexadecConst
-    : HexPrefix [0-9a-fA-F]+
+    : Sign? ('0x'|'0X') [0-9a-fA-F]+
     ;
 
-fragment HexPrefix
-    : '0x'
-    | '0X'
-    ;
 
 FloatConst
     : PreFloatDouble ('f' | 'F')
@@ -244,8 +244,8 @@ DoubleConst
     ;
 
 fragment PreFloatDouble
-    : Fraction Exponent?
-    | [0-9]+ Exponent
+    : Sign? Fraction Exponent?
+    | Sign? [0-9]+ Exponent
     ;
 fragment Fraction
     : [0-9]+ '.' [0-9]+
