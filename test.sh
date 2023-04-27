@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # 指定目录和命令
-dir="samples/samples_lex_and_syntax"
+# dir="samples/samples_lex_and_syntax"
+dir="samples/samples_semantic"
 # dir="samples/added_samples"
 command="./compiler"
 
