@@ -1,6 +1,8 @@
 grammar CACT;
 
 @header {
+    #include "cact_types.h"
+    #include "SymbolTable.h"
     #include <vector>
     #include <string>
 }
@@ -21,17 +23,46 @@ constDecl
     ;
 
 bType
+    locals[
+        cact_basety_t basety,
+        std::vector<cact_basety_t*> passTo, 
+    ]
     : INT
     | BOOL
     | FLOAT
     | DOUBLE
     ;
 
+//为了方便在enterconst/varDef时为constinitval获取维度数组，提取该部分
+arrayDims
+    locals[
+        std::vector<uint32_t> *dims_ptr,
+    ]
+    : (LeftBracket IntConst RightBracket)*
+    ;
+
 constDef
-    : Ident (LeftBracket IntConst RightBracket)* ASSIGN constInitVal
+    locals [
+        //由同级btype填充
+        cact_basety_t basety,
+        std::vector<uint32_t> arraydims,
+        std::string name,
+        cact_type_t type,
+    ]
+    : Ident arrayDims ASSIGN constInitVal
     ;
 
 constInitVal
+    locals[
+        //自顶向下继承
+        cact_basety_t basety,
+        //维度数组指针，值依次是从最外层到最内层的维度
+        std::vector<uint32_t> *dims_ptr,
+        //维度索引，最内层为0
+        uint16_t dim_index,
+        //表征是否最顶层，只有index为1，且为最顶层才允许以平铺列表初始化
+        bool top,
+    ]
     : constExp 
     | LeftBrace (constInitVal (COMMA constInitVal)*)? RightBrace
     ;
@@ -41,14 +72,31 @@ varDecl
     ;
 
 varDef
-    : Ident (LeftBracket IntConst RightBracket)* (ASSIGN constInitVal)?
+    locals[
+        //由同级btype填充
+        cact_basety_t basety,
+        std::vector<uint32_t> arraydims,
+        std::string name,
+        cact_type_t type,
+    ]
+    : Ident arrayDims (ASSIGN constInitVal)?
     ;
 
+//省去中间的funcFParams，直接在funcDef中生成形参列表，避免形参列表的过多传递
+//在funcDef中定义列表，并将其指针传递给funcFParam填充
 funcDef
-    : funcType Ident LeftParen funcFParams? RightParen block
+    locals[
+        //由funcDef管理，funcFParam负责插入
+        //用于函数声明以及添加到block作用域
+        fparam_list_t fparam_list,
+    ]
+    : funcType Ident LeftParen funcFParam? (COMMA funcFParam)* RightParen block
     ;
 
 funcType
+    locals[
+        cact_basety_t basety,
+    ]
     : VOID
     | INT
     | FLOAT
@@ -56,39 +104,52 @@ funcType
     | BOOL
     ;
 
-funcFParams
-    : funcFParam (COMMA funcFParam)*
-    ;
-
 funcFParam
+    locals[
+        //指向fparam_list的指针，用于查找重复命名和插入
+        fparam_list_t *fparam_list_ptr,
+        //由父节点确定的次序
+        int order,
+    ]
     : bType Ident (LeftBracket (IntConst)? RightBracket (LeftBracket IntConst RightBracket)*)?
     ;
 
 /*** 语句&表达式 ***/
+//考虑到直接从block获取最后一个decl|stmt，省略blockItem
+//由于只检查特定位置的stmt返回类型，使用自底向上的综合属性
 block
-    : LeftBrace blockItem* RightBrace
-    ;
-
-blockItem
-    : decl
-    | stmt
+    locals[
+        cact_basety_t ret_type,
+        //形参列表添加到block作用域
+        fparam_list_t *fparam_list_ptr,
+    ]
+    : LeftBrace (decl|stmt)* RightBrace
     ;
 
 stmt
-    : lVal ASSIGN exp SEMICOLON
-    | (exp)? SEMICOLON
-    | block
-    | IF LeftParen cond RightParen stmt (ELSE stmt)?
-    | WHILE LeftParen cond RightParen stmt
-    | (BREAK | CONTINUE | RETURN exp) SEMICOLON
+    locals[
+        cact_basety_t ret_type,
+    ]
+    : lVal ASSIGN exp SEMICOLON                         #stmt_assign
+    | (exp)? SEMICOLON                                  #stmt_exp
+    | block                                             #stmt_block
+    | IF LeftParen cond RightParen stmt (ELSE stmt)?    #stmt_if
+    | WHILE LeftParen cond RightParen stmt              #stmt_while
+    | (BREAK | CONTINUE | RETURN exp?) SEMICOLON        #stmt_bcr
     ;
 
 exp 
+    locals[
+        cact_expr_ptr self,
+    ]
     : BoolConst
     | addExp 
     ;
 
 constExp
+    locals[
+        cact_basety_t basety,
+    ]
     : number
     | BoolConst
     ;
@@ -97,60 +158,116 @@ cond
     : lOrExp
     ;
 
+//对于有中括号的，为子数组/元素，需要进行维度检查
+//不允许对子数组赋值（不允许类型转换）
+//为方便赋值操作对象检查，将lVal也当做表达式进行管理，子数组op为OP_ARRAY，元素op为OP_BASE
 lVal
+    locals[
+        cact_expr_ptr self,
+        //仅用于赋值时检查是否常量
+        bool is_const,
+    ]
     : Ident (LeftBracket exp RightBracket)*
     ;
 
 primaryExp
+    locals[
+        cact_expr_ptr self,
+    ]
     : number
     | lVal
     | LeftParen exp RightParen
     ;
 
+//为方便管理，将number也设置为表达式
+//op为OP_BASE，表示终结符常量
 number
+    locals[
+        cact_expr_ptr self,
+    ]
     : IntConst
     | DoubleConst
     | FloatConst
     ;
 
 unaryExp
+    locals[
+        cact_expr_ptr self,
+    ]
     : primaryExp
-    | (ADD | SUB | NOT) unaryExp
+    | unaryOp unaryExp
     | Ident LeftParen (funcRParams)? RightParen
     ;
 
+//将操作符的可能集合独立处理，方便在对应Exp中直接使用getText获取
+unaryOp
+    : ADD | SUB | NOT 
+    ;
 funcRParams
     : exp (COMMA exp)*
     ;
 
 mulExp
+    locals[
+        cact_expr_ptr self,
+    ]
     : unaryExp
-    | mulExp (MUL | DIV | MOD) unaryExp
+    | mulExp mulOp unaryExp
+    ;
+
+mulOp
+    : MUL | DIV | MOD
     ;
 
 addExp
+    locals[
+        cact_expr_ptr self,
+    ]
     : mulExp
-    | addExp (ADD | SUB) mulExp
+    | addExp addOp mulExp
     ;
 
-//考虑是否需要BoolConst
-relExp
+addOp
+    : ADD | SUB
+    ;
+
+relExp  
+    locals[
+        cact_expr_ptr self,
+    ]
     : addExp
-    | relExp (LEQ | GEQ | LT | GT) addExp
+    | relExp relOp addExp
     | BoolConst
     ;
 
+relOp
+    : LEQ | GEQ | LT | GT
+    ;
+
 eqExp
+    locals[
+        cact_expr_ptr self,
+    ]
     : relExp
-    | eqExp (EQ | NEQ) relExp
+    | eqExp eqOp relExp
+    ;
+
+eqOp
+    : EQ | NEQ
     ;
 
 lAndExp
+    locals[
+        cact_expr_ptr self,
+    ]
     : eqExp
     | lAndExp AND eqExp
     ;
 
 lOrExp
+    locals[
+        cact_expr_ptr self,
+    ]
     : lAndExp
     | lOrExp OR lAndExp
     ;

@@ -3,11 +3,13 @@
 keep_file="CACT.g4"  # 指定要保留的文件
 # keep_file="Example.g4"
 
-echo "Input Mode:"
-echo "  l      : Listener"
-echo "  v      : Visitor"
-echo "  default: Visitor"
-read choice
+# echo "Input Mode:"
+# echo "  l      : Listener"
+# echo "  v      : Visitor"
+# echo "  default: Visitor"
+# read choice
+
+choice="l"
 if [ "$choice" == "l" ];then
     echo "Mode: Listener"
     cp -r src_listener/ src/

@@ -1,4 +1,6 @@
 
+    #include "cact_types.h"
+    #include "SymbolTable.h"
     #include <vector>
     #include <string>
 

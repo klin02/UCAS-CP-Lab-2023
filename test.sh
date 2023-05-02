@@ -3,7 +3,8 @@
 # 指定目录和命令
 # dir="samples/samples_lex_and_syntax"
 dir="samples/samples_semantic"
-# dir="samples/added_samples"
+# dir="samples/extra_samples_pr1"
+# dir="samples/extra_samples_pr2"
 command="./compiler"
 
 total_cnt=0

@@ -123,32 +123,32 @@ compiler/fast:
 	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/build
 .PHONY : compiler/fast
 
-grammar/CACTBaseVisitor.o: grammar/CACTBaseVisitor.cpp.o
+grammar/CACTBaseListener.o: grammar/CACTBaseListener.cpp.o
 
-.PHONY : grammar/CACTBaseVisitor.o
+.PHONY : grammar/CACTBaseListener.o
 
 # target to build an object file
-grammar/CACTBaseVisitor.cpp.o:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.o
-.PHONY : grammar/CACTBaseVisitor.cpp.o
+grammar/CACTBaseListener.cpp.o:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.o
+.PHONY : grammar/CACTBaseListener.cpp.o
 
-grammar/CACTBaseVisitor.i: grammar/CACTBaseVisitor.cpp.i
+grammar/CACTBaseListener.i: grammar/CACTBaseListener.cpp.i
 
-.PHONY : grammar/CACTBaseVisitor.i
+.PHONY : grammar/CACTBaseListener.i
 
 # target to preprocess a source file
-grammar/CACTBaseVisitor.cpp.i:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.i
-.PHONY : grammar/CACTBaseVisitor.cpp.i
+grammar/CACTBaseListener.cpp.i:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.i
+.PHONY : grammar/CACTBaseListener.cpp.i
 
-grammar/CACTBaseVisitor.s: grammar/CACTBaseVisitor.cpp.s
+grammar/CACTBaseListener.s: grammar/CACTBaseListener.cpp.s
 
-.PHONY : grammar/CACTBaseVisitor.s
+.PHONY : grammar/CACTBaseListener.s
 
 # target to generate assembly for a file
-grammar/CACTBaseVisitor.cpp.s:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.s
-.PHONY : grammar/CACTBaseVisitor.cpp.s
+grammar/CACTBaseListener.cpp.s:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.s
+.PHONY : grammar/CACTBaseListener.cpp.s
 
 grammar/CACTLexer.o: grammar/CACTLexer.cpp.o
 
@@ -177,6 +177,33 @@ grammar/CACTLexer.cpp.s:
 	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTLexer.cpp.s
 .PHONY : grammar/CACTLexer.cpp.s
 
+grammar/CACTListener.o: grammar/CACTListener.cpp.o
+
+.PHONY : grammar/CACTListener.o
+
+# target to build an object file
+grammar/CACTListener.cpp.o:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTListener.cpp.o
+.PHONY : grammar/CACTListener.cpp.o
+
+grammar/CACTListener.i: grammar/CACTListener.cpp.i
+
+.PHONY : grammar/CACTListener.i
+
+# target to preprocess a source file
+grammar/CACTListener.cpp.i:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTListener.cpp.i
+.PHONY : grammar/CACTListener.cpp.i
+
+grammar/CACTListener.s: grammar/CACTListener.cpp.s
+
+.PHONY : grammar/CACTListener.s
+
+# target to generate assembly for a file
+grammar/CACTListener.cpp.s:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTListener.cpp.s
+.PHONY : grammar/CACTListener.cpp.s
+
 grammar/CACTParser.o: grammar/CACTParser.cpp.o
 
 .PHONY : grammar/CACTParser.o
@@ -204,32 +231,32 @@ grammar/CACTParser.cpp.s:
 	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTParser.cpp.s
 .PHONY : grammar/CACTParser.cpp.s
 
-grammar/CACTVisitor.o: grammar/CACTVisitor.cpp.o
+src/SemanticAnalysis.o: src/SemanticAnalysis.cpp.o
 
-.PHONY : grammar/CACTVisitor.o
+.PHONY : src/SemanticAnalysis.o
 
 # target to build an object file
-grammar/CACTVisitor.cpp.o:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.o
-.PHONY : grammar/CACTVisitor.cpp.o
+src/SemanticAnalysis.cpp.o:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.o
+.PHONY : src/SemanticAnalysis.cpp.o
 
-grammar/CACTVisitor.i: grammar/CACTVisitor.cpp.i
+src/SemanticAnalysis.i: src/SemanticAnalysis.cpp.i
 
-.PHONY : grammar/CACTVisitor.i
+.PHONY : src/SemanticAnalysis.i
 
 # target to preprocess a source file
-grammar/CACTVisitor.cpp.i:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.i
-.PHONY : grammar/CACTVisitor.cpp.i
+src/SemanticAnalysis.cpp.i:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.i
+.PHONY : src/SemanticAnalysis.cpp.i
 
-grammar/CACTVisitor.s: grammar/CACTVisitor.cpp.s
+src/SemanticAnalysis.s: src/SemanticAnalysis.cpp.s
 
-.PHONY : grammar/CACTVisitor.s
+.PHONY : src/SemanticAnalysis.s
 
 # target to generate assembly for a file
-grammar/CACTVisitor.cpp.s:
-	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.s
-.PHONY : grammar/CACTVisitor.cpp.s
+src/SemanticAnalysis.cpp.s:
+	$(MAKE) -f CMakeFiles/compiler.dir/build.make CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.s
+.PHONY : src/SemanticAnalysis.cpp.s
 
 src/main.o: src/main.cpp.o
 
@@ -267,18 +294,21 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... compiler"
-	@echo "... grammar/CACTBaseVisitor.o"
-	@echo "... grammar/CACTBaseVisitor.i"
-	@echo "... grammar/CACTBaseVisitor.s"
+	@echo "... grammar/CACTBaseListener.o"
+	@echo "... grammar/CACTBaseListener.i"
+	@echo "... grammar/CACTBaseListener.s"
 	@echo "... grammar/CACTLexer.o"
 	@echo "... grammar/CACTLexer.i"
 	@echo "... grammar/CACTLexer.s"
+	@echo "... grammar/CACTListener.o"
+	@echo "... grammar/CACTListener.i"
+	@echo "... grammar/CACTListener.s"
 	@echo "... grammar/CACTParser.o"
 	@echo "... grammar/CACTParser.i"
 	@echo "... grammar/CACTParser.s"
-	@echo "... grammar/CACTVisitor.o"
-	@echo "... grammar/CACTVisitor.i"
-	@echo "... grammar/CACTVisitor.s"
+	@echo "... src/SemanticAnalysis.o"
+	@echo "... src/SemanticAnalysis.i"
+	@echo "... src/SemanticAnalysis.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

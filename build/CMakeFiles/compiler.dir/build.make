@@ -57,18 +57,18 @@ include CMakeFiles/compiler.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/compiler.dir/flags.make
 
-CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.o: CMakeFiles/compiler.dir/flags.make
-CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.o: ../grammar/CACTBaseVisitor.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stu/CPLab/cact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.o -c /home/stu/CPLab/cact/grammar/CACTBaseVisitor.cpp
+CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.o: CMakeFiles/compiler.dir/flags.make
+CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.o: ../grammar/CACTBaseListener.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stu/CPLab/cact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.o -c /home/stu/CPLab/cact/grammar/CACTBaseListener.cpp
 
-CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stu/CPLab/cact/grammar/CACTBaseVisitor.cpp > CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.i
+CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stu/CPLab/cact/grammar/CACTBaseListener.cpp > CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.i
 
-CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stu/CPLab/cact/grammar/CACTBaseVisitor.cpp -o CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.s
+CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stu/CPLab/cact/grammar/CACTBaseListener.cpp -o CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.s
 
 CMakeFiles/compiler.dir/grammar/CACTLexer.cpp.o: CMakeFiles/compiler.dir/flags.make
 CMakeFiles/compiler.dir/grammar/CACTLexer.cpp.o: ../grammar/CACTLexer.cpp
@@ -83,9 +83,22 @@ CMakeFiles/compiler.dir/grammar/CACTLexer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compiler.dir/grammar/CACTLexer.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stu/CPLab/cact/grammar/CACTLexer.cpp -o CMakeFiles/compiler.dir/grammar/CACTLexer.cpp.s
 
+CMakeFiles/compiler.dir/grammar/CACTListener.cpp.o: CMakeFiles/compiler.dir/flags.make
+CMakeFiles/compiler.dir/grammar/CACTListener.cpp.o: ../grammar/CACTListener.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stu/CPLab/cact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/compiler.dir/grammar/CACTListener.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/compiler.dir/grammar/CACTListener.cpp.o -c /home/stu/CPLab/cact/grammar/CACTListener.cpp
+
+CMakeFiles/compiler.dir/grammar/CACTListener.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compiler.dir/grammar/CACTListener.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stu/CPLab/cact/grammar/CACTListener.cpp > CMakeFiles/compiler.dir/grammar/CACTListener.cpp.i
+
+CMakeFiles/compiler.dir/grammar/CACTListener.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compiler.dir/grammar/CACTListener.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stu/CPLab/cact/grammar/CACTListener.cpp -o CMakeFiles/compiler.dir/grammar/CACTListener.cpp.s
+
 CMakeFiles/compiler.dir/grammar/CACTParser.cpp.o: CMakeFiles/compiler.dir/flags.make
 CMakeFiles/compiler.dir/grammar/CACTParser.cpp.o: ../grammar/CACTParser.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stu/CPLab/cact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/compiler.dir/grammar/CACTParser.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stu/CPLab/cact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/compiler.dir/grammar/CACTParser.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/compiler.dir/grammar/CACTParser.cpp.o -c /home/stu/CPLab/cact/grammar/CACTParser.cpp
 
 CMakeFiles/compiler.dir/grammar/CACTParser.cpp.i: cmake_force
@@ -96,22 +109,22 @@ CMakeFiles/compiler.dir/grammar/CACTParser.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compiler.dir/grammar/CACTParser.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stu/CPLab/cact/grammar/CACTParser.cpp -o CMakeFiles/compiler.dir/grammar/CACTParser.cpp.s
 
-CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.o: CMakeFiles/compiler.dir/flags.make
-CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.o: ../grammar/CACTVisitor.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stu/CPLab/cact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.o -c /home/stu/CPLab/cact/grammar/CACTVisitor.cpp
+CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.o: CMakeFiles/compiler.dir/flags.make
+CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.o: ../src/SemanticAnalysis.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stu/CPLab/cact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.o -c /home/stu/CPLab/cact/src/SemanticAnalysis.cpp
 
-CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stu/CPLab/cact/grammar/CACTVisitor.cpp > CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.i
+CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stu/CPLab/cact/src/SemanticAnalysis.cpp > CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.i
 
-CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stu/CPLab/cact/grammar/CACTVisitor.cpp -o CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.s
+CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stu/CPLab/cact/src/SemanticAnalysis.cpp -o CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.s
 
 CMakeFiles/compiler.dir/src/main.cpp.o: CMakeFiles/compiler.dir/flags.make
 CMakeFiles/compiler.dir/src/main.cpp.o: ../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stu/CPLab/cact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/compiler.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stu/CPLab/cact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/compiler.dir/src/main.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/compiler.dir/src/main.cpp.o -c /home/stu/CPLab/cact/src/main.cpp
 
 CMakeFiles/compiler.dir/src/main.cpp.i: cmake_force
@@ -124,23 +137,25 @@ CMakeFiles/compiler.dir/src/main.cpp.s: cmake_force
 
 # Object files for target compiler
 compiler_OBJECTS = \
-"CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.o" \
+"CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.o" \
 "CMakeFiles/compiler.dir/grammar/CACTLexer.cpp.o" \
+"CMakeFiles/compiler.dir/grammar/CACTListener.cpp.o" \
 "CMakeFiles/compiler.dir/grammar/CACTParser.cpp.o" \
-"CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.o" \
+"CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.o" \
 "CMakeFiles/compiler.dir/src/main.cpp.o"
 
 # External object files for target compiler
 compiler_EXTERNAL_OBJECTS =
 
-compiler: CMakeFiles/compiler.dir/grammar/CACTBaseVisitor.cpp.o
+compiler: CMakeFiles/compiler.dir/grammar/CACTBaseListener.cpp.o
 compiler: CMakeFiles/compiler.dir/grammar/CACTLexer.cpp.o
+compiler: CMakeFiles/compiler.dir/grammar/CACTListener.cpp.o
 compiler: CMakeFiles/compiler.dir/grammar/CACTParser.cpp.o
-compiler: CMakeFiles/compiler.dir/grammar/CACTVisitor.cpp.o
+compiler: CMakeFiles/compiler.dir/src/SemanticAnalysis.cpp.o
 compiler: CMakeFiles/compiler.dir/src/main.cpp.o
 compiler: CMakeFiles/compiler.dir/build.make
 compiler: CMakeFiles/compiler.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/stu/CPLab/cact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable compiler"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/stu/CPLab/cact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable compiler"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/compiler.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
