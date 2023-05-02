@@ -10,7 +10,6 @@
 //定义作用域节点，以多叉树进行组织
 typedef struct scope{
     struct scope *parent;
-    std::vector<struct scope*> child_list;
 }scope_t;
 
 //在变量表中，使用名字+作用域作为一项的key
@@ -28,10 +27,8 @@ typedef struct name_scope{
 
 //变量表表项
 typedef struct var_symbol_item{
-    std::string name;
     //整合类型，包含常量和数组信息
     cact_type_t type;
-    scope_t * scope_ptr;
 } var_symbol_item_t;
 
 //由于变量表无序性，使用基于hash的unorder_map以提高性能
@@ -58,7 +55,6 @@ typedef std::map<std::string, fparam_item_t>
 
 //函数表表项
 typedef struct func_symbol_item{
-    std::string name;
     //函数返回值只能是基本类型
     cact_basety_t ret_type;
     //对应形参列表，为对应检查，实现为有序表
@@ -82,7 +78,7 @@ class SymbolTable{
             auto end_flag = var_table.end();
             while (scope_ptr != NULL){
                 //返回指向找到元素的迭代器
-                auto iter = var_table.find((name_scope){name,scope_ptr});
+                auto iter = var_table.find((name_scope){.name=name, .scope_ptr=scope_ptr});
                 if (iter != end_flag){
                     //找到该变量
                     return iter;

@@ -9,13 +9,12 @@ void SemanticAnalysis::addBuiltinFunc(std::string func_name, int argc, cact_base
     fparam_list_t fparam_list;
     if(argc == 1){
         std::string name = "arg0";
-        //创建空vector
-        arrdims_t arrdims;
-        cact_type_t type = (cact_type_t){false, basety, arrdims};
+        //不指定初始值时，arrdims默认为空
+        cact_type_t type = (cact_type_t){.is_const=false,.basety=basety};
         int order = 0;
-        fparam_list[name] = (fparam_item_t){type, order};
+        fparam_list[name] = (fparam_item_t){.type=type, .order=order};
     }
-    symbol_table.func_table[func_name] = (func_symbol_item_t){func_name,ret_type,fparam_list};
+    symbol_table.func_table[func_name] = (func_symbol_item_t){.ret_type=ret_type,.fparam_list=fparam_list};
 }
 
 //二元操作检查，类型相同，不是VOID，不是数组
@@ -118,7 +117,6 @@ void SemanticAnalysis::enterConst_Var_Def(T1 *ctx){
     if(ctx->constInitVal() != nullptr){
         ctx->constInitVal()->basety = ctx->basety;
         ctx->constInitVal()->dims_ptr = &(ctx->arraydims);
-        ctx->constInitVal()->dim_index = 0;
         //最顶层数组，且index为1时允许以平铺列表形式初始化
         ctx->constInitVal()->top = true;
     }
@@ -136,17 +134,17 @@ void SemanticAnalysis::exitConst_Var_Def(T1 *ctx, bool is_const){
     ctx->name = name;
     
     //检查当前作用域该变量是否声明
-    auto iter = (symbol_table.var_table).find((name_scope_t){name,cur_scope});
+    auto iter = (symbol_table.var_table).find((name_scope_t){.name=name, .scope_ptr=cur_scope});
     if(iter != (symbol_table.var_table).end()){
         std::cout << "Err: Const_Var_Def: "<<name<<" Redefined" << std::endl;
         exit(Semantic_ERR);
     }
     
     //整合变量类型
-    ctx->type = (cact_type_t){is_const, ctx->basety, ctx->arraydims};
+    ctx->type = (cact_type_t){.is_const=is_const, .basety=ctx->basety, .arrdims=ctx->arraydims};
     
     //将该变量加入变量表
-    symbol_table.var_table[(name_scope_t){name,cur_scope}] = (var_symbol_item_t){name,ctx->type,cur_scope};
+    symbol_table.var_table[(name_scope_t){name,cur_scope}] = (var_symbol_item_t){.type=ctx->type};
 
     //检查变量与初始值层级
     if(ctx->constInitVal()!=nullptr){
@@ -185,9 +183,8 @@ void SemanticAnalysis::exitBinaryExp(T1 *ctx, T2 *aExp, T3 *op_ptr, T4 *bExp, bo
         subexprs_t subexprs;
         subexprs.push_back(aExp->self);
         subexprs.push_back(bExp->self);
-        //子数组不允许操作，此处合法的必定不为数组
-        arrdims_t arrdims;
-        ctx->self.reset(new cact_expr_t{op,basety,subexprs,0,arrdims});
+        //作为维度的intConst和子数组不允许操作，不需指定int_result和arrdims
+        ctx->self.reset(new cact_expr_t{.op=op, .basety=basety, .subexprs=subexprs});
 
         //类型检查
         OperandCheck(ctx->self);
@@ -375,7 +372,7 @@ void SemanticAnalysis::exitFuncDef(CACTParser::FuncDefContext *ctx){
     }
     
     //未定义则添加
-    func_symbol_item_t item = (func_symbol_item_t){name,ret_type,ctx->fparam_list};
+    func_symbol_item_t item = (func_symbol_item_t){.ret_type=ret_type, .fparam_list=ctx->fparam_list};
     (symbol_table.func_table)[name] = item;
 
     //检查声明类型与块返回类型一致性
@@ -409,7 +406,7 @@ void SemanticAnalysis::exitFuncFParam(CACTParser::FuncFParamContext *ctx){
     }
     
     //整合类型
-    cact_type_t type = (cact_type_t){false, basety, arrdims};
+    cact_type_t type = (cact_type_t){.is_const=false, .basety=basety, .arrdims=arrdims};
 
     //在形参列表中查找是否已定义
     if((*ctx->fparam_list_ptr).find(name) != (*ctx->fparam_list_ptr).end()){
@@ -418,7 +415,7 @@ void SemanticAnalysis::exitFuncFParam(CACTParser::FuncFParamContext *ctx){
     }
 
     //未定义则添加
-    fparam_item_t item = (fparam_item_t){type,ctx->order};
+    fparam_item_t item = (fparam_item_t){.type=type, .order=ctx->order};
     (*ctx->fparam_list_ptr)[name] = item;
 }
 
@@ -426,7 +423,6 @@ void SemanticAnalysis::enterBlock(CACTParser::BlockContext *ctx){
     //更改当前作用域
     scope_t *new_scope = new scope_t;
     new_scope->parent = cur_scope;
-    cur_scope->child_list.push_back(new_scope);
     cur_scope = new_scope;
 
     //对于函数声明作用域，将形参列表逐一添加到作用域
@@ -434,8 +430,8 @@ void SemanticAnalysis::enterBlock(CACTParser::BlockContext *ctx){
         for(auto iter = (*ctx->fparam_list_ptr).begin(); iter != (*ctx->fparam_list_ptr).end(); iter++){
             std::string name = iter->first;
             fparam_item_t fparam = iter->second;
-            var_symbol_item_t item = (var_symbol_item_t){name,fparam.type,cur_scope};
-            (symbol_table.var_table)[(name_scope_t){name,cur_scope}] = item;
+            var_symbol_item_t item = (var_symbol_item_t){.type=fparam.type};
+            (symbol_table.var_table)[(name_scope_t){.name=name, .scope_ptr=cur_scope}] = item;
         }        
     }
 }
@@ -466,8 +462,7 @@ void SemanticAnalysis::exitStmt_assign(CACTParser::Stmt_assignContext *ctx){
     subexprs_t subexprs;
     subexprs.push_back(ctx->lVal()->self);
     subexprs.push_back(ctx->exp()->self);
-    arrdims_t arrdims;
-    cact_expr_ptr expr_ptr(new cact_expr_t{op,BTY_UNKNOWN,subexprs,0,arrdims});
+    cact_expr_ptr expr_ptr(new cact_expr_t{.op=op, .basety=BTY_UNKNOWN, .subexprs=subexprs});
     OperandCheck(expr_ptr);
 
     //返回类型
@@ -540,10 +535,8 @@ void SemanticAnalysis::exitExp(CACTParser::ExpContext *ctx){
     if(ctx->BoolConst() != nullptr){
         //创建self指向的结构体
         cact_op_t op = OP_BASE;
-        subexprs_t subexprs;
-        arrdims_t arrdims;
 
-        ctx->self.reset(new cact_expr_t{op,BTY_BOOL,subexprs,0,arrdims});
+        ctx->self.reset(new cact_expr_t{.op=op, .basety=BTY_BOOL});
     }
     else{
         ctx->self = ctx->addExp()->self;
@@ -610,8 +603,7 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
         else{
             op = OP_ARRAY;
         }
-        subexprs_t subexprs;
-        ctx->self.reset(new cact_expr_t{op,iter_type.basety,subexprs,0,iter_type.arrdims});
+        ctx->self.reset(new cact_expr_t{.op=op, .basety=iter_type.basety, .arrdims=iter_type.arrdims});
     }
     else{
         //带中括号，layer前检查维度，layer后继承维度
@@ -633,15 +625,14 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
 
             //索引，合法范围为0~dim_len-1
             int index = expr_ptr->int_result;
-            if(index >= iter_type.arrdims[i]){
-                std::cout << "Err: LVal: expr index greater then dim_len" << std::endl;
+            if(index >= iter_type.arrdims[i] || index < 0){
+                std::cout << "Err: LVal: expr index out of dim[" << i << "] bound" << std::endl;
                 exit(Semantic_ERR);
             }
         }
 
         //建立结构体
         cact_op_t op;
-        subexprs_t subexprs;
         arrdims_t arrdims;
         //判断类型
         if(layer == dim_size){
@@ -654,7 +645,7 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
                 arrdims.push_back(iter_type.arrdims[i]);
             }
         }
-        ctx->self.reset(new cact_expr_t{op,iter_type.basety,subexprs,0,arrdims});
+        ctx->self.reset(new cact_expr_t{.op=op, .basety=iter_type.basety, .arrdims=arrdims});
     }
 
 }
@@ -678,18 +669,19 @@ void SemanticAnalysis::exitNumber(CACTParser::NumberContext *ctx){
     cact_basety_t basety;
     if(ctx->IntConst() != nullptr){
         basety = BTY_INT;
+        int int_result = std::stoi(ctx->IntConst()->getText());
+        //注意这里需要指定int_result
+        //构造指向结构体的指针
+        ctx->self.reset(new cact_expr_t{.op=op, .basety=basety, .int_result=int_result});
     }
-    if(ctx->FloatConst() != nullptr){
+    else if(ctx->FloatConst() != nullptr){
         basety = BTY_FLOAT;
+        ctx->self.reset(new cact_expr_t{.op=op, .basety=basety});
     }
-    if(ctx->DoubleConst() != nullptr){
+    else if(ctx->DoubleConst() != nullptr){
         basety = BTY_DOUBLE;
+        ctx->self.reset(new cact_expr_t{.op=op, .basety=basety});
     }
-    subexprs_t subexprs;
-    arrdims_t arrdims;
-    
-    //构造结构体
-    ctx->self.reset(new cact_expr_t{op,basety,subexprs,0,arrdims});
 }
 
 void SemanticAnalysis::enterUnaryExp(CACTParser::UnaryExpContext *ctx){}
@@ -702,12 +694,10 @@ void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
         cact_basety_t basety = ctx->unaryExp()->self->basety;
         subexprs_t subexprs;
         subexprs.push_back(ctx->unaryExp()->self);
-        //由于不允许对数组操作，arrdims使用空的即可
-        arrdims_t arrdims;
 
         //构造self指向的结构体
-        //注：因为数组维度不能经过任何操作，无需为int_result赋值
-        ctx->self.reset(new cact_expr_t{op,basety,subexprs,0,arrdims});
+        //注：因为不能对数组操作，数组维度也不能经过任何操作，无需为int_result和arrdims赋值
+        ctx->self.reset(new cact_expr_t{.op=op, .basety=basety, .subexprs=subexprs});
 
         //针对操作符的操作对象检查
         OperandCheck(ctx->self);
@@ -724,9 +714,7 @@ void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
         //构造self指向的结构体，类型同变量
         cact_op_t op = OP_ITEM;
         cact_basety_t basety = (iter->second).ret_type;
-        subexprs_t subexprs;
-        arrdims_t arrdims;
-        ctx->self.reset(new cact_expr_t{op,basety,subexprs,0,arrdims});
+        ctx->self.reset(new cact_expr_t{.op=op, .basety=basety});
 
         //检查参数列表
         auto fparam_list = (iter->second).fparam_list;
@@ -817,10 +805,8 @@ void SemanticAnalysis::exitRelExp(CACTParser::RelExpContext *ctx){
     if(ctx->BoolConst()!=nullptr){
         //创建self所指结构体
         cact_op_t op = OP_BASE;
-        subexprs_t subexprs;
-        arrdims_t arrdims;
 
-        ctx->self.reset(new cact_expr_t{op,BTY_BOOL,subexprs,0,arrdims});
+        ctx->self.reset(new cact_expr_t{.op=op, .basety=BTY_BOOL});
     }
     else{
         exitBinaryExp(ctx, ctx->relExp(), ctx->relOp(), ctx->addExp(), true);
