@@ -15,15 +15,29 @@ class SemanticAnalysis: public CACTListener {
         scope_t *root_scope;
         scope_t *cur_scope;
 
-        SemanticAnalysis(){}
-        ~SemanticAnalysis(){}
-
         //添加内联函数声明
         void addBuiltinFunc(std::string func_name, int argc, cact_basety_t basety, cact_basety_t ret_type);
 
         //操作对象检查，非数组，并针对操作符检查类型
         //stmt_assign赋值同样需要满足上述判断
         void OperandCheck(cact_expr_ptr expr_ptr);
+
+        //模板函数，提供公共逻辑
+        template <typename T1,typename T2>
+        void enterConst_Var_Decl(T1 *ctx,std::vector<T2*> def_list);
+
+        template <typename T1>
+        void enterConst_Var_Def(T1 *ctx);
+
+        //is_const区分constDef和varDef添加到变量表的不同类型
+        template <typename T1>
+        void exitConst_Var_Def(T1 *ctx, bool is_const);
+
+        //二元表达式模板，处理形似 aExp -> bExp | aExp op bExp
+        //使用is_boolexp 区分Mul/Add 和 Rel/Eq/LAnd/LOr 的不同返回值类型
+        //注意RelExp还可能推导出BoolConst，考虑该分支后再应用模板
+        template <typename T1,typename T2, typename T3, typename T4>
+        void exitBinaryExp(T1 *ctx, T2 *aExp, T3 *op_ptr, T4 *bExp, bool is_boolexp);
 
         void enterCompUnit(CACTParser::CompUnitContext *ctx) override;
         void exitCompUnit(CACTParser::CompUnitContext *ctx) override;

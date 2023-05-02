@@ -103,6 +103,97 @@ void SemanticAnalysis::OperandCheck(cact_expr_ptr expr_ptr){
     }
 }
 
+template <typename T1,typename T2>
+void SemanticAnalysis::enterConst_Var_Decl(T1 *ctx,std::vector<T2*> def_list){
+    //将后续Def的基本类型传递向btype，&def->type.basety非法
+    for (auto def: def_list){
+        ctx->bType()->passTo.push_back(&(def->basety));
+    }
+}
+
+//有初始值的情况下，最终维度、各维度限制、基本类型分别在Def、constInitVal和constExp中完成检查
+template <typename T1>
+void SemanticAnalysis::enterConst_Var_Def(T1 *ctx){
+    //有初始值时，basety和维度数据自顶向下继承
+    if(ctx->constInitVal() != nullptr){
+        ctx->constInitVal()->basety = ctx->basety;
+        ctx->constInitVal()->dims_ptr = &(ctx->arraydims);
+        ctx->constInitVal()->dim_index = 0;
+        //最顶层数组，且index为1时允许以平铺列表形式初始化
+        ctx->constInitVal()->top = true;
+    }
+    
+    //子节点arrayDims负责填写维度数组
+    if(ctx->arrayDims() != nullptr){
+        ctx->arrayDims()->dims_ptr = &(ctx->arraydims);
+    }
+}
+
+//通过is_const区分constDef和varDef加入变量表的类型
+template <typename T1>
+void SemanticAnalysis::exitConst_Var_Def(T1 *ctx, bool is_const){
+    std::string name = ctx->Ident()->getText();
+    ctx->name = name;
+    
+    //检查当前作用域该变量是否声明
+    auto iter = (symbol_table.var_table).find((name_scope_t){name,cur_scope});
+    if(iter != (symbol_table.var_table).end()){
+        std::cout << "Err: Const_Var_Def: "<<name<<" Redefined" << std::endl;
+        exit(Semantic_ERR);
+    }
+    
+    //整合变量类型
+    ctx->type = (cact_type_t){is_const, ctx->basety, ctx->arraydims};
+    
+    //将该变量加入变量表
+    symbol_table.var_table[(name_scope_t){name,cur_scope}] = (var_symbol_item_t){name,ctx->type,cur_scope};
+
+    //检查变量与初始值层级
+    if(ctx->constInitVal()!=nullptr){
+        //同时考虑非数组左右都应当为0
+        if(ctx->arraydims.size() != ctx->constInitVal()->dim_index){
+            //只有左边为数组，右侧为元素列表才允许不等
+            if((ctx->arraydims.size() != 0) && (ctx->constInitVal()->dim_index==1)){
+                ;
+            }
+            else{
+                std::cout << "Err: Const_Var_Def: Def and Initval dims mismatched"<<std::endl;
+                exit(Semantic_ERR);
+            }
+        }
+    }
+}
+
+//二元表达式模板，处理形似 aExp -> bExp | aExp op bExp
+//使用is_boolexp 区分Mul/Add 和 Rel/Eq/LAnd/LOr 的不同返回值类型
+//注意RelExp还可能推导出BoolConst，考虑该分支后再应用模板
+template <typename T1,typename T2, typename T3, typename T4>
+void SemanticAnalysis::exitBinaryExp(T1 *ctx, T2 *aExp, T3 *op_ptr, T4 *bExp, bool is_boolexp){
+    if(aExp == nullptr){
+        ctx->self = bExp->self;
+    }
+    else{
+        cact_op_t op = (typeutils.str_to_op)[op_ptr->getText()];
+        cact_basety_t basety;
+        if(is_boolexp){
+            basety = BTY_BOOL;
+        }
+        else{
+            //任取一个子表达式类型，如果两个子表达式类型不一致，会在OperandCheck中报错
+            basety = bExp->self->basety;
+        }
+        subexprs_t subexprs;
+        subexprs.push_back(aExp->self);
+        subexprs.push_back(bExp->self);
+        //子数组不允许操作，此处合法的必定不为数组
+        arrdims_t arrdims;
+        ctx->self.reset(new cact_expr_t{op,basety,subexprs,0,arrdims});
+
+        //类型检查
+        OperandCheck(ctx->self);
+    }
+}
+
 void SemanticAnalysis::enterCompUnit(CACTParser::CompUnitContext *ctx){
     //初始化根作用域及当前作用域
     root_scope = new scope_t;
@@ -147,10 +238,7 @@ void SemanticAnalysis::enterDecl(CACTParser::DeclContext *ctx){}
 void SemanticAnalysis::exitDecl(CACTParser::DeclContext *ctx){}
 
 void SemanticAnalysis::enterConstDecl(CACTParser::ConstDeclContext *ctx){
-    //将后续Def的基本类型传递向btype，&def->type.basety非法
-    for (auto def: ctx->constDef()){
-        ctx->bType()->passTo.push_back(&(def->basety));
-    }
+    enterConst_Var_Decl(ctx,ctx->constDef());
 }
 void SemanticAnalysis::exitConstDecl(CACTParser::ConstDeclContext *ctx){}
 
@@ -173,52 +261,11 @@ void SemanticAnalysis::exitArrayDims(CACTParser::ArrayDimsContext *ctx){
 
 }
 
-//有初始值的情况下，维度及基本类型分别在constInitVal和constExp中完成检查
 void SemanticAnalysis::enterConstDef(CACTParser::ConstDefContext *ctx){
-    //有初始值时，basety和维度数据自顶向下继承
-    if(ctx->constInitVal() != nullptr){
-        ctx->constInitVal()->basety = ctx->basety;
-        ctx->constInitVal()->dims_ptr = &(ctx->arraydims);
-        ctx->constInitVal()->dim_index = 0;
-        //最顶层数组，且index为1时允许以平铺列表形式初始化
-        ctx->constInitVal()->top = true;
-    }
-    
-    //子节点arrayDims负责填写维度数组
-    if(ctx->arrayDims() != nullptr){
-        ctx->arrayDims()->dims_ptr = &(ctx->arraydims);
-    }
+    enterConst_Var_Def(ctx);
 }
 void SemanticAnalysis::exitConstDef(CACTParser::ConstDefContext *ctx){
-    std::string name = ctx->Ident()->getText();
-    ctx->name = name;
-    //检查当前作用域该变量是否声明
-    auto iter = (symbol_table.var_table).find((name_scope_t){name,cur_scope});
-    if(iter != (symbol_table.var_table).end()){
-        std::cout << "Err: constDef: "<<name<<" Redefined" << std::endl;
-        exit(Semantic_ERR);
-    }
-    
-    //整合变量类型
-    ctx->type = (cact_type_t){true, ctx->basety, ctx->arraydims};
-    
-    //将该变量加入变量表
-    symbol_table.var_table[(name_scope_t){name,cur_scope}] = (var_symbol_item_t){name,ctx->type,cur_scope};
-
-    //检查变量与初始值层级
-    if(ctx->constInitVal()!=nullptr){
-        //同时考虑非数组左右都应当为0
-        if(ctx->arraydims.size() != ctx->constInitVal()->dim_index){
-            //只有左边为数组，右侧为元素列表才允许不等
-            if((ctx->arraydims.size() != 0) && (ctx->constInitVal()->dim_index==1)){
-                ;
-            }
-            else{
-                std::cout << "Err: constDef: Def and Initval dims mismatched"<<std::endl;
-                exit(Semantic_ERR);
-            }
-        }
-    }
+    exitConst_Var_Def(ctx, true);
 }
 
 //对于多维数组：
@@ -294,59 +341,15 @@ void SemanticAnalysis::exitConstInitVal(CACTParser::ConstInitValContext *ctx){
 
 //VarDecl/ValDef和ConstDecl/ConstDef逻辑一致
 void SemanticAnalysis::enterVarDecl(CACTParser::VarDeclContext *ctx){
-    //将后续Def的基本类型传递向btype，&def->type.basety非法
-    for (auto def: ctx->varDef()){
-        ctx->bType()->passTo.push_back(&(def->basety));
-    }
+    enterConst_Var_Decl(ctx,ctx->varDef());
 }
 void SemanticAnalysis::exitVarDecl(CACTParser::VarDeclContext *ctx){}
 
 void SemanticAnalysis::enterVarDef(CACTParser::VarDefContext *ctx){
-    //有初始值时，basety和维度数据自顶向下继承
-    if(ctx->constInitVal() != nullptr){
-        ctx->constInitVal()->basety = ctx->basety;
-        ctx->constInitVal()->dims_ptr = &(ctx->arraydims);
-        ctx->constInitVal()->dim_index = 0;
-        //最顶层数组，且index为1时允许以平铺列表形式初始化
-        ctx->constInitVal()->top = true;
-    }
-    
-    //子节点arrayDims负责填写维度数组
-    if(ctx->arrayDims() != nullptr){
-        ctx->arrayDims()->dims_ptr = &(ctx->arraydims);
-    }
+    enterConst_Var_Def(ctx);
 }
 void SemanticAnalysis::exitVarDef(CACTParser::VarDefContext *ctx){
-    std::string name = ctx->Ident()->getText();
-    ctx->name = name;
-    
-    //检查当前作用域该变量是否声明
-    auto iter = (symbol_table.var_table).find((name_scope_t){name,cur_scope});
-    if(iter != (symbol_table.var_table).end()){
-        std::cout << "Err: varDef: "<<name<<" Redefined" << std::endl;
-        exit(Semantic_ERR);
-    }
-    
-    //整合变量类型
-    ctx->type = (cact_type_t){false, ctx->basety, ctx->arraydims};
-    
-    //将该变量加入变量表
-    symbol_table.var_table[(name_scope_t){name,cur_scope}] = (var_symbol_item_t){name,ctx->type,cur_scope};
-
-    //检查变量与初始值层级
-    if(ctx->constInitVal()!=nullptr){
-        //同时考虑非数组左右都应当为0
-        if(ctx->arraydims.size() != ctx->constInitVal()->dim_index){
-            //只有左边为数组，右侧为元素列表才允许不等
-            if((ctx->arraydims.size() != 0) && (ctx->constInitVal()->dim_index==1)){
-                ;
-            }
-            else{
-                std::cout << "Err: varDef: Def and Initval dims mismatched"<<std::endl;
-                exit(Semantic_ERR);
-            }
-        }
-    }
+    exitConst_Var_Def(ctx, false);
 }
 
 void SemanticAnalysis::enterFuncDef(CACTParser::FuncDefContext *ctx){
@@ -795,22 +798,7 @@ void SemanticAnalysis::exitFuncRParams(CACTParser::FuncRParamsContext *ctx){}
 
 void SemanticAnalysis::enterMulExp(CACTParser::MulExpContext *ctx){}
 void SemanticAnalysis::exitMulExp(CACTParser::MulExpContext *ctx){
-    if(ctx->mulExp() == nullptr){
-        ctx->self = ctx->unaryExp()->self;
-    }
-    else{
-        cact_op_t op = (typeutils.str_to_op)[ctx->mulOp()->getText()];
-        //如果两个子表达式类型不一致，会在OperandCheck中报错
-        cact_basety_t basety = ctx->unaryExp()->self->basety;
-        subexprs_t subexprs;
-        subexprs.push_back(ctx->mulExp()->self);
-        subexprs.push_back(ctx->unaryExp()->self);
-        arrdims_t arrdims;
-        ctx->self.reset(new cact_expr_t{op,basety,subexprs,0,arrdims});
-        
-        //类型检查
-        OperandCheck(ctx->self);
-    }
+    exitBinaryExp(ctx, ctx->mulExp(), ctx->mulOp(), ctx->unaryExp(), false);
 }
 
 void SemanticAnalysis::enterMulOp(CACTParser::MulOpContext *ctx){}
@@ -818,22 +806,7 @@ void SemanticAnalysis::exitMulOp(CACTParser::MulOpContext *ctx){}
 
 void SemanticAnalysis::enterAddExp(CACTParser::AddExpContext *ctx){}
 void SemanticAnalysis::exitAddExp(CACTParser::AddExpContext *ctx){
-    if(ctx->addExp() == nullptr){
-        ctx->self = ctx->mulExp()->self;
-    }
-    else{
-        cact_op_t op = (typeutils.str_to_op)[ctx->addOp()->getText()];
-        //如果两个子表达式类型不一致，会在OperandCheck中报错
-        cact_basety_t basety = ctx->mulExp()->self->basety;
-        subexprs_t subexprs;
-        subexprs.push_back(ctx->addExp()->self);
-        subexprs.push_back(ctx->mulExp()->self);
-        arrdims_t arrdims;
-        ctx->self.reset(new cact_expr_t{op,basety,subexprs,0,arrdims});
-        
-        //类型检查
-        OperandCheck(ctx->self);
-    }
+    exitBinaryExp(ctx, ctx->addExp(), ctx->addOp(), ctx->mulExp(), false);
 }
 
 void SemanticAnalysis::enterAddOp(CACTParser::AddOpContext *ctx){}
@@ -849,22 +822,8 @@ void SemanticAnalysis::exitRelExp(CACTParser::RelExpContext *ctx){
 
         ctx->self.reset(new cact_expr_t{op,BTY_BOOL,subexprs,0,arrdims});
     }
-    else if(ctx->relExp() == nullptr){
-        ctx->self = ctx->addExp()->self;
-    }
     else{
-        cact_op_t op = (typeutils.str_to_op)[ctx->relOp()->getText()];
-        //如果两个子表达式类型不一致，会在OperandCheck中报错
-        cact_basety_t basety = BTY_BOOL;
-        subexprs_t subexprs;
-        subexprs.push_back(ctx->relExp()->self);
-        subexprs.push_back(ctx->addExp()->self);
-        arrdims_t arrdims;
-
-        ctx->self.reset(new cact_expr_t{op,basety,subexprs,0,arrdims});
-        
-        //类型检查
-        OperandCheck(ctx->self);
+        exitBinaryExp(ctx, ctx->relExp(), ctx->relOp(), ctx->addExp(), true);
     }
 }
 
@@ -873,23 +832,7 @@ void SemanticAnalysis::exitRelOp(CACTParser::RelOpContext *ctx){}
 
 void SemanticAnalysis::enterEqExp(CACTParser::EqExpContext *ctx){}
 void SemanticAnalysis::exitEqExp(CACTParser::EqExpContext *ctx){
-    if(ctx->eqExp() == nullptr){
-        ctx->self = ctx->relExp()->self;
-    }
-    else{
-        cact_op_t op = (typeutils.str_to_op)[ctx->eqOp()->getText()];
-        //如果两个子表达式类型不一致，会在OperandCheck中报错
-        cact_basety_t basety = BTY_BOOL;
-        subexprs_t subexprs;
-        subexprs.push_back(ctx->eqExp()->self);
-        subexprs.push_back(ctx->relExp()->self);
-        arrdims_t arrdims;
-        
-        ctx->self.reset(new cact_expr_t{op,basety,subexprs,0,arrdims});
-        
-        //类型检查
-        OperandCheck(ctx->self);
-    }
+    exitBinaryExp(ctx, ctx->eqExp(), ctx->eqOp(), ctx->relExp(), true);
 }
 
 void SemanticAnalysis::enterEqOp(CACTParser::EqOpContext *ctx){}
@@ -897,44 +840,12 @@ void SemanticAnalysis::exitEqOp(CACTParser::EqOpContext *ctx){}
 
 void SemanticAnalysis::enterLAndExp(CACTParser::LAndExpContext *ctx){}
 void SemanticAnalysis::exitLAndExp(CACTParser::LAndExpContext *ctx){
-    if(ctx->lAndExp() == nullptr){
-        ctx->self = ctx->eqExp()->self;
-    }
-    else{
-        cact_op_t op = (typeutils.str_to_op)[ctx->AND()->getText()];
-        //如果两个子表达式类型不一致，会在OperandCheck中报错
-        cact_basety_t basety = BTY_BOOL;
-        subexprs_t subexprs;
-        subexprs.push_back(ctx->lAndExp()->self);
-        subexprs.push_back(ctx->eqExp()->self);
-        arrdims_t arrdims;
-        
-        ctx->self.reset(new cact_expr_t{op,basety,subexprs,0,arrdims});
-        
-        //类型检查
-        OperandCheck(ctx->self);
-    }
+    exitBinaryExp(ctx, ctx->lAndExp(), ctx->AND(), ctx->eqExp(), true);
 }
 
 void SemanticAnalysis::enterLOrExp(CACTParser::LOrExpContext *ctx){}
 void SemanticAnalysis::exitLOrExp(CACTParser::LOrExpContext *ctx){
-    if(ctx->lOrExp() == nullptr){
-        ctx->self = ctx->lAndExp()->self;
-    }
-    else{
-        cact_op_t op = (typeutils.str_to_op)[ctx->OR()->getText()];
-        //如果两个子表达式类型不一致，会在OperandCheck中报错
-        cact_basety_t basety = BTY_BOOL;
-        subexprs_t subexprs;
-        subexprs.push_back(ctx->lOrExp()->self);
-        subexprs.push_back(ctx->lAndExp()->self);
-        arrdims_t arrdims;
-        
-        ctx->self.reset(new cact_expr_t{op,basety,subexprs,0,arrdims});
-        
-        //类型检查
-        OperandCheck(ctx->self);
-    }
+    exitBinaryExp(ctx, ctx->lOrExp(), ctx->OR(), ctx->lAndExp(), true);
 }
 
 
