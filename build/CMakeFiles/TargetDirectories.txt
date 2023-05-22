@@ -1,3 +1,0 @@
-/home/stu/CPLab/cact/build/CMakeFiles/rebuild_cache.dir
-/home/stu/CPLab/cact/build/CMakeFiles/edit_cache.dir
-/home/stu/CPLab/cact/build/CMakeFiles/compiler.dir
