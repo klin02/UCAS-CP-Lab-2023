@@ -56,6 +56,12 @@ public:
   virtual void enterFuncFParam(CACTParser::FuncFParamContext *ctx) = 0;
   virtual void exitFuncFParam(CACTParser::FuncFParamContext *ctx) = 0;
 
+  virtual void enterLab(CACTParser::LabContext *ctx) = 0;
+  virtual void exitLab(CACTParser::LabContext *ctx) = 0;
+
+  virtual void enterGo(CACTParser::GoContext *ctx) = 0;
+  virtual void exitGo(CACTParser::GoContext *ctx) = 0;
+
   virtual void enterBlock(CACTParser::BlockContext *ctx) = 0;
   virtual void exitBlock(CACTParser::BlockContext *ctx) = 0;
 

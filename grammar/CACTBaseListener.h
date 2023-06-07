@@ -58,6 +58,12 @@ public:
   virtual void enterFuncFParam(CACTParser::FuncFParamContext * /*ctx*/) override { }
   virtual void exitFuncFParam(CACTParser::FuncFParamContext * /*ctx*/) override { }
 
+  virtual void enterLab(CACTParser::LabContext * /*ctx*/) override { }
+  virtual void exitLab(CACTParser::LabContext * /*ctx*/) override { }
+
+  virtual void enterGo(CACTParser::GoContext * /*ctx*/) override { }
+  virtual void exitGo(CACTParser::GoContext * /*ctx*/) override { }
+
   virtual void enterBlock(CACTParser::BlockContext * /*ctx*/) override { }
   virtual void exitBlock(CACTParser::BlockContext * /*ctx*/) override { }
 

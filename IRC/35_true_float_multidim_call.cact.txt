@@ -1,0 +1,12 @@
+      IRop|    Basety|    result|      arg1|      arg2|
+Func Begin|   unknown|       foo|          |          |
+       ADD|    double|        %0|       x>0|       y>0|
+    Return|    double|        %0|          |          |
+  Func End|   unknown|       foo|          |          |
+Func Begin|   unknown|      main|          |          |
+   L_Alloc|    double|         a|#1.0,2.0,4.5e-2,$,|          |
+     Param|      addr|       a>0|          |          |
+     Param|      addr|       a>2|          |          |
+      Call|    double|       foo|        %1|          |
+    Return|       int|        #0|          |          |
+  Func End|   unknown|      main|          |          |

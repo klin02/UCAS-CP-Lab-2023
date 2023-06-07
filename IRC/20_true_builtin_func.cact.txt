@@ -1,0 +1,12 @@
+      IRop|    Basety|    result|      arg1|      arg2|
+Func Begin|   unknown|      main|          |          |
+   L_Alloc|     float|         a|          |          |
+   L_Alloc|       int|         b|          |          |
+      Call|     float| get_float|        %0|          |
+        ST|     float|         a|        %0|          |
+     Param|     float|         a|          |          |
+      Call|      void|print_float|          |          |
+      Call|       int|   get_int|        %1|          |
+        ST|       int|         b|        %1|          |
+    Return|       int|         b|          |          |
+  Func End|   unknown|      main|          |          |

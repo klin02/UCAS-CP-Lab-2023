@@ -3,6 +3,7 @@
 #include "antlr4-runtime.h"
 #include "CACTListener.h"
 #include "SymbolTable.h"
+#include "cact_types.h"
 
 extern SymbolTable  symbol_table;
 extern TypeUtils    typeutils;
@@ -10,10 +11,62 @@ extern TypeUtils    typeutils;
 #define Syntax_ERR   1
 #define Semantic_ERR 2
 #define Code_ERR     3   //代码编写中意料外的错误
+
+#ifdef IR_gen
+#define TEMP_PREFIX         "%"
+#define OFFSET_INFIX        ">"
+#define ARRAY_PLACEHOLDER   "$"
+#define IMM_PREFIX          "#"
+#define LABEL_PREFIX        "L"
+#endif
+
 class SemanticAnalysis: public CACTListener {
     public:
-        scope_t *root_scope;
         scope_t *cur_scope;
+
+        #ifdef IR_gen
+        std::vector <IR_code_t> IRC_array;
+        size_t label_cnt=0;
+        // size_t end_label_cnt = 0;
+        
+        std::vector<IR_temp_t> Temp_array;
+        std::string newTemp(cact_type_t type){
+            std::string temp_name = TEMP_PREFIX + std::to_string(Temp_array.size());
+            Temp_array.push_back((IR_temp_t){.type=type});
+            return temp_name;
+        }
+        std::string newLabel(){
+            std::string label_name = LABEL_PREFIX + std::to_string(label_cnt);
+            label_cnt++;
+            return label_name;
+        }
+
+        //缺省参数，可以从左到右写参数，省略后面的部分
+        void addIRC(IR_op_t IRop,cact_basety_t basety=BTY_UNKNOWN,std::string result="",std::string arg1="",std::string arg2=""){
+            IRC_array.push_back((IR_code_t){IRop,basety,result,arg1,arg2});
+        }
+
+        //stmt进入和退出模板，用于处理进入添加in_label，退出跳至out_label
+        template <typename T1>
+        void enterStmt(T1 *ctx);
+        template <typename T1>
+        void exitStmt(T1 *ctx);
+
+        void printIRC(std::ofstream &outfile){
+            outfile << std::setw(10) << "IRop"   << '|' 
+                    << std::setw(10) << "Basety" << '|' 
+                    << std::setw(10) << "result" << '|' 
+                    << std::setw(10) << "arg1"   << '|' 
+                    << std::setw(10) << "arg2"   << '|' << std::endl;
+            for(auto IRC = IRC_array.begin(); IRC!= IRC_array.end(); IRC++) {
+                outfile << std::setw(10) << (typeutils.IRop_to_str)[IRC->IRop]      << '|' 
+                        << std::setw(10) << (typeutils.basety_to_str)[IRC->basety]  << '|' 
+                        << std::setw(10) << IRC->result << '|' 
+                        << std::setw(10) << IRC->arg1   << '|' 
+                        << std::setw(10) << IRC->arg2   << '|'<< std::endl;
+            }
+        }
+        #endif
 
         //添加内联函数声明
         void addBuiltinFunc(std::string func_name, int argc, cact_basety_t basety, cact_basety_t ret_type);
@@ -74,6 +127,12 @@ class SemanticAnalysis: public CACTListener {
 
         void enterFuncFParam(CACTParser::FuncFParamContext *ctx) override;
         void exitFuncFParam(CACTParser::FuncFParamContext *ctx) override;
+
+        void enterLab(CACTParser::LabContext *ctx) override;
+        void exitLab(CACTParser::LabContext *ctx) override;
+        
+        void enterGo(CACTParser::GoContext *ctx) override;
+        void exitGo(CACTParser::GoContext *ctx) override;
 
         void enterBlock(CACTParser::BlockContext *ctx) override;
         void exitBlock(CACTParser::BlockContext *ctx) override;

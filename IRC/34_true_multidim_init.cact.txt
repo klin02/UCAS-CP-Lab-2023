@@ -1,0 +1,7 @@
+      IRop|    Basety|    result|      arg1|      arg2|
+   G_Alloc|       int|         a|#1,2,3,4,$,$,$,$,$,$,$,$,$,$,$,$,$,$,|          |
+Func Begin|   unknown|      main|          |          |
+   L_Alloc|       int|         b|#1,2,3,$,$,$,|          |
+       ADD|       int|        %0|      a>10|       b>3|
+    Return|       int|        %0|          |          |
+  Func End|   unknown|      main|          |          |

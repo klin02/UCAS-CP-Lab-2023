@@ -4,6 +4,8 @@
 #include <map>
 #include <memory>
 
+#define IR_gen  //宏定义 开启中间代码生成
+
 typedef enum {
     BTY_UNKNOWN = 0,
     BTY_VOID,
@@ -11,6 +13,7 @@ typedef enum {
     BTY_BOOL,
     BTY_FLOAT,
     BTY_DOUBLE,
+    BTY_ADDR,
 } cact_basety_t;
 
 typedef std::vector<uint32_t> arrdims_t;
@@ -31,9 +34,11 @@ typedef enum{
     OP_ARRAY,
     OP_ITEM,
     OP_ASSIGN,
+    OP_POS,
+    OP_NEG,
+    OP_NOT,
     OP_ADD,
     OP_SUB,
-    OP_NOT,
     OP_MUL,
     OP_DIV,
     OP_MOD,
@@ -65,22 +70,68 @@ typedef struct cact_expr{
     arrdims_t       arrdims;
 }cact_expr_t;
 
+#ifdef IR_gen
+typedef enum{
+    IR_UNKNOWN=0,
+    IR_LABEL,
+    IR_FUNC_BEGIN,
+    IR_FUNC_END,
+    IR_PARAM,
+    IR_CALL,
+    IR_RETURN,
+    IR_LD,
+    IR_ST,
+    IR_ADD,
+    IR_SUB,
+    IR_MUL,
+    IR_DIV,
+    IR_MOD,
+    IR_AND,
+    IR_OR,  
+    IR_NEG,
+    IR_NOT,
+    IR_BEQ,
+    IR_BNE,
+    IR_BLT,
+    IR_BGT,
+    IR_BLE,
+    IR_BGE,
+    IR_J,
+    IR_G_ALLOC,    //全局变量声明
+    IR_L_ALLOC,    //局部变量声明
+}IR_op_t;
+
+typedef struct{
+    IR_op_t IRop;
+    cact_basety_t basety;
+    std::string result;
+    std::string arg1;
+    std::string arg2;
+}IR_code_t;
+
+typedef struct{
+    cact_type_t type;
+}IR_temp_t;
+#endif
+
 //使用map用于实现类型的标号、字符串及大小的转换
 class TypeUtils {
     public:
-    std::map <std::string, cact_basety_t> str_to_val{
+    std::map <std::string, cact_basety_t> str_to_basety{
         {"void",    BTY_VOID},
         {"int",     BTY_INT},
         {"bool",    BTY_BOOL},
         {"float",   BTY_FLOAT},
         {"double",  BTY_DOUBLE},
     };
-    std::map <cact_basety_t, std::string> val_to_str{
-        {BTY_VOID,  "void"},
-        {BTY_INT,   "int"},
-        {BTY_BOOL,  "bool"},
-        {BTY_FLOAT, "float"},
-        {BTY_DOUBLE,"double"},
+    std::map <cact_basety_t, std::string> basety_to_str{
+        {BTY_VOID,      "void"},
+        {BTY_INT,       "int"},
+        {BTY_BOOL,      "bool"},
+        {BTY_FLOAT,     "float"},
+        {BTY_DOUBLE,    "double"},
+        {BTY_UNKNOWN,   "unknown"},
+        {BTY_ADDR,      "addr"}
     };
     std::map <cact_basety_t, size_t> val_to_size{
         {BTY_VOID,  8},
@@ -91,9 +142,12 @@ class TypeUtils {
     };
     std::map <std::string, cact_op_t> str_to_op{
         {"=",   OP_ASSIGN},
+        //unaryOp通过后缀U进行区分，统一后缀方便API
+        {"+U",  OP_POS},
         {"+",   OP_ADD},
+        {"-U",  OP_NEG},
         {"-",   OP_SUB},
-        {"!",   OP_NOT},
+        {"!U",  OP_NOT},
         {"*",   OP_MUL},
         {"/",   OP_DIV},
         {"%",   OP_MOD},
@@ -106,6 +160,53 @@ class TypeUtils {
         {"&&",  OP_AND},
         {"||",  OP_OR},
     };
+
+    #ifdef IR_gen
+    std::map <cact_op_t, IR_op_t> op_to_IRop{
+        {OP_NEG, IR_NEG},
+        {OP_NOT, IR_NOT},
+        {OP_ADD, IR_ADD},
+        {OP_SUB, IR_SUB},
+        {OP_MUL, IR_MUL},
+        {OP_DIV, IR_DIV},
+        {OP_MOD, IR_MOD},
+        {OP_LEQ, IR_BLE},
+        {OP_GEQ, IR_BGE},
+        {OP_LT,  IR_BLT},
+        {OP_GT,  IR_BGT},
+        {OP_EQ,  IR_BEQ},
+        {OP_NEQ, IR_BNE},
+    };
+
+    std::map <IR_op_t, std::string> IRop_to_str{
+        {IR_LABEL,      "Label"},
+        {IR_FUNC_BEGIN, "Func Begin"},
+        {IR_FUNC_END,   "Func End"},
+        {IR_PARAM,      "Param"},
+        {IR_CALL,       "Call"},
+        {IR_RETURN,     "Return"},
+        {IR_LD,         "LD"},
+        {IR_ST,         "ST"},
+        {IR_ADD,        "ADD"},
+        {IR_SUB,        "SUB"},
+        {IR_MUL,        "MUL"},
+        {IR_DIV,        "DIV"},
+        {IR_MOD,        "MOD"},
+        {IR_AND,        "AND"},
+        {IR_OR,         "OR"},
+        {IR_NEG,        "NEG"},
+        {IR_NOT,        "NOT"},
+        {IR_BEQ,        "BEQ"},
+        {IR_BNE,        "BNE"},
+        {IR_BLT,        "BLT"},
+        {IR_BGT,        "BGT"},
+        {IR_BLE,        "BLE"},
+        {IR_BGE,        "BGE"},
+        {IR_J,          "J"},
+        {IR_G_ALLOC,    "G_Alloc"},//全局变量声明
+        {IR_L_ALLOC,    "L_Alloc"},//局部变量声明
+    };
+    #endif
 };
 
 //定义在main中

@@ -3,6 +3,7 @@
 #include "cact_types.h"
 #include "SemanticAnalysis.h"
 
+
 //添加内联函数声明
 void SemanticAnalysis::addBuiltinFunc(std::string func_name, int argc, cact_basety_t basety, cact_basety_t ret_type){
     //建立形参列表，内联函数argc只能为0/1
@@ -30,9 +31,9 @@ void SemanticAnalysis::OperandCheck(cact_expr_ptr expr_ptr){
         }
         //根据操作检查类型
         cact_basety_t basety = expr_ptr->subexprs[0]->basety;
-        if((op==OP_ADD) || (op==OP_SUB)){
+        if((op==OP_POS) || (op==OP_NEG)){
             if((basety!=BTY_INT) && (basety!=BTY_FLOAT) && (basety!=BTY_DOUBLE)){
-                std::cout << "Err: OperandCheck: Unary: ADD/SUB only support INT/FLAOT/DOUBLE" << std::endl;
+                std::cout << "Err: OperandCheck: Unary: POS/NEG only support INT/FLAOT/DOUBLE" << std::endl;
                 exit(Semantic_ERR);
             }
         }
@@ -43,7 +44,7 @@ void SemanticAnalysis::OperandCheck(cact_expr_ptr expr_ptr){
             }
         }
         else{
-            std::cout << "CodeErr: OperandCheck: UnaryOP list: ADD/SUB/NOT" << std::endl;
+            std::cout << "CodeErr: OperandCheck: UnaryOP list: POS/NEG/NOT" << std::endl;
             exit(Code_ERR);
         }
     }
@@ -160,6 +161,30 @@ void SemanticAnalysis::exitConst_Var_Def(T1 *ctx, bool is_const){
             }
         }
     }
+
+    #ifdef IR_gen
+    IR_op_t IRop;
+    if(cur_scope == symbol_table.root_scope){
+        IRop = IR_G_ALLOC;
+    }
+    else{
+        IRop = IR_L_ALLOC;
+    }
+    //忽略arg2
+    //如果有初始值，则arg1为初始值字符串，否则为空串
+    if(ctx->constInitVal()!=nullptr){
+        std::string initval = IMM_PREFIX + ctx->constInitVal()->value_list;
+        addIRC( IRop,
+                ctx->basety,
+                ctx->name,
+                initval);
+    }
+    else{
+        addIRC( IRop,
+                ctx->basety,
+                ctx->name);
+    }
+    #endif
 }
 
 //二元表达式模板，处理形似 aExp -> bExp | aExp op bExp
@@ -193,9 +218,9 @@ void SemanticAnalysis::exitBinaryExp(T1 *ctx, T2 *aExp, T3 *op_ptr, T4 *bExp, bo
 
 void SemanticAnalysis::enterCompUnit(CACTParser::CompUnitContext *ctx){
     //初始化根作用域及当前作用域
-    root_scope = new scope_t;
-    root_scope -> parent = nullptr;
-    cur_scope = root_scope;
+    symbol_table.root_scope = new scope_t;
+    symbol_table.root_scope -> parent = nullptr;
+    cur_scope = symbol_table.root_scope;
 
     //添加内联函数
     addBuiltinFunc("print_int", 1, BTY_INT, BTY_VOID);
@@ -241,7 +266,7 @@ void SemanticAnalysis::exitConstDecl(CACTParser::ConstDeclContext *ctx){}
 
 void SemanticAnalysis::enterBType(CACTParser::BTypeContext *ctx){}
 void SemanticAnalysis::exitBType(CACTParser::BTypeContext *ctx){
-    ctx->basety = (typeutils.str_to_val)[ctx->getText()];
+    ctx->basety = (typeutils.str_to_basety)[ctx->getText()];
     for(cact_basety_t* to: ctx->passTo){
         assert(to);
         *to = ctx->basety;
@@ -252,7 +277,6 @@ void SemanticAnalysis::enterArrayDims(CACTParser::ArrayDimsContext *ctx){}
 void SemanticAnalysis::exitArrayDims(CACTParser::ArrayDimsContext *ctx){
     for(auto dim: ctx->IntConst()){
         uint32_t len = std::stoi(dim->getText());
-
         ctx->dims_ptr->push_back(len);
     }
 
@@ -288,8 +312,22 @@ void SemanticAnalysis::enterConstInitVal(CACTParser::ConstInitValContext *ctx){
 void SemanticAnalysis::exitConstInitVal(CACTParser::ConstInitValContext *ctx){
     if(ctx->constExp() != nullptr){
         ctx->dim_index = 0;
+        #ifdef IR_gen
+            ctx->value_list = ctx->constExp()->getText();
+        #endif
     }
     else{
+        //检查是否存在维度数组
+        if((*ctx->dims_ptr).size()==0){
+            std::cout << "Err: constInitVal: lack of arraydims" <<std::endl;
+            exit(Semantic_ERR);
+        }
+        //所有维度长度乘积
+        int product = 1;
+        for(int num: *(ctx->dims_ptr)){
+            product *= num;
+        }
+
         auto initval_list = ctx->constInitVal();
         size_t len = initval_list.size(); 
         if(len == 0){
@@ -309,10 +347,6 @@ void SemanticAnalysis::exitConstInitVal(CACTParser::ConstInitValContext *ctx){
             ctx->dim_index = child_index + 1;
             if(ctx->top == true && ctx->dim_index == 1){
                 //最外层数组，且无嵌套，允许以平铺列表初始化
-                int product = 1;
-                for(int num: *(ctx->dims_ptr)){
-                    product *= num;
-                }
                 if(len > product){
                     std::cout << "Err: constInitVal: flatten: len greater than dims_product" << std::endl;
                     exit(Semantic_ERR);
@@ -333,7 +367,34 @@ void SemanticAnalysis::exitConstInitVal(CACTParser::ConstInitValContext *ctx){
                 }
             }
         }
+
+        //占位长度hold_len取决于是否顶层
+        //前部分用子数组填充，后部分占位填充
+        #ifdef IR_gen
+        size_t hold_len;
+        if(ctx->top == true && ctx->dim_index == 1){
+            hold_len = product;
+        }
+        else{
+            int index = (*ctx->dims_ptr).size() - ctx->dim_index;
+            hold_len = (*ctx->dims_ptr)[index];
+        }
+        
+        for(auto initval:initval_list){
+            ctx->value_list += initval->value_list;
+            if(ctx->dim_index == 1){
+                ctx->value_list += ",";
+            }
+        }
+        for (int i=0;i<hold_len-len;i++){
+            ctx->value_list += ARRAY_PLACEHOLDER;
+            if(ctx->dim_index == 1){
+                ctx->value_list += ",";
+            }
+        }
+        #endif
     }
+
 }
 
 //VarDecl/ValDef和ConstDecl/ConstDef逻辑一致
@@ -360,6 +421,13 @@ void SemanticAnalysis::enterFuncDef(CACTParser::FuncDefContext *ctx){
     
     //对于block，由fparam提供形参列表
     ctx->block()->fparam_list_ptr = &(ctx->fparam_list);
+
+    #ifdef IR_gen
+    //这里类型还未获得，中间代码生成汇编时从符号表提取即可
+    addIRC( IR_FUNC_BEGIN,
+            BTY_UNKNOWN,
+            ctx->Ident()->getText());
+    #endif
 }
 void SemanticAnalysis::exitFuncDef(CACTParser::FuncDefContext *ctx){
     std::string name = ctx->Ident()->getText();
@@ -380,11 +448,17 @@ void SemanticAnalysis::exitFuncDef(CACTParser::FuncDefContext *ctx){
         std::cout << "Err: FuncDef: Func_type mismatched block ret_type" << std::endl;
         exit(Semantic_ERR);
     }
+
+    #ifdef IR_gen
+    addIRC( IR_FUNC_END,
+            BTY_UNKNOWN,
+            name);
+    #endif
 }
 
 void SemanticAnalysis::enterFuncType(CACTParser::FuncTypeContext *ctx){}
 void SemanticAnalysis::exitFuncType(CACTParser::FuncTypeContext *ctx){
-    ctx->basety = (typeutils.str_to_val)[ctx->getText()];
+    ctx->basety = (typeutils.str_to_basety)[ctx->getText()];
 }
 
 void SemanticAnalysis::enterFuncFParam(CACTParser::FuncFParamContext *ctx){}
@@ -419,6 +493,24 @@ void SemanticAnalysis::exitFuncFParam(CACTParser::FuncFParamContext *ctx){
     (*ctx->fparam_list_ptr)[name] = item;
 }
 
+void SemanticAnalysis::enterLab(CACTParser::LabContext *ctx){
+    #ifdef IR_gen
+    addIRC( IR_LABEL,
+            BTY_UNKNOWN,
+            ctx->in_label);
+    #endif
+}
+void SemanticAnalysis::exitLab(CACTParser::LabContext *ctx){}
+
+void SemanticAnalysis::enterGo(CACTParser::GoContext *ctx){
+    #ifdef IR_gen
+    addIRC( IR_J,
+            BTY_UNKNOWN,
+            ctx->out_label);
+    #endif
+}
+void SemanticAnalysis::exitGo(CACTParser::GoContext *ctx){}
+
 void SemanticAnalysis::enterBlock(CACTParser::BlockContext *ctx){
     //更改当前作用域
     scope_t *new_scope = new scope_t;
@@ -434,6 +526,13 @@ void SemanticAnalysis::enterBlock(CACTParser::BlockContext *ctx){
             (symbol_table.var_table)[(name_scope_t){.name=name, .scope_ptr=cur_scope}] = item;
         }        
     }
+
+    #ifdef IR_gen
+    for(auto stmt:ctx->stmt()){
+        stmt->break_label = ctx->break_label;
+        stmt->continue_label = ctx->continue_label;
+    }
+    #endif
 }
 void SemanticAnalysis::exitBlock(CACTParser::BlockContext *ctx){
     //根据简化，若有return，一定在最后一个语句
@@ -446,9 +545,15 @@ void SemanticAnalysis::exitBlock(CACTParser::BlockContext *ctx){
     }
     //退出作用域
     cur_scope = cur_scope->parent;
+
 }
 
-void SemanticAnalysis::enterStmt_assign(CACTParser::Stmt_assignContext *ctx){}
+void SemanticAnalysis::enterStmt_assign(CACTParser::Stmt_assignContext *ctx){
+    // #ifdef IR_gen
+    // //标识左值使用场景为赋值
+    // ctx->lVal()->is_store = true; 
+    // #endif
+}
 void SemanticAnalysis::exitStmt_assign(CACTParser::Stmt_assignContext *ctx){
     //左值检查(是否存在于变量表在exitLVal中完成)
     //检查不可为常量
@@ -466,7 +571,14 @@ void SemanticAnalysis::exitStmt_assign(CACTParser::Stmt_assignContext *ctx){
     OperandCheck(expr_ptr);
 
     //返回类型
-    ctx->ret_type = BTY_VOID;
+    ctx->ret_type = BTY_VOID; 
+
+    #ifdef IR_gen
+    addIRC( IR_ST,
+            ctx->exp()->self->basety,
+            ctx->lVal()->result_name,
+            ctx->exp()->result_name);
+    #endif
 }
 
 void SemanticAnalysis::enterStmt_exp(CACTParser::Stmt_expContext *ctx){}
@@ -476,13 +588,46 @@ void SemanticAnalysis::exitStmt_exp(CACTParser::Stmt_expContext *ctx){
 
 void SemanticAnalysis::enterStmt_block(CACTParser::Stmt_blockContext *ctx){
     ctx->block()->fparam_list_ptr = nullptr;
+    #ifdef IR_gen
+    ctx->block()->break_label = ctx->break_label;
+    ctx->block()->continue_label = ctx->continue_label;
+    #endif
 }
 void SemanticAnalysis::exitStmt_block(CACTParser::Stmt_blockContext *ctx){
     //当块最后一个节点是子块时，继承其返回类型
     ctx->ret_type = ctx->block()->ret_type;
 }
 
-void SemanticAnalysis::enterStmt_if(CACTParser::Stmt_ifContext *ctx){}
+void SemanticAnalysis::enterStmt_if(CACTParser::Stmt_ifContext *ctx){
+    #ifdef IR_gen
+    std::string end_label = newLabel();
+    int branch = (ctx->stmt()).size();
+    //xx_start表示某个分支块最开始的语句
+    //省略了最后一个分支跳转到end_label的语句
+    if(branch == 1){ //if
+        std::string if_start = newLabel();
+        ctx->cond()->true_label = if_start;
+        ctx->cond()->false_label = end_label;
+        ctx->lab()[0]->in_label = if_start;
+        ctx->lab()[1]->in_label = end_label;
+    }
+    if(branch == 2){ //if-else
+        std::string if_start = newLabel();
+        std::string else_start = newLabel();
+        ctx->cond()->true_label = if_start;
+        ctx->cond()->false_label = else_start;
+        ctx->lab()[0]->in_label = if_start;
+        ctx->lab()[1]->in_label = else_start;
+        ctx->lab()[2]->in_label = end_label;
+        ctx->go()->out_label = end_label;
+    }
+    //沿子节点传递
+    for(auto stmt: ctx->stmt()){
+        stmt->break_label = ctx->break_label;
+        stmt->continue_label = ctx->continue_label;
+    }
+    #endif
+}
 void SemanticAnalysis::exitStmt_if(CACTParser::Stmt_ifContext *ctx){
     //根据简化，如果if-else语句的stmt含有return，则在块的最后一句
     //将省略的else分支视为返回类型void
@@ -502,7 +647,22 @@ void SemanticAnalysis::exitStmt_if(CACTParser::Stmt_ifContext *ctx){
     ctx->ret_type = ctx->stmt()[0]->ret_type;
 }
 
-void SemanticAnalysis::enterStmt_while(CACTParser::Stmt_whileContext *ctx){}
+void SemanticAnalysis::enterStmt_while(CACTParser::Stmt_whileContext *ctx){
+    #ifdef IR_gen
+    std::string start_label = newLabel();
+    std::string end_label = newLabel();
+    std::string blk_start = newLabel();
+    ctx->cond()->true_label = blk_start;
+    ctx->cond()->false_label = end_label;
+    ctx->lab()[0]->in_label = start_label;
+    ctx->lab()[1]->in_label = blk_start;
+    ctx->lab()[2]->in_label = end_label;
+    ctx->go()->out_label = start_label;
+    //沿子节点传递
+    ctx->stmt()->break_label = end_label;
+    ctx->stmt()->continue_label = start_label;
+    #endif
+}
 void SemanticAnalysis::exitStmt_while(CACTParser::Stmt_whileContext *ctx){
     //根据简化，如果while语句stmt含有return，则在块最后
     //错误情形，while的stmt返回类型不为VOID
@@ -514,20 +674,44 @@ void SemanticAnalysis::exitStmt_while(CACTParser::Stmt_whileContext *ctx){
     ctx->ret_type = ctx->stmt()->ret_type;
 }
 
-void SemanticAnalysis::enterStmt_bcr(CACTParser::Stmt_bcrContext *ctx){}
+void SemanticAnalysis::enterStmt_bcr(CACTParser::Stmt_bcrContext *ctx){
+}
 void SemanticAnalysis::exitStmt_bcr(CACTParser::Stmt_bcrContext *ctx){
     //return exp时由exp类型决定，其余都为VOID
-    if(ctx->exp() != nullptr){
-        //数组检查
-        if(ctx->exp()->self->op == OP_ARRAY){
-            std::cout << "Err: Stmt_bcr: stmt ret_type cannot be array" << std::endl;
-            exit(Semantic_ERR);
+    if(ctx->RETURN()!=nullptr){
+        if(ctx->exp() != nullptr){ //return exp
+            //数组检查
+            if(ctx->exp()->self->op == OP_ARRAY){
+                std::cout << "Err: Stmt_bcr: stmt ret_type cannot be array" << std::endl;
+                exit(Semantic_ERR);
+            }
+            ctx->ret_type = ctx->exp()->self->basety;
+            #ifdef IR_gen
+            addIRC( IR_RETURN,
+                    ctx->ret_type,
+                    ctx->exp()->result_name);
+            #endif
         }
-        ctx->ret_type = ctx->exp()->self->basety;
+        else{ //return语句负责将变量存到a0，exp为空时不需要
+            ctx->ret_type = BTY_VOID;
+        }
     }
     else{
         ctx->ret_type = BTY_VOID;
+        #ifdef IR_gen
+        if(ctx->BREAK()!=nullptr){
+            addIRC( IR_J,
+                    BTY_UNKNOWN,
+                    ctx->break_label);
+        }
+        else if(ctx->CONTINUE()!=nullptr){
+            addIRC( IR_J,
+                    BTY_UNKNOWN,
+                    ctx->continue_label);
+        }
+        #endif
     }
+
 }
 
 void SemanticAnalysis::enterExp(CACTParser::ExpContext *ctx){}
@@ -535,11 +719,22 @@ void SemanticAnalysis::exitExp(CACTParser::ExpContext *ctx){
     if(ctx->BoolConst() != nullptr){
         //创建self指向的结构体
         cact_op_t op = OP_BASE;
-
         ctx->self.reset(new cact_expr_t{.op=op, .basety=BTY_BOOL});
+        #ifdef IR_gen
+        bool is_true = ctx->BoolConst()->getText() == "true";
+        if(is_true){
+            ctx->result_name = IMM_PREFIX + std::to_string(1);
+        }
+        else{
+            ctx->result_name = IMM_PREFIX + std::to_string(0);
+        }
+        #endif
     }
     else{
         ctx->self = ctx->addExp()->self;
+        #ifdef IR_gen
+        ctx->result_name = ctx->addExp()->result_name;
+        #endif
     }
 }
 
@@ -562,7 +757,12 @@ void SemanticAnalysis::exitConstExp(CACTParser::ConstExpContext *ctx){
     }
 }
 
-void SemanticAnalysis::enterCond(CACTParser::CondContext *ctx){}
+void SemanticAnalysis::enterCond(CACTParser::CondContext *ctx){
+    #ifdef IR_gen
+    ctx->lOrExp()->true_label = ctx->true_label;
+    ctx->lOrExp()->false_label = ctx->false_label;
+    #endif
+}
 void SemanticAnalysis::exitCond(CACTParser::CondContext *ctx){
     auto expr_ptr = ctx->lOrExp()->self;
     if(expr_ptr->basety != BTY_BOOL || expr_ptr->op == OP_ARRAY){
@@ -604,6 +804,10 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
             op = OP_ARRAY;
         }
         ctx->self.reset(new cact_expr_t{.op=op, .basety=iter_type.basety, .arrdims=iter_type.arrdims});
+        
+        #ifdef IR_gen
+        ctx->result_name = name;
+        #endif
     }
     else{
         //带中括号，layer前检查维度，layer后继承维度
@@ -613,7 +817,20 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
             std::cout << "Err: LVal: left leyer greater than var_item dims" << std::endl;
             exit(Semantic_ERR);
         }
-       //维度检查
+
+        #ifdef IR_gen
+        //索引数组，用于确定offset
+        std::vector<size_t> index_array;
+        //统计数组总长，则每个索引改变1的相对偏移为后续维度乘积
+        size_t product = 1;
+        for(int num: iter_type.arrdims){
+            product *= num;
+        }
+        int subproduct = product;
+        int offset = 0;
+        #endif
+
+        //维度检查
         for(int i=0;i<layer;i++){
             //类型检查：必须是为终结符int常量
             //该值传递过程中不经历任何操作
@@ -629,6 +846,12 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
                 std::cout << "Err: LVal: expr index out of dim[" << i << "] bound" << std::endl;
                 exit(Semantic_ERR);
             }
+
+            #ifdef IR_gen
+            //后续维度乘积
+            subproduct /= iter_type.arrdims[i];
+            offset += index * subproduct;
+            #endif
         }
 
         //建立结构体
@@ -646,6 +869,10 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
             }
         }
         ctx->self.reset(new cact_expr_t{.op=op, .basety=iter_type.basety, .arrdims=arrdims});
+
+        #ifdef IR_gen
+        ctx->result_name = name + OFFSET_INFIX + std::to_string(offset);
+        #endif
     }
 
 }
@@ -654,12 +881,21 @@ void SemanticAnalysis::enterPrimaryExp(CACTParser::PrimaryExpContext *ctx){}
 void SemanticAnalysis::exitPrimaryExp(CACTParser::PrimaryExpContext *ctx){
     if(ctx->number()!=nullptr){
         ctx->self = ctx->number()->self;
+        #ifdef IR_gen
+        ctx->result_name = IMM_PREFIX + ctx->number()->getText();
+        #endif
     }
     else if(ctx->lVal()!=nullptr){
         ctx->self = ctx->lVal()->self;
+        #ifdef IR_gen
+        ctx->result_name = ctx->lVal()->result_name;
+        #endif
     }
     else{
         ctx->self = ctx->exp()->self;
+        #ifdef IR_gen
+        ctx->result_name = ctx->lVal()->result_name;
+        #endif
     }
 }
 
@@ -688,9 +924,13 @@ void SemanticAnalysis::enterUnaryExp(CACTParser::UnaryExpContext *ctx){}
 void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
     if(ctx->primaryExp()!=nullptr){
         ctx->self = ctx->primaryExp()->self;
+        #ifdef IR_gen
+        ctx->result_name = ctx->primaryExp()->result_name;
+        #endif
     }
     else if(ctx->unaryExp()!=nullptr){
-        cact_op_t op = (typeutils.str_to_op)[ctx->unaryOp()->getText()];
+        //注意这里的OP_POS/OP_NEG，通过后缀与二元区分
+        cact_op_t op = (typeutils.str_to_op)[ctx->unaryOp()->getText()+"U"];
         cact_basety_t basety = ctx->unaryExp()->self->basety;
         subexprs_t subexprs;
         subexprs.push_back(ctx->unaryExp()->self);
@@ -701,13 +941,28 @@ void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
 
         //针对操作符的操作对象检查
         OperandCheck(ctx->self);
+
+        #ifdef IR_gen
+        //形如a=+b，直接当做a=b即可
+        if(op==OP_POS){
+            ctx->result_name = ctx->unaryExp()->result_name;
+        }
+        else{
+            IR_op_t IRop = (typeutils.op_to_IRop)[op];
+            ctx->result_name = newTemp((cact_type_t){.is_const=false, .basety=basety});
+            addIRC( IRop, 
+                    basety, 
+                    ctx->result_name, 
+                    ctx->unaryExp()->result_name);
+        }
+        #endif
     }
     else{ //func call
-        std::string name = ctx->Ident()->getText();
+        std::string func_name = ctx->Ident()->getText();
         //检查函数表项是否存在
-        auto iter = (symbol_table.func_table).find(name);
+        auto iter = (symbol_table.func_table).find(func_name);
         if(iter == (symbol_table.func_table).end()){
-            std::cout << "Err: UnaryExp: Called Func" << name << " Undefined" << std::endl;
+            std::cout << "Err: UnaryExp: Called Func" << func_name << " Undefined" << std::endl;
             exit(Semantic_ERR);
         }
         
@@ -726,7 +981,7 @@ void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
                 exit(Semantic_ERR);
             }
         }
-        else{
+        else{ //至少含一个参数
             auto exp_list = ctx->funcRParams()->exp();
             //长度检查
             if(exp_list.size() != fparam_len){
@@ -738,6 +993,9 @@ void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
             auto iter = fparam_list.begin();
             for(int i=0;i<fparam_len;i++,iter++){
                 auto fparam_type = (iter->second).type;
+                #ifdef IR_gen
+                std::string expr_name = exp_list[i]->result_name;
+                #endif
                 auto expr_ptr = exp_list[i]->self;
                 //基本类型检查
                 if(expr_ptr->basety != fparam_type.basety){
@@ -746,35 +1004,63 @@ void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
                 }
 
                 size_t dim_size = fparam_type.arrdims.size();
-                if(dim_size == 0){
+                if(dim_size == 0){//传入元素情形
                     if(expr_ptr->op == OP_ARRAY){
                         std::cout << "Err: UnaryExp: expr cannot be array when fparam is not" << std::endl;
                         exit(Semantic_ERR);
                     }
+
+                    #ifdef IR_gen
+                    addIRC( IR_PARAM, 
+                            expr_ptr->basety, 
+                            expr_name);
+                    #endif
                 }
-                else{
+                else{//传入数组（指针）情形
                     //数组及维数检查
                     if((expr_ptr->op != OP_ARRAY) || (expr_ptr->arrdims.size() != dim_size)){
                         std::cout << "Err: UnaryExp: expr must be array with same dims as fparam" << std::endl;
                         exit(Semantic_ERR);
                     }
-                    else{
-                        //逐维度检查
-                        for(int i=0;i<dim_size;i++){
-                            if(i==0 && fparam_type.arrdims[i]==0){
-                                //首维隐式声明时为0，忽略检查
-                                continue;
-                            }
-                            if(expr_ptr->arrdims[i]!=fparam_type.arrdims[i]){
-                                std::cout << "Err: UnaryExp: param dim_len mismatched" << std::endl;
-                                exit(Semantic_ERR);
-                            }
+                    
+                    //逐维度检查
+                    for(int j=0;j<dim_size;j++){
+                        if(j==0 && fparam_type.arrdims[j]==0){
+                            //首维隐式声明时为0，忽略检查
+                            continue;
+                        }
+                        if(expr_ptr->arrdims[j]!=fparam_type.arrdims[j]){
+                            std::cout << "Err: UnaryExp: param dim_len mismatched" << std::endl;
+                            exit(Semantic_ERR);
                         }
                     }
+
+                    #ifdef IR_gen
+                    addIRC( IR_PARAM, 
+                            BTY_ADDR, 
+                            expr_name);                    
+                    #endif
                 }
             }
         }
 
+        #ifdef IR_gen
+        //传参结束，调用函数
+        //函数类型为basety
+        //arg1表示当函数类别不为void时，用临时变量存储
+        if(basety==BTY_VOID){
+            addIRC( IR_CALL,
+                    BTY_VOID,
+                    func_name);
+        }
+        else{
+            ctx->result_name = newTemp((cact_type_t){.is_const=false,.basety=basety});
+            addIRC( IR_CALL,
+                    basety,
+                    func_name,
+                    ctx->result_name);
+        }
+        #endif
     }
 }
 
@@ -787,6 +1073,22 @@ void SemanticAnalysis::exitFuncRParams(CACTParser::FuncRParamsContext *ctx){}
 void SemanticAnalysis::enterMulExp(CACTParser::MulExpContext *ctx){}
 void SemanticAnalysis::exitMulExp(CACTParser::MulExpContext *ctx){
     exitBinaryExp(ctx, ctx->mulExp(), ctx->mulOp(), ctx->unaryExp(), false);
+    #ifdef IR_gen
+    if(ctx->mulExp()==nullptr){
+        ctx->result_name = ctx->unaryExp()->result_name;
+    }
+    else{
+        cact_op_t op = (typeutils.str_to_op)[ctx->mulOp()->getText()];
+        IR_op_t IRop = (typeutils.op_to_IRop)[op];
+        cact_basety_t basety = ctx->unaryExp()->self->basety;
+        ctx->result_name = newTemp((cact_type_t){.is_const=false, .basety=basety});
+        addIRC( IRop, 
+                basety, 
+                ctx->result_name, 
+                ctx->mulExp()->result_name, 
+                ctx->unaryExp()->result_name);
+    }
+    #endif
 }
 
 void SemanticAnalysis::enterMulOp(CACTParser::MulOpContext *ctx){}
@@ -795,41 +1097,187 @@ void SemanticAnalysis::exitMulOp(CACTParser::MulOpContext *ctx){}
 void SemanticAnalysis::enterAddExp(CACTParser::AddExpContext *ctx){}
 void SemanticAnalysis::exitAddExp(CACTParser::AddExpContext *ctx){
     exitBinaryExp(ctx, ctx->addExp(), ctx->addOp(), ctx->mulExp(), false);
+    #ifdef IR_gen
+    if(ctx->addExp()==nullptr){
+        ctx->result_name = ctx->mulExp()->result_name;
+    }
+    else{
+        cact_op_t op = (typeutils.str_to_op)[ctx->addOp()->getText()];
+        IR_op_t IRop = (typeutils.op_to_IRop)[op];
+        cact_basety_t basety = ctx->mulExp()->self->basety;
+        ctx->result_name = newTemp((cact_type_t){.is_const=false, .basety=basety});
+        addIRC( IRop, 
+                basety, 
+                ctx->result_name, 
+                ctx->addExp()->result_name, 
+                ctx->mulExp()->result_name);
+    }
+    #endif
 }
 
 void SemanticAnalysis::enterAddOp(CACTParser::AddOpContext *ctx){}
 void SemanticAnalysis::exitAddOp(CACTParser::AddOpContext *ctx){}
 
-void SemanticAnalysis::enterRelExp(CACTParser::RelExpContext *ctx){}
+//考虑a & true 和 a != true两种情形，前者需要label，后者需要存值
+void SemanticAnalysis::enterRelExp(CACTParser::RelExpContext *ctx){
+    #ifdef IR_gen
+    if(ctx->relExp()!=nullptr){
+        ctx->relExp()->has_label = false;
+    }
+    #endif
+}
+
+//考虑到if(0)等情况，这里bool可以直接看作1和0，从而合并到addExp情况中
 void SemanticAnalysis::exitRelExp(CACTParser::RelExpContext *ctx){
     if(ctx->BoolConst()!=nullptr){
         //创建self所指结构体
         cact_op_t op = OP_BASE;
-
         ctx->self.reset(new cact_expr_t{.op=op, .basety=BTY_BOOL});
     }
     else{
         exitBinaryExp(ctx, ctx->relExp(), ctx->relOp(), ctx->addExp(), true);
     }
+
+    #ifdef IR_gen
+    if(ctx->BoolConst()!=nullptr){
+        bool is_true = ctx->BoolConst()->getText() == "true";
+        if(ctx->has_label){
+            if(is_true){
+                addIRC( IR_J,
+                        BTY_UNKNOWN,
+                        ctx->true_label);
+            }
+            else{
+                addIRC( IR_J,
+                        BTY_UNKNOWN,
+                        ctx->false_label);
+            }
+        }
+        else{
+            if(is_true){
+                ctx->result_name = IMM_PREFIX + std::to_string(1);
+            }
+            else{
+                ctx->result_name = IMM_PREFIX + std::to_string(0);
+            }
+        }
+    }
+    else if(ctx->relExp()==nullptr){
+        if(ctx->has_label){ //例如if(b) 其中b=0
+            addIRC( IR_BNE,
+                    ctx->addExp()->self->basety,
+                    ctx->true_label,
+                    ctx->addExp()->result_name,
+                    IMM_PREFIX+std::to_string(0));
+            addIRC( IR_J,
+                    BTY_UNKNOWN,
+                    ctx->false_label);
+        }   
+        else{
+            ctx->result_name = ctx->addExp()->result_name;
+        }
+    }
+    else{
+        if(ctx->has_label){
+            cact_op_t op = (typeutils.str_to_op)[ctx->relOp()->getText()];
+            IR_op_t IRop = (typeutils.op_to_IRop)[op];
+            
+            addIRC( IRop,
+                    ctx->addExp()->self->basety,
+                    ctx->true_label,
+                    ctx->relExp()->result_name,
+                    ctx->addExp()->result_name);
+            addIRC( IR_J,
+                    BTY_UNKNOWN,
+                    ctx->false_label);
+        }
+    }
+    #endif
 }
 
 void SemanticAnalysis::enterRelOp(CACTParser::RelOpContext *ctx){}
 void SemanticAnalysis::exitRelOp(CACTParser::RelOpContext *ctx){}
 
-void SemanticAnalysis::enterEqExp(CACTParser::EqExpContext *ctx){}
+//不考虑a==b==c / a<b == c>d等复杂情形，因此eqExp和relExp都直接用标签，没有存储中间结果的情形
+//即，二元推导之后默认都是一元传递，一元推导才传label
+void SemanticAnalysis::enterEqExp(CACTParser::EqExpContext *ctx){
+    #ifdef IR_gen
+    if(ctx->eqExp()==nullptr){ //relExp
+        ctx->relExp()->true_label = ctx->true_label;
+        ctx->relExp()->false_label = ctx->false_label;
+        //考虑到eqExp->relExp->true和eqExp->eqExp == relExp->true=a，二者relExp的has_label不同
+        ctx->relExp()->has_label = ctx->has_label;
+    }
+    else{
+        ctx->relExp()->has_label = false;
+        ctx->eqExp()->has_label = false;
+    }
+    #endif
+}
 void SemanticAnalysis::exitEqExp(CACTParser::EqExpContext *ctx){
     exitBinaryExp(ctx, ctx->eqExp(), ctx->eqOp(), ctx->relExp(), true);
+    #ifdef IR_gen
+    if(ctx->eqExp()==nullptr){
+        ctx->result_name = ctx->relExp()->result_name;
+    }
+    else if(ctx->has_label){
+        cact_op_t op = (typeutils.str_to_op)[ctx->eqOp()->getText()];
+        IR_op_t IRop = (typeutils.op_to_IRop)[op];
+        addIRC( IRop,
+                ctx->relExp()->self->basety,
+                ctx->true_label,
+                ctx->eqExp()->result_name,
+                ctx->relExp()->result_name);
+        addIRC( IR_J,
+                BTY_UNKNOWN,
+                ctx->false_label);
+    }
+    #endif
 }
 
 void SemanticAnalysis::enterEqOp(CACTParser::EqOpContext *ctx){}
 void SemanticAnalysis::exitEqOp(CACTParser::EqOpContext *ctx){}
 
-void SemanticAnalysis::enterLAndExp(CACTParser::LAndExpContext *ctx){}
+void SemanticAnalysis::enterLAndExp(CACTParser::LAndExpContext *ctx){
+    #ifdef IR_gen
+    if(ctx->lAndExp()!=nullptr){ //lAndExp AND eqExp
+        //部分为true不需要特别处理，继续向下即可，不必和OR一样加额外标签
+        std::string and_label = newLabel();
+        ctx->lab()->in_label = and_label;
+        ctx->lAndExp()->true_label = and_label;
+        ctx->lAndExp()->false_label = ctx->false_label;
+        ctx->eqExp()->true_label = ctx->true_label;
+        ctx->eqExp()->false_label = ctx->false_label;
+        ctx->eqExp()->has_label = true;
+    }
+    else{//eqExp
+        ctx->eqExp()->true_label = ctx->true_label;
+        ctx->eqExp()->false_label = ctx->false_label;
+        ctx->eqExp()->has_label = true;
+    }
+    #endif
+}
 void SemanticAnalysis::exitLAndExp(CACTParser::LAndExpContext *ctx){
     exitBinaryExp(ctx, ctx->lAndExp(), ctx->AND(), ctx->eqExp(), true);
 }
 
-void SemanticAnalysis::enterLOrExp(CACTParser::LOrExpContext *ctx){}
+void SemanticAnalysis::enterLOrExp(CACTParser::LOrExpContext *ctx){
+    #ifdef IR_gen
+    if(ctx->lOrExp()!=nullptr){ //lOrExp OR lAandExp
+        //lOrExp部分出错需要跳转到lAndExp前
+        std::string or_label = newLabel();
+        ctx->lab()->in_label = or_label;
+        ctx->lOrExp()->true_label = ctx->true_label;
+        ctx->lOrExp()->false_label = or_label;
+        ctx->lAndExp()->true_label = ctx->true_label;
+        ctx->lAndExp()->false_label = ctx->false_label;
+    }
+    else{//lAndExp 
+        ctx->lAndExp()->true_label = ctx->true_label;
+        ctx->lAndExp()->false_label = ctx->false_label;
+    }
+    #endif
+}
 void SemanticAnalysis::exitLOrExp(CACTParser::LOrExpContext *ctx){
     exitBinaryExp(ctx, ctx->lOrExp(), ctx->OR(), ctx->lAndExp(), true);
 }

@@ -68,6 +68,8 @@ typedef std::unordered_map <std::string, func_symbol_item_t>
 
 class SymbolTable{
     public:
+        scope_t *root_scope;
+
         //unordermap需要传入key，value和hash_func(可选)
         var_table_t var_table;
         func_table_t func_table;

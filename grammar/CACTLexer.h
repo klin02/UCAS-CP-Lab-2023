@@ -21,7 +21,7 @@ public:
     LeftParen = 1, RightParen = 2, LeftBracket = 3, RightBracket = 4, LeftBrace = 5, 
     RightBrace = 6, SEMICOLON = 7, COMMA = 8, CONST = 9, VOID = 10, INT = 11, 
     BOOL = 12, FLOAT = 13, DOUBLE = 14, IF = 15, ELSE = 16, WHILE = 17, 
-    BREAK = 18, CONTINUE = 19, RETURN = 20, ASSIGN = 21, ADD = 22, SUB = 23, 
+    BREAK = 18, CONTINUE = 19, RETURN = 20, ASSIGN = 21, POS_ADD = 22, NEG_SUB = 23, 
     NOT = 24, MUL = 25, DIV = 26, MOD = 27, LEQ = 28, GEQ = 29, LT = 30, 
     GT = 31, EQ = 32, NEQ = 33, AND = 34, OR = 35, BoolConst = 36, Ident = 37, 
     IntConst = 38, FloatConst = 39, DoubleConst = 40, NewLine = 41, WhiteSpace = 42, 

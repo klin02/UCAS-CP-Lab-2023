@@ -21,7 +21,7 @@ public:
     LeftParen = 1, RightParen = 2, LeftBracket = 3, RightBracket = 4, LeftBrace = 5, 
     RightBrace = 6, SEMICOLON = 7, COMMA = 8, CONST = 9, VOID = 10, INT = 11, 
     BOOL = 12, FLOAT = 13, DOUBLE = 14, IF = 15, ELSE = 16, WHILE = 17, 
-    BREAK = 18, CONTINUE = 19, RETURN = 20, ASSIGN = 21, ADD = 22, SUB = 23, 
+    BREAK = 18, CONTINUE = 19, RETURN = 20, ASSIGN = 21, POS_ADD = 22, NEG_SUB = 23, 
     NOT = 24, MUL = 25, DIV = 26, MOD = 27, LEQ = 28, GEQ = 29, LT = 30, 
     GT = 31, EQ = 32, NEQ = 33, AND = 34, OR = 35, BoolConst = 36, Ident = 37, 
     IntConst = 38, FloatConst = 39, DoubleConst = 40, NewLine = 41, WhiteSpace = 42, 
@@ -31,12 +31,12 @@ public:
   enum {
     RuleCompUnit = 0, RuleDecl = 1, RuleConstDecl = 2, RuleBType = 3, RuleArrayDims = 4, 
     RuleConstDef = 5, RuleConstInitVal = 6, RuleVarDecl = 7, RuleVarDef = 8, 
-    RuleFuncDef = 9, RuleFuncType = 10, RuleFuncFParam = 11, RuleBlock = 12, 
-    RuleStmt = 13, RuleExp = 14, RuleConstExp = 15, RuleCond = 16, RuleLVal = 17, 
-    RulePrimaryExp = 18, RuleNumber = 19, RuleUnaryExp = 20, RuleUnaryOp = 21, 
-    RuleFuncRParams = 22, RuleMulExp = 23, RuleMulOp = 24, RuleAddExp = 25, 
-    RuleAddOp = 26, RuleRelExp = 27, RuleRelOp = 28, RuleEqExp = 29, RuleEqOp = 30, 
-    RuleLAndExp = 31, RuleLOrExp = 32
+    RuleFuncDef = 9, RuleFuncType = 10, RuleFuncFParam = 11, RuleLab = 12, 
+    RuleGo = 13, RuleBlock = 14, RuleStmt = 15, RuleExp = 16, RuleConstExp = 17, 
+    RuleCond = 18, RuleLVal = 19, RulePrimaryExp = 20, RuleNumber = 21, 
+    RuleUnaryExp = 22, RuleUnaryOp = 23, RuleFuncRParams = 24, RuleMulExp = 25, 
+    RuleMulOp = 26, RuleAddExp = 27, RuleAddOp = 28, RuleRelExp = 29, RuleRelOp = 30, 
+    RuleEqExp = 31, RuleEqOp = 32, RuleLAndExp = 33, RuleLOrExp = 34
   };
 
   CACTParser(antlr4::TokenStream *input);
@@ -61,6 +61,8 @@ public:
   class FuncDefContext;
   class FuncTypeContext;
   class FuncFParamContext;
+  class LabContext;
+  class GoContext;
   class BlockContext;
   class StmtContext;
   class ExpContext;
@@ -196,6 +198,7 @@ public:
     std::vector<uint32_t> * dims_ptr;
     uint16_t dim_index;
     bool top;
+    std::string value_list;
     ConstInitValContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     ConstExpContext *constExp();
@@ -313,10 +316,38 @@ public:
 
   FuncFParamContext* funcFParam();
 
+  class  LabContext : public antlr4::ParserRuleContext {
+  public:
+    std::string in_label;
+    LabContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  LabContext* lab();
+
+  class  GoContext : public antlr4::ParserRuleContext {
+  public:
+    std::string out_label;
+    GoContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  GoContext* go();
+
   class  BlockContext : public antlr4::ParserRuleContext {
   public:
     cact_basety_t ret_type;
     fparam_list_t * fparam_list_ptr;
+    std::string break_label;
+    std::string continue_label;
     BlockContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *LeftBrace();
@@ -336,6 +367,10 @@ public:
   class  StmtContext : public antlr4::ParserRuleContext {
   public:
     cact_basety_t ret_type;
+    std::string in_label;
+    std::string out_label;
+    std::string break_label;
+    std::string continue_label;
     StmtContext(antlr4::ParserRuleContext *parent, size_t invokingState);
    
     StmtContext() = default;
@@ -355,8 +390,11 @@ public:
     antlr4::tree::TerminalNode *LeftParen();
     CondContext *cond();
     antlr4::tree::TerminalNode *RightParen();
+    std::vector<LabContext *> lab();
+    LabContext* lab(size_t i);
     std::vector<StmtContext *> stmt();
     StmtContext* stmt(size_t i);
+    GoContext *go();
     antlr4::tree::TerminalNode *ELSE();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -388,11 +426,14 @@ public:
   public:
     Stmt_whileContext(StmtContext *ctx);
 
+    std::vector<LabContext *> lab();
+    LabContext* lab(size_t i);
     antlr4::tree::TerminalNode *WHILE();
     antlr4::tree::TerminalNode *LeftParen();
     CondContext *cond();
     antlr4::tree::TerminalNode *RightParen();
     StmtContext *stmt();
+    GoContext *go();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
   };
@@ -424,6 +465,7 @@ public:
   class  ExpContext : public antlr4::ParserRuleContext {
   public:
     cact_expr_ptr self;
+    std::string result_name;
     ExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *BoolConst();
@@ -453,6 +495,8 @@ public:
 
   class  CondContext : public antlr4::ParserRuleContext {
   public:
+    std::string true_label;
+    std::string false_label;
     CondContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     LOrExpContext *lOrExp();
@@ -468,6 +512,7 @@ public:
   public:
     cact_expr_ptr self;
     bool is_const;
+    std::string result_name;
     LValContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *Ident();
@@ -488,6 +533,7 @@ public:
   class  PrimaryExpContext : public antlr4::ParserRuleContext {
   public:
     cact_expr_ptr self;
+    std::string result_name;
     PrimaryExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     NumberContext *number();
@@ -522,6 +568,7 @@ public:
   class  UnaryExpContext : public antlr4::ParserRuleContext {
   public:
     cact_expr_ptr self;
+    std::string result_name;
     UnaryExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     PrimaryExpContext *primaryExp();
@@ -543,8 +590,8 @@ public:
   public:
     UnaryOpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *ADD();
-    antlr4::tree::TerminalNode *SUB();
+    antlr4::tree::TerminalNode *POS_ADD();
+    antlr4::tree::TerminalNode *NEG_SUB();
     antlr4::tree::TerminalNode *NOT();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -573,6 +620,7 @@ public:
   class  MulExpContext : public antlr4::ParserRuleContext {
   public:
     cact_expr_ptr self;
+    std::string result_name;
     MulExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     UnaryExpContext *unaryExp();
@@ -604,6 +652,7 @@ public:
   class  AddExpContext : public antlr4::ParserRuleContext {
   public:
     cact_expr_ptr self;
+    std::string result_name;
     AddExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     MulExpContext *mulExp();
@@ -621,8 +670,8 @@ public:
   public:
     AddOpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *ADD();
-    antlr4::tree::TerminalNode *SUB();
+    antlr4::tree::TerminalNode *POS_ADD();
+    antlr4::tree::TerminalNode *NEG_SUB();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -634,6 +683,10 @@ public:
   class  RelExpContext : public antlr4::ParserRuleContext {
   public:
     cact_expr_ptr self;
+    std::string result_name;
+    std::string true_label;
+    std::string false_label;
+    bool has_label;
     RelExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     AddExpContext *addExp();
@@ -667,6 +720,10 @@ public:
   class  EqExpContext : public antlr4::ParserRuleContext {
   public:
     cact_expr_ptr self;
+    std::string result_name;
+    std::string true_label;
+    std::string false_label;
+    bool has_label;
     EqExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     RelExpContext *relExp();
@@ -697,11 +754,15 @@ public:
   class  LAndExpContext : public antlr4::ParserRuleContext {
   public:
     cact_expr_ptr self;
+    std::string true_label;
+    std::string false_label;
+    std::string in_label;
     LAndExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     EqExpContext *eqExp();
     LAndExpContext *lAndExp();
     antlr4::tree::TerminalNode *AND();
+    LabContext *lab();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -713,11 +774,14 @@ public:
   class  LOrExpContext : public antlr4::ParserRuleContext {
   public:
     cact_expr_ptr self;
+    std::string true_label;
+    std::string false_label;
     LOrExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     LAndExpContext *lAndExp();
     LOrExpContext *lOrExp();
     antlr4::tree::TerminalNode *OR();
+    LabContext *lab();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;

@@ -62,6 +62,10 @@ constInitVal
         uint16_t dim_index,
         //表征是否最顶层，只有index为1，且为最顶层才允许以平铺列表初始化
         bool top,
+        
+        //IR
+        //value_list为所有子元素拼接，空位置用#占位
+        std::string value_list,
     ]
     : constExp 
     | LeftBrace (constInitVal (COMMA constInitVal)*)? RightBrace
@@ -117,11 +121,29 @@ funcFParam
 /*** 语句&表达式 ***/
 //考虑到直接从block获取最后一个decl|stmt，省略blockItem
 //由于只检查特定位置的stmt返回类型，使用自底向上的综合属性
+//空节点，用于label的跳入和跳出
+lab
+    locals[
+        std::string in_label,
+    ]
+    :
+    ;
+
+go
+    locals[
+        std::string out_label,
+    ]
+    :
+    ;
+
 block
     locals[
         cact_basety_t ret_type,
         //形参列表添加到block作用域
         fparam_list_t *fparam_list_ptr,
+        //考虑到break和continue可能存在block内，作为中间过程传递
+        std::string break_label,
+        std::string continue_label,
     ]
     : LeftBrace (decl|stmt)* RightBrace
     ;
@@ -129,18 +151,27 @@ block
 stmt
     locals[
         cact_basety_t ret_type,
+        //IR
+        //长度非空时，enter时跳进到in_label，exit跳出到out_label
+        std::string in_label,
+        std::string out_label,
+        //因为不知道break和continue层级，在每个stmt/block->stmt/block推导时传递
+        std::string break_label,
+        std::string continue_label,
     ]
-    : lVal ASSIGN exp SEMICOLON                         #stmt_assign
-    | (exp)? SEMICOLON                                  #stmt_exp
-    | block                                             #stmt_block
-    | IF LeftParen cond RightParen stmt (ELSE stmt)?    #stmt_if
-    | WHILE LeftParen cond RightParen stmt              #stmt_while
-    | (BREAK | CONTINUE | RETURN exp?) SEMICOLON        #stmt_bcr
+    : lVal ASSIGN exp SEMICOLON                                         #stmt_assign
+    | (exp)? SEMICOLON                                                  #stmt_exp
+    | block                                                             #stmt_block
+    | IF LeftParen cond RightParen lab stmt (go lab ELSE stmt)? lab     #stmt_if
+    | lab WHILE LeftParen cond RightParen lab stmt go lab               #stmt_while
+    | (BREAK | CONTINUE | RETURN exp?) SEMICOLON                        #stmt_bcr
     ;
 
 exp 
     locals[
         cact_expr_ptr self,
+        //IR
+        std::string result_name,
     ]
     : BoolConst
     | addExp 
@@ -155,6 +186,11 @@ constExp
     ;
 
 cond
+    locals[
+        //IR
+        std::string true_label,
+        std::string false_label,
+    ]
     : lOrExp
     ;
 
@@ -166,6 +202,12 @@ lVal
         cact_expr_ptr self,
         //仅用于赋值时检查是否常量
         bool is_const,
+        
+        //IR
+        // //区分应用场景：赋值ST 1，使用LD 0 
+        // bool is_store,
+        //使用">n"表示偏移n个元素
+        std::string result_name,
     ]
     : Ident (LeftBracket exp RightBracket)*
     ;
@@ -173,6 +215,9 @@ lVal
 primaryExp
     locals[
         cact_expr_ptr self,
+        //IR
+        //结果变量名，下同
+        std::string result_name,
     ]
     : number
     | lVal
@@ -193,6 +238,8 @@ number
 unaryExp
     locals[
         cact_expr_ptr self,
+        //IR
+        std::string result_name,
     ]
     : primaryExp
     | unaryOp unaryExp
@@ -201,7 +248,7 @@ unaryExp
 
 //将操作符的可能集合独立处理，方便在对应Exp中直接使用getText获取
 unaryOp
-    : ADD | SUB | NOT 
+    : POS_ADD | NEG_SUB | NOT 
     ;
 funcRParams
     : exp (COMMA exp)*
@@ -210,6 +257,8 @@ funcRParams
 mulExp
     locals[
         cact_expr_ptr self,
+        //IR
+        std::string result_name,
     ]
     : unaryExp
     | mulExp mulOp unaryExp
@@ -222,18 +271,29 @@ mulOp
 addExp
     locals[
         cact_expr_ptr self,
+        //IR
+        std::string result_name,
     ]
     : mulExp
     | addExp addOp mulExp
     ;
 
 addOp
-    : ADD | SUB
+    : POS_ADD | NEG_SUB
     ;
+
+//代码设计中只支持简单的条件运算，不支持复杂组合，例如a==b==c，a<b != c>d等
+//因此可省略relExp和eqExp作为中间运算的情形
 
 relExp  
     locals[
         cact_expr_ptr self,
+        //IR
+        std::string result_name,
+        std::string true_label,
+        std::string false_label,
+        //该节点能否使用label
+        bool has_label,
     ]
     : addExp
     | relExp relOp addExp
@@ -247,6 +307,11 @@ relOp
 eqExp
     locals[
         cact_expr_ptr self,
+        //IR
+        std::string result_name,
+        std::string true_label,
+        std::string false_label,
+        bool has_label,
     ]
     : relExp
     | eqExp eqOp relExp
@@ -259,17 +324,24 @@ eqOp
 lAndExp
     locals[
         cact_expr_ptr self,
+        //IR
+        std::string true_label,
+        std::string false_label,
+        std::string in_label,
     ]
     : eqExp
-    | lAndExp AND eqExp
+    | lAndExp AND lab eqExp
     ;
 
 lOrExp
     locals[
         cact_expr_ptr self,
+        //IR
+        std::string true_label,
+        std::string false_label,
     ]
     : lAndExp
-    | lOrExp OR lAndExp
+    | lOrExp OR lab lAndExp
     ;
 
 /****** lexer  ******/
@@ -303,8 +375,8 @@ RETURN      : 'return'  ;
 
 /* 运算符号 */
 ASSIGN      : '='       ;
-ADD         : '+'       ;
-SUB         : '-'       ;
+POS_ADD     : '+'       ;
+NEG_SUB     : '-'       ;
 NOT         : '!'       ;
 MUL         : '*'       ;
 DIV         : '/'       ;
@@ -335,7 +407,7 @@ IntConst
     ;
 
 fragment Sign
-    : (ADD | SUB)
+    : (POS_ADD | NEG_SUB)
     ;
 
 fragment DecimalConst
@@ -371,7 +443,7 @@ fragment Fraction
     ;
 
 fragment Exponent
-    : ('E' | 'e') (ADD | SUB)? [0-9]+
+    : ('E' | 'e') Sign? [0-9]+
     ;
 
 

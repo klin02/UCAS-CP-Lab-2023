@@ -38,7 +38,7 @@
 
 4. typeutils
 
-   主要用到了str_to_val和str_to_op，直接根据子节点的getText获取其信息。
+   主要用到了str_to_basety和str_to_op，直接根据子节点的getText获取其信息。
 
 
 

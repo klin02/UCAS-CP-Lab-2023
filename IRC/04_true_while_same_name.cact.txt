@@ -1,0 +1,16 @@
+      IRop|    Basety|    result|      arg1|      arg2|
+Func Begin|   unknown|      main|          |          |
+   L_Alloc|       int|         i|        #0|          |
+   L_Alloc|       int|         b|        #0|          |
+     Label|   unknown|        L0|          |          |
+       BLT|       int|        L2|         i|        #3|
+         J|   unknown|        L1|          |          |
+     Label|   unknown|        L2|          |          |
+   L_Alloc|       int|         b|        #1|          |
+       ADD|       int|        %0|         i|         b|
+        ST|       int|         i|        %0|          |
+         J|   unknown|        L0|          |          |
+     Label|   unknown|        L1|          |          |
+   L_Alloc|       int|         b|        #2|          |
+    Return|       int|         b|          |          |
+  Func End|   unknown|      main|          |          |
