@@ -1,10 +1,10 @@
 	.file	"26_true_void_func_stmt.c"
 	.option nopic
-	.attribute arch, "rv64i2p1_m2p0_a2p1_f2p2_d2p2_zicsr2p0_zifencei2p0"
+	.attribute arch, "rv64i2p0_m2p0_a2p0_f2p0_d2p0_c2p0"
 	.attribute unaligned_access, 0
 	.attribute stack_align, 16
 	.text
-	.align	2
+	.align	1
 	.globl	func
 	.type	func, @function
 func:
@@ -17,8 +17,7 @@ func:
 	sw	a5,-36(s0)
 	li	a5,3
 	sw	a5,-20(s0)
-	lw	a5,-36(s0)
-	mv	a4,a5
+	lw	a4,-36(s0)
 	lw	a5,-20(s0)
 	addw	a5,a4,a5
 	sw	a5,-36(s0)
@@ -27,7 +26,7 @@ func:
 	addi	sp,sp,48
 	jr	ra
 	.size	func, .-func
-	.align	2
+	.align	1
 	.globl	main
 	.type	main, @function
 main:
@@ -49,4 +48,4 @@ main:
 	addi	sp,sp,32
 	jr	ra
 	.size	main, .-main
-	.ident	"GCC: (g2ee5e430018) 12.2.0"
+	.ident	"GCC: (GNU) 10.2.0"

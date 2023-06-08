@@ -18,6 +18,8 @@ extern TypeUtils    typeutils;
 #define ARRAY_PLACEHOLDER   "$"
 #define IMM_PREFIX          "#"
 #define LABEL_PREFIX        "L"
+#define GVAR_PREFIX         "@"
+#define LVAR_PREFIX         "^"
 #endif
 
 class SemanticAnalysis: public CACTListener {
@@ -29,12 +31,40 @@ class SemanticAnalysis: public CACTListener {
         size_t label_cnt=0;
         // size_t end_label_cnt = 0;
         
+        size_t len_from_type(cact_type_t type){
+            if(type.arrdims.size()==0){
+                return 1;
+            }
+            else{
+                size_t product = 1;
+                for(int dim: type.arrdims){
+                    product *= dim;
+                }
+                return product;
+            }
+        }
+
         std::vector<IR_temp_t> Temp_array;
-        std::string newTemp(cact_type_t type){
+        std::string newTemp(cact_basety_t basety, bool is_const=false, size_t length=1){
             std::string temp_name = TEMP_PREFIX + std::to_string(Temp_array.size());
-            Temp_array.push_back((IR_temp_t){.type=type});
+            Temp_array.push_back((IR_temp_t){.basety=basety,.is_const=is_const,.length=length});
             return temp_name;
         }
+
+        std::vector<IR_temp_t> Gvar_array;
+        std::string newGvar(cact_basety_t basety, bool is_const=false, size_t length=1){
+            std::string gvar_name = GVAR_PREFIX + std::to_string(Gvar_array.size());
+            Gvar_array.push_back((IR_temp_t){.basety=basety,.is_const=is_const,.length=length});
+            return gvar_name;
+        }
+
+        std::vector<IR_temp_t> Lvar_array;
+        std::string newLvar(cact_basety_t basety, bool is_const=false, size_t length=1){
+            std::string lvar_name = LVAR_PREFIX + std::to_string(Lvar_array.size());
+            Lvar_array.push_back((IR_temp_t){.basety=basety,.is_const=is_const,.length=length});
+            return lvar_name;
+        }
+
         std::string newLabel(){
             std::string label_name = LABEL_PREFIX + std::to_string(label_cnt);
             label_cnt++;

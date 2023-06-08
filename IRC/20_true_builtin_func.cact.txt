@@ -1,12 +1,12 @@
       IRop|    Basety|    result|      arg1|      arg2|
 Func Begin|   unknown|      main|          |          |
-   L_Alloc|     float|         a|          |          |
-   L_Alloc|       int|         b|          |          |
+   L_Alloc|     float|        ^0|          |          |
+   L_Alloc|       int|        ^1|          |          |
       Call|     float| get_float|        %0|          |
-        ST|     float|         a|        %0|          |
-     Param|     float|         a|          |          |
+        ST|     float|        ^0|        %0|          |
+     Param|     float|        ^0|          |          |
       Call|      void|print_float|          |          |
       Call|       int|   get_int|        %1|          |
-        ST|       int|         b|        %1|          |
-    Return|       int|         b|          |          |
+        ST|       int|        ^1|        %1|          |
+    Return|       int|        ^1|          |          |
   Func End|   unknown|      main|          |          |

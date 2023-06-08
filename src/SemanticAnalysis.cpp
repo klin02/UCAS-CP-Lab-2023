@@ -1,8 +1,6 @@
 #pragma once
 
-#include "cact_types.h"
 #include "SemanticAnalysis.h"
-
 
 //添加内联函数声明
 void SemanticAnalysis::addBuiltinFunc(std::string func_name, int argc, cact_basety_t basety, cact_basety_t ret_type){
@@ -143,10 +141,30 @@ void SemanticAnalysis::exitConst_Var_Def(T1 *ctx, bool is_const){
     
     //整合变量类型
     ctx->type = (cact_type_t){.is_const=is_const, .basety=ctx->basety, .arrdims=ctx->arraydims};
+
+    #ifdef IR_gen
+    bool is_global = cur_scope == symbol_table.root_scope;
+    IR_op_t IRop;
+    size_t len;
+    std::string IR_name;
+    if(is_global){
+        IRop = IR_G_ALLOC;
+        len = len_from_type(ctx->type);
+        IR_name = newGvar(ctx->basety, is_const, len);
+    }
+    else{
+        IRop = IR_L_ALLOC;
+        len = len_from_type(ctx->type);
+        IR_name = newLvar(ctx->basety, is_const, len);
+    }
+    //将IRname写入变量表，后续中间代码直接只用IRname
+    symbol_table.var_table[(name_scope_t){name,cur_scope}] = (var_symbol_item_t){.type=ctx->type,.IR_name=IR_name};
     
+    #else
     //将该变量加入变量表
     symbol_table.var_table[(name_scope_t){name,cur_scope}] = (var_symbol_item_t){.type=ctx->type};
 
+    #endif
     //检查变量与初始值层级
     if(ctx->constInitVal()!=nullptr){
         //同时考虑非数组左右都应当为0
@@ -160,31 +178,23 @@ void SemanticAnalysis::exitConst_Var_Def(T1 *ctx, bool is_const){
                 exit(Semantic_ERR);
             }
         }
-    }
-
-    #ifdef IR_gen
-    IR_op_t IRop;
-    if(cur_scope == symbol_table.root_scope){
-        IRop = IR_G_ALLOC;
-    }
-    else{
-        IRop = IR_L_ALLOC;
-    }
-    //忽略arg2
-    //如果有初始值，则arg1为初始值字符串，否则为空串
-    if(ctx->constInitVal()!=nullptr){
+        #ifdef IR_gen
+        //arg1表示初始值串
         std::string initval = IMM_PREFIX + ctx->constInitVal()->value_list;
         addIRC( IRop,
                 ctx->basety,
-                ctx->name,
+                IR_name,
                 initval);
+        #endif
     }
     else{
+        #ifdef IR_gen
         addIRC( IRop,
                 ctx->basety,
-                ctx->name);
+                IR_name);
+        #endif
     }
-    #endif
+
 }
 
 //二元表达式模板，处理形似 aExp -> bExp | aExp op bExp
@@ -313,7 +323,7 @@ void SemanticAnalysis::exitConstInitVal(CACTParser::ConstInitValContext *ctx){
     if(ctx->constExp() != nullptr){
         ctx->dim_index = 0;
         #ifdef IR_gen
-            ctx->value_list = ctx->constExp()->getText();
+            ctx->value_list = ctx->constExp()->valstr;
         #endif
     }
     else{
@@ -452,7 +462,7 @@ void SemanticAnalysis::exitFuncDef(CACTParser::FuncDefContext *ctx){
     #ifdef IR_gen
     addIRC( IR_FUNC_END,
             BTY_UNKNOWN,
-            name);
+            ctx->Ident()->getText());
     #endif
 }
 
@@ -522,7 +532,23 @@ void SemanticAnalysis::enterBlock(CACTParser::BlockContext *ctx){
         for(auto iter = (*ctx->fparam_list_ptr).begin(); iter != (*ctx->fparam_list_ptr).end(); iter++){
             std::string name = iter->first;
             fparam_item_t fparam = iter->second;
+            
+            #ifdef IR_gen
+            cact_basety_t basety;
+            if(fparam.type.arrdims.size()!=0){
+                basety = BTY_ADDR;
+            }
+            else{
+                basety = fparam.type.basety;
+            }
+            std::string IR_name = newLvar(basety);//使用缺省参数 isconst=false,len=1
+            var_symbol_item_t item = (var_symbol_item_t){.type=fparam.type,.IR_name=IR_name};
+            
+            #else
             var_symbol_item_t item = (var_symbol_item_t){.type=fparam.type};
+            
+            #endif   
+                     
             (symbol_table.var_table)[(name_scope_t){.name=name, .scope_ptr=cur_scope}] = item;
         }        
     }
@@ -748,12 +774,24 @@ void SemanticAnalysis::exitConstExp(CACTParser::ConstExpContext *ctx){
             std::cout<<"Err: ConstExp: number type mismatched" << std::endl;
             exit(Semantic_ERR);
         }
+        #ifdef IR_gen
+        ctx->valstr = ctx->number()->getText();
+        #endif
     }
     if(ctx->BoolConst() != nullptr){
         if(ctx->basety != BTY_BOOL){
             std::cout<<"Err: ConstExp: BoolConst type mismatched" << std::endl;
             exit(Semantic_ERR);
         }
+        #ifdef IR_gen
+        bool is_true = ctx->BoolConst()->getText() == "true";
+        if(is_true){
+            ctx->valstr = std::to_string(1);
+        }
+        else{
+            ctx->valstr = std::to_string(0);
+        }
+        #endif
     }
 }
 
@@ -777,6 +815,11 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
     
     //从变量表检查和提取，使用符号表中定义的向根追溯查找
     auto iter = symbol_table.deepfind(name,cur_scope);
+    
+    #ifdef IR_gen
+    std::string IR_name = (iter->second).IR_name;
+    #endif
+
 
     //判断是否存在
     if(iter == (symbol_table.var_table).end()){
@@ -793,6 +836,8 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
     //常量属性继承：用于赋值时判断
     ctx->is_const = iter_type.is_const;
 
+
+
     if(layer == 0){
         //不带中括号，类型相同。将原类型转换为self指向的expr结构体
         cact_op_t op;
@@ -806,7 +851,7 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
         ctx->self.reset(new cact_expr_t{.op=op, .basety=iter_type.basety, .arrdims=iter_type.arrdims});
         
         #ifdef IR_gen
-        ctx->result_name = name;
+        ctx->result_name = IR_name;
         #endif
     }
     else{
@@ -871,7 +916,7 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
         ctx->self.reset(new cact_expr_t{.op=op, .basety=iter_type.basety, .arrdims=arrdims});
 
         #ifdef IR_gen
-        ctx->result_name = name + OFFSET_INFIX + std::to_string(offset);
+        ctx->result_name = IR_name + OFFSET_INFIX + std::to_string(offset);
         #endif
     }
 
@@ -949,7 +994,7 @@ void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
         }
         else{
             IR_op_t IRop = (typeutils.op_to_IRop)[op];
-            ctx->result_name = newTemp((cact_type_t){.is_const=false, .basety=basety});
+            ctx->result_name = newTemp(basety);
             addIRC( IRop, 
                     basety, 
                     ctx->result_name, 
@@ -1054,7 +1099,7 @@ void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
                     func_name);
         }
         else{
-            ctx->result_name = newTemp((cact_type_t){.is_const=false,.basety=basety});
+            ctx->result_name = newTemp(basety);
             addIRC( IR_CALL,
                     basety,
                     func_name,
@@ -1081,7 +1126,7 @@ void SemanticAnalysis::exitMulExp(CACTParser::MulExpContext *ctx){
         cact_op_t op = (typeutils.str_to_op)[ctx->mulOp()->getText()];
         IR_op_t IRop = (typeutils.op_to_IRop)[op];
         cact_basety_t basety = ctx->unaryExp()->self->basety;
-        ctx->result_name = newTemp((cact_type_t){.is_const=false, .basety=basety});
+        ctx->result_name = newTemp(basety);
         addIRC( IRop, 
                 basety, 
                 ctx->result_name, 
@@ -1105,7 +1150,7 @@ void SemanticAnalysis::exitAddExp(CACTParser::AddExpContext *ctx){
         cact_op_t op = (typeutils.str_to_op)[ctx->addOp()->getText()];
         IR_op_t IRop = (typeutils.op_to_IRop)[op];
         cact_basety_t basety = ctx->mulExp()->self->basety;
-        ctx->result_name = newTemp((cact_type_t){.is_const=false, .basety=basety});
+        ctx->result_name = newTemp(basety);
         addIRC( IRop, 
                 basety, 
                 ctx->result_name, 
@@ -1284,8 +1329,14 @@ void SemanticAnalysis::exitLOrExp(CACTParser::LOrExpContext *ctx){
 
 
 
-void SemanticAnalysis::enterEveryRule(antlr4::ParserRuleContext * ctx){}
-void SemanticAnalysis::exitEveryRule(antlr4::ParserRuleContext * ctx){}
+void SemanticAnalysis::enterEveryRule(antlr4::ParserRuleContext * ctx){
+    // int ruleIndex = ctx->getRuleIndex();
+    // std::cout << "enter " << ruleIndex << std::endl;
+}
+void SemanticAnalysis::exitEveryRule(antlr4::ParserRuleContext * ctx){
+    // int ruleIndex = ctx->getRuleIndex();
+    // std::cout << "exit " << ruleIndex << std::endl;
+}
 void SemanticAnalysis::visitTerminal(antlr4::tree::TerminalNode * node){}
 void SemanticAnalysis::visitErrorNode(antlr4::tree::ErrorNode * node){
     std::cout << "Err: Syntax: "<< node->getText() << std::endl;

@@ -29,6 +29,9 @@ typedef struct name_scope{
 typedef struct var_symbol_item{
     //整合类型，包含常量和数组信息
     cact_type_t type;
+    #ifdef IR_gen
+    std::string IR_name;
+    #endif
 } var_symbol_item_t;
 
 //由于变量表无序性，使用基于hash的unorder_map以提高性能

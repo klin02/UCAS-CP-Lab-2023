@@ -5,6 +5,7 @@
 #include <memory>
 
 #define IR_gen  //宏定义 开启中间代码生成
+#define ASM_gen
 
 typedef enum {
     BTY_UNKNOWN = 0,
@@ -110,7 +111,9 @@ typedef struct{
 }IR_code_t;
 
 typedef struct{
-    cact_type_t type;
+    cact_basety_t basety;
+    bool is_const;
+    size_t length;
 }IR_temp_t;
 #endif
 

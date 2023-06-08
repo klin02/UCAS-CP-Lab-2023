@@ -481,6 +481,7 @@ public:
   class  ConstExpContext : public antlr4::ParserRuleContext {
   public:
     cact_basety_t basety;
+    std::string valstr;
     ConstExpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     NumberContext *number();

@@ -32,7 +32,6 @@ int main(int argc, const char* argv[]) {
     CACTParser parser(&tokens);
 
     tree::ParseTree *tree = parser.compUnit();
-
     // std::cout << "---------------------------Print AST:-----------------------------" << std::endl;
     // std::cout << tree->toStringTree(&parser) << std::endl;
 

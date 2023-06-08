@@ -1,10 +1,10 @@
 	.file	"35_true_float_multidim_call.c"
 	.option nopic
-	.attribute arch, "rv64i2p1_m2p0_a2p1_f2p2_d2p2_zicsr2p0_zifencei2p0"
+	.attribute arch, "rv64i2p0_m2p0_a2p0_f2p0_d2p0_c2p0"
 	.attribute unaligned_access, 0
 	.attribute stack_align, 16
 	.text
-	.align	2
+	.align	1
 	.globl	foo
 	.type	foo, @function
 foo:
@@ -23,7 +23,7 @@ foo:
 	addi	sp,sp,32
 	jr	ra
 	.size	foo, .-foo
-	.align	2
+	.align	1
 	.globl	main
 	.type	main, @function
 main:
@@ -70,4 +70,4 @@ main:
 .LC2:
 	.word	1889785610
 	.word	1067911741
-	.ident	"GCC: (g2ee5e430018) 12.2.0"
+	.ident	"GCC: (GNU) 10.2.0"

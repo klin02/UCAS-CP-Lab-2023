@@ -180,6 +180,8 @@ exp
 constExp
     locals[
         cact_basety_t basety,
+        //IR
+        std::string valstr,
     ]
     : number
     | BoolConst
