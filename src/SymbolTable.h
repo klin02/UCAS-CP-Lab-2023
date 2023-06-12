@@ -44,16 +44,14 @@ struct hash_utils{
 
 //形参列表的一项
 typedef struct fparam_item{
+    std::string name;
     cact_type_t type;
-    int order;
-
-    //map有序，按照key排序，因此需要重载运算符<    
-    bool operator<(fparam_item const &item) const{
-        return order < item.order;
-    }
+    #ifdef IR_gen
+    std::string IR_name;
+    #endif
 } fparam_item_t;
 
-typedef std::map<std::string, fparam_item_t>
+typedef std::vector<fparam_item_t>
         fparam_list_t;
 
 //函数表表项

@@ -232,9 +232,7 @@ number
     locals[
         cact_expr_ptr self,
     ]
-    : IntConst
-    | DoubleConst
-    | FloatConst
+    : addOp ? ( IntConst | DoubleConst | FloatConst )
     ;
 
 unaryExp
@@ -250,7 +248,7 @@ unaryExp
 
 //将操作符的可能集合独立处理，方便在对应Exp中直接使用getText获取
 unaryOp
-    : POS_ADD | NEG_SUB | NOT 
+    : addOp | NOT 
     ;
 funcRParams
     : exp (COMMA exp)*
@@ -408,21 +406,18 @@ IntConst
     | HexadecConst
     ;
 
-fragment Sign
-    : (POS_ADD | NEG_SUB)
-    ;
 
 fragment DecimalConst
-    : Sign? '0'
-    | Sign? [1-9] [0-9]*
+    : '0'
+    | [1-9] [0-9]*
     ;
 
 fragment OctalConst
-    : Sign? '0' [0-7]+
+    : '0' [0-7]+
     ;
 
 fragment HexadecConst
-    : Sign? ('0x'|'0X') [0-9a-fA-F]+
+    : ('0x'|'0X') [0-9a-fA-F]+
     ;
 
 
@@ -435,8 +430,8 @@ DoubleConst
     ;
 
 fragment PreFloatDouble
-    : Sign? Fraction Exponent?
-    | Sign? [0-9]+ Exponent
+    : Fraction Exponent?
+    | [0-9]+ Exponent
     ;
 fragment Fraction
     : [0-9]+ '.' [0-9]+
@@ -445,7 +440,7 @@ fragment Fraction
     ;
 
 fragment Exponent
-    : ('E' | 'e') Sign? [0-9]+
+    : ('E' | 'e') (POS_ADD|NEG_SUB)? [0-9]+
     ;
 
 

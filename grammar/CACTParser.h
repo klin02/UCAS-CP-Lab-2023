@@ -558,6 +558,7 @@ public:
     antlr4::tree::TerminalNode *IntConst();
     antlr4::tree::TerminalNode *DoubleConst();
     antlr4::tree::TerminalNode *FloatConst();
+    AddOpContext *addOp();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -591,8 +592,7 @@ public:
   public:
     UnaryOpContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *POS_ADD();
-    antlr4::tree::TerminalNode *NEG_SUB();
+    AddOpContext *addOp();
     antlr4::tree::TerminalNode *NOT();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;

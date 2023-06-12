@@ -1,13 +1,14 @@
       IRop|    Basety|    result|      arg1|      arg2|
 Func Begin|   unknown|      func|          |          |
-        ST|       int|        ^0|        #2|          |
-   L_Alloc|       int|        ^1|        #3|          |
+    ASSIGN|       int|        ^0|        #2|          |
+   L_Alloc|       int|        ^1|       #3,|          |
+   L_Alloc|       int|        %0|          |          |
        ADD|       int|        %0|        ^0|        ^1|
-        ST|       int|        ^0|        %0|          |
+    ASSIGN|       int|        ^0|        %0|          |
   Func End|   unknown|      func|          |          |
 Func Begin|   unknown|      main|          |          |
-   L_Alloc|       int|        ^2|        #4|          |
-   L_Alloc|       int|        ^3|        #2|          |
+   L_Alloc|       int|        ^2|       #4,|          |
+   L_Alloc|       int|        ^3|       #2,|          |
      Param|       int|        ^3|          |          |
       Call|      void|      func|          |          |
     Return|       int|        ^2|          |          |

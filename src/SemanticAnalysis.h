@@ -8,13 +8,14 @@
 extern SymbolTable  symbol_table;
 extern TypeUtils    typeutils;
 
-#define Syntax_ERR   1
+#define Syntax_ERR   1   //直接在语法分析阶段使用
 #define Semantic_ERR 2
 #define Code_ERR     3   //代码编写中意料外的错误
 
 #ifdef IR_gen
 #define TEMP_PREFIX         "%"
-#define OFFSET_INFIX        ">"
+#define ADDR_INFIX         ">"     //表示子数组相对变量的偏移
+#define ITEM_INFIX          "<"     //表示子元素相对变量的偏移
 #define ARRAY_PLACEHOLDER   "$"
 #define IMM_PREFIX          "#"
 #define LABEL_PREFIX        "L"
@@ -25,6 +26,8 @@ extern TypeUtils    typeutils;
 class SemanticAnalysis: public CACTListener {
     public:
         scope_t *cur_scope;
+
+        std::vector<int> node;
 
         #ifdef IR_gen
         std::vector <IR_code_t> IRC_array;

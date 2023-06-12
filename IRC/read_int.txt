@@ -1,8 +1,10 @@
       IRop|    Basety|    result|      arg1|      arg2|
 Func Begin|   unknown|      main|          |          |
-   L_Alloc|       int|         a|          |          |
+   L_Alloc|       int|        ^0|          |          |
+   L_Alloc|       int|        %0|          |          |
       Call|       int|   get_int|        %0|          |
-        ST|       int|         a|        %0|          |
-     Param|       int|         a|          |          |
+        ST|       int|        ^0|        %0|          |
+     Param|       int|        ^0|          |          |
       Call|      void| print_int|          |          |
+    Return|       int|        #0|          |          |
   Func End|   unknown|      main|          |          |

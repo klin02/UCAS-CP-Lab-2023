@@ -10,8 +10,7 @@ void SemanticAnalysis::addBuiltinFunc(std::string func_name, int argc, cact_base
         std::string name = "arg0";
         //不指定初始值时，arrdims默认为空
         cact_type_t type = (cact_type_t){.is_const=false,.basety=basety};
-        int order = 0;
-        fparam_list[name] = (fparam_item_t){.type=type, .order=order};
+        fparam_list.push_back((fparam_item_t){.name=name,.type=type});
     }
     symbol_table.func_table[func_name] = (func_symbol_item_t){.ret_type=ret_type,.fparam_list=fparam_list};
 }
@@ -218,7 +217,7 @@ void SemanticAnalysis::exitBinaryExp(T1 *ctx, T2 *aExp, T3 *op_ptr, T4 *bExp, bo
         subexprs_t subexprs;
         subexprs.push_back(aExp->self);
         subexprs.push_back(bExp->self);
-        //作为维度的intConst和子数组不允许操作，不需指定int_result和arrdims
+        //作为维度的intConst和子数组不允许操作，不需指定arrdims
         ctx->self.reset(new cact_expr_t{.op=op, .basety=basety, .subexprs=subexprs});
 
         //类型检查
@@ -323,7 +322,7 @@ void SemanticAnalysis::exitConstInitVal(CACTParser::ConstInitValContext *ctx){
     if(ctx->constExp() != nullptr){
         ctx->dim_index = 0;
         #ifdef IR_gen
-            ctx->value_list = ctx->constExp()->valstr;
+            ctx->value_list = ctx->constExp()->valstr + ",";
         #endif
     }
     else{
@@ -392,15 +391,16 @@ void SemanticAnalysis::exitConstInitVal(CACTParser::ConstInitValContext *ctx){
         
         for(auto initval:initval_list){
             ctx->value_list += initval->value_list;
-            if(ctx->dim_index == 1){
-                ctx->value_list += ",";
-            }
         }
-        for (int i=0;i<hold_len-len;i++){
-            ctx->value_list += ARRAY_PLACEHOLDER;
-            if(ctx->dim_index == 1){
-                ctx->value_list += ",";
-            }
+        //缺失一个元素需要补充的占位符个数,最底层数组为1，次层数组为底层长度
+        int subproduct = 1;
+        for(int i=1;i<ctx->dim_index;i++){
+            int index = (*ctx->dims_ptr).size() - i;
+            subproduct *= (*ctx->dims_ptr)[index];
+        }
+        std::string holder = ARRAY_PLACEHOLDER + std::string(",");
+        for (int i=0;i<(hold_len-len)*subproduct;i++){
+            ctx->value_list += holder;
         }
         #endif
     }
@@ -492,15 +492,17 @@ void SemanticAnalysis::exitFuncFParam(CACTParser::FuncFParamContext *ctx){
     //整合类型
     cact_type_t type = (cact_type_t){.is_const=false, .basety=basety, .arrdims=arrdims};
 
-    //在形参列表中查找是否已定义
-    if((*ctx->fparam_list_ptr).find(name) != (*ctx->fparam_list_ptr).end()){
-        std::cout<< "Err: FuncFParam: "<<name<<" Redefined" << std::endl;
-        exit(Semantic_ERR);
+    //在形参列表中查找是否已定义，遍历vector
+    for(int i=0;i<(*ctx->fparam_list_ptr).size();i++){
+        if(name == (*ctx->fparam_list_ptr)[i].name){
+            std::cout<< "Err: FuncFParam: "<<name<<" Redefined" << std::endl;
+            exit(Semantic_ERR);
+        }
     }
 
     //未定义则添加
-    fparam_item_t item = (fparam_item_t){.type=type, .order=ctx->order};
-    (*ctx->fparam_list_ptr)[name] = item;
+    (*ctx->fparam_list_ptr).push_back((fparam_item_t){.name=name,.type=type});
+    
 }
 
 void SemanticAnalysis::enterLab(CACTParser::LabContext *ctx){
@@ -529,19 +531,25 @@ void SemanticAnalysis::enterBlock(CACTParser::BlockContext *ctx){
 
     //对于函数声明作用域，将形参列表逐一添加到作用域
     if(ctx->fparam_list_ptr != nullptr){
-        for(auto iter = (*ctx->fparam_list_ptr).begin(); iter != (*ctx->fparam_list_ptr).end(); iter++){
-            std::string name = iter->first;
-            fparam_item_t fparam = iter->second;
-            
+        for(int i=0;i<(*ctx->fparam_list_ptr).size();i++){
+            fparam_item_t fparam = (*ctx->fparam_list_ptr)[i];
+
             #ifdef IR_gen
             cact_basety_t basety;
             if(fparam.type.arrdims.size()!=0){
-                basety = BTY_ADDR;
+                switch(fparam.type.basety){
+                    case BTY_INT:   basety = BTY_INT_PTR; break;
+                    case BTY_BOOL:  basety = BTY_BOOL_PTR; break;
+                    case BTY_FLOAT: basety = BTY_FLOAT_PTR; break;
+                    case BTY_DOUBLE: basety = BTY_DOUBLE_PTR; break;
+                    default: break;
+                }
             }
             else{
                 basety = fparam.type.basety;
             }
             std::string IR_name = newLvar(basety);//使用缺省参数 isconst=false,len=1
+            (*ctx->fparam_list_ptr)[i].IR_name = IR_name;
             var_symbol_item_t item = (var_symbol_item_t){.type=fparam.type,.IR_name=IR_name};
             
             #else
@@ -549,7 +557,7 @@ void SemanticAnalysis::enterBlock(CACTParser::BlockContext *ctx){
             
             #endif   
                      
-            (symbol_table.var_table)[(name_scope_t){.name=name, .scope_ptr=cur_scope}] = item;
+            (symbol_table.var_table)[(name_scope_t){.name=fparam.name, .scope_ptr=cur_scope}] = item;
         }        
     }
 
@@ -600,7 +608,7 @@ void SemanticAnalysis::exitStmt_assign(CACTParser::Stmt_assignContext *ctx){
     ctx->ret_type = BTY_VOID; 
 
     #ifdef IR_gen
-    addIRC( IR_ST,
+    addIRC( IR_ASSIGN,
             ctx->exp()->self->basety,
             ctx->lVal()->result_name,
             ctx->exp()->result_name);
@@ -815,11 +823,6 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
     
     //从变量表检查和提取，使用符号表中定义的向根追溯查找
     auto iter = symbol_table.deepfind(name,cur_scope);
-    
-    #ifdef IR_gen
-    std::string IR_name = (iter->second).IR_name;
-    #endif
-
 
     //判断是否存在
     if(iter == (symbol_table.var_table).end()){
@@ -827,6 +830,10 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
         exit(Semantic_ERR);
     }
 
+    #ifdef IR_gen
+    //注意在完成上述检查后才可获取，避免段错误
+    std::string IR_name = (iter->second).IR_name;
+    #endif
 
     //维度检查和类型继承
     auto exp_list = ctx->exp();
@@ -835,8 +842,6 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
 
     //常量属性继承：用于赋值时判断
     ctx->is_const = iter_type.is_const;
-
-
 
     if(layer == 0){
         //不带中括号，类型相同。将原类型转换为self指向的expr结构体
@@ -863,41 +868,55 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
             exit(Semantic_ERR);
         }
 
-        #ifdef IR_gen
-        //索引数组，用于确定offset
-        std::vector<size_t> index_array;
-        //统计数组总长，则每个索引改变1的相对偏移为后续维度乘积
-        size_t product = 1;
-        for(int num: iter_type.arrdims){
-            product *= num;
-        }
-        int subproduct = product;
-        int offset = 0;
-        #endif
-
         //维度检查
         for(int i=0;i<layer;i++){
-            //类型检查：必须是为终结符int常量
-            //该值传递过程中不经历任何操作
+            //类型检查：必须是int，但不要求是终结符常量，不需要越界检查
             auto expr_ptr = exp_list[i]->self;
-            if(expr_ptr->op != OP_BASE || expr_ptr->basety != BTY_INT){
-                std::cout << "Err: LVal: expr for dims must be base_int" << std::endl;
+            if(expr_ptr->basety != BTY_INT && expr_ptr->op != OP_ARRAY){
+                std::cout << "Err: LVal: expr for dims must be int" << std::endl;
                 exit(Semantic_ERR);
             }
-
-            //索引，合法范围为0~dim_len-1
-            int index = expr_ptr->int_result;
-            if(index >= iter_type.arrdims[i] || index < 0){
-                std::cout << "Err: LVal: expr index out of dim[" << i << "] bound" << std::endl;
-                exit(Semantic_ERR);
-            }
-
-            #ifdef IR_gen
-            //后续维度乘积
-            subproduct /= iter_type.arrdims[i];
-            offset += index * subproduct;
-            #endif
         }
+
+        #ifdef IR_gen
+        //统计字节偏移量，使用临时变量
+        std::string byte_offset = newTemp(BTY_INT);
+        addIRC(IR_L_ALLOC,BTY_INT,byte_offset);
+        //单位元素的字节偏移，语义分析不出现PTR，只有IR传参的时候可能使用
+        int base_size;
+        switch(iter_type.basety){
+            case BTY_BOOL: 
+                base_size = 1; break;
+            case BTY_INT: case BTY_FLOAT:  
+                base_size = 4; break;
+            case BTY_DOUBLE: 
+                base_size = 8; break;
+            default: 
+                break;
+        }
+
+        int subproduct = 1; //后续维度乘积，注意这里不能用总维度除以首维度，因为首维度允许隐式声明
+        //单独把layer=1的情况提取出来，节省一条指令
+        for(int j=1;j<dim_size;j++){
+            subproduct *= iter_type.arrdims[j];
+        }
+        std::string times = IMM_PREFIX + std::to_string(subproduct * base_size);
+        addIRC(IR_MUL,BTY_INT,byte_offset,exp_list[0]->result_name,times);
+        
+        if(layer>1){ //a[i][j]
+            std::string index_offset = newTemp(BTY_INT); //当前维度的字节偏移
+            addIRC(IR_L_ALLOC,BTY_INT,index_offset);
+            for(int i=1;i<layer;i++){
+                int subproduct = 1;
+                for(int j=i+1;j<dim_size;j++){
+                    subproduct *= iter_type.arrdims[j];
+                }
+                std::string times = IMM_PREFIX + std::to_string(subproduct*base_size);
+                addIRC(IR_MUL,BTY_INT,index_offset,exp_list[i]->result_name,times);
+                addIRC(IR_ADD,BTY_INT,byte_offset,byte_offset,index_offset);
+            }
+        }
+        #endif
 
         //建立结构体
         cact_op_t op;
@@ -916,7 +935,9 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
         ctx->self.reset(new cact_expr_t{.op=op, .basety=iter_type.basety, .arrdims=arrdims});
 
         #ifdef IR_gen
-        ctx->result_name = IR_name + OFFSET_INFIX + std::to_string(offset);
+        //形如abc>%2 或abc<%2
+        std::string infix = (op==OP_ARRAY) ? ADDR_INFIX : ITEM_INFIX;
+        ctx->result_name = IR_name + infix + byte_offset;
         #endif
     }
 
@@ -939,7 +960,7 @@ void SemanticAnalysis::exitPrimaryExp(CACTParser::PrimaryExpContext *ctx){
     else{
         ctx->self = ctx->exp()->self;
         #ifdef IR_gen
-        ctx->result_name = ctx->lVal()->result_name;
+        ctx->result_name = ctx->exp()->result_name;
         #endif
     }
 }
@@ -950,10 +971,8 @@ void SemanticAnalysis::exitNumber(CACTParser::NumberContext *ctx){
     cact_basety_t basety;
     if(ctx->IntConst() != nullptr){
         basety = BTY_INT;
-        int int_result = std::stoi(ctx->IntConst()->getText());
-        //注意这里需要指定int_result
         //构造指向结构体的指针
-        ctx->self.reset(new cact_expr_t{.op=op, .basety=basety, .int_result=int_result});
+        ctx->self.reset(new cact_expr_t{.op=op, .basety=basety});
     }
     else if(ctx->FloatConst() != nullptr){
         basety = BTY_FLOAT;
@@ -981,7 +1000,7 @@ void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
         subexprs.push_back(ctx->unaryExp()->self);
 
         //构造self指向的结构体
-        //注：因为不能对数组操作，数组维度也不能经过任何操作，无需为int_result和arrdims赋值
+        //注：因为不能对数组操作，数组维度也不能经过任何操作，无需为arrdims赋值
         ctx->self.reset(new cact_expr_t{.op=op, .basety=basety, .subexprs=subexprs});
 
         //针对操作符的操作对象检查
@@ -995,6 +1014,9 @@ void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
         else{
             IR_op_t IRop = (typeutils.op_to_IRop)[op];
             ctx->result_name = newTemp(basety);
+            addIRC( IR_L_ALLOC,
+                    basety,
+                    ctx->result_name);
             addIRC( IRop, 
                     basety, 
                     ctx->result_name, 
@@ -1035,9 +1057,8 @@ void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
             }
             
             //类型检查
-            auto iter = fparam_list.begin();
-            for(int i=0;i<fparam_len;i++,iter++){
-                auto fparam_type = (iter->second).type;
+            for(int i=0;i<fparam_len;i++){
+                auto fparam_type = fparam_list[i].type;
                 #ifdef IR_gen
                 std::string expr_name = exp_list[i]->result_name;
                 #endif
@@ -1081,8 +1102,16 @@ void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
                     }
 
                     #ifdef IR_gen
+                    cact_basety_t basety;
+                    switch(expr_ptr->basety){
+                        case BTY_INT: basety = BTY_INT_PTR; break;
+                        case BTY_BOOL: basety = BTY_BOOL_PTR; break;
+                        case BTY_FLOAT: basety = BTY_FLOAT_PTR; break;
+                        case BTY_DOUBLE: basety = BTY_DOUBLE_PTR; break;
+                        default: break; 
+                    }
                     addIRC( IR_PARAM, 
-                            BTY_ADDR, 
+                            basety, 
                             expr_name);                    
                     #endif
                 }
@@ -1100,6 +1129,9 @@ void SemanticAnalysis::exitUnaryExp(CACTParser::UnaryExpContext *ctx){
         }
         else{
             ctx->result_name = newTemp(basety);
+            addIRC( IR_L_ALLOC,
+                    basety,
+                    ctx->result_name);
             addIRC( IR_CALL,
                     basety,
                     func_name,
@@ -1127,6 +1159,9 @@ void SemanticAnalysis::exitMulExp(CACTParser::MulExpContext *ctx){
         IR_op_t IRop = (typeutils.op_to_IRop)[op];
         cact_basety_t basety = ctx->unaryExp()->self->basety;
         ctx->result_name = newTemp(basety);
+        addIRC( IR_L_ALLOC,
+                basety,
+                ctx->result_name);
         addIRC( IRop, 
                 basety, 
                 ctx->result_name, 
@@ -1151,6 +1186,9 @@ void SemanticAnalysis::exitAddExp(CACTParser::AddExpContext *ctx){
         IR_op_t IRop = (typeutils.op_to_IRop)[op];
         cact_basety_t basety = ctx->mulExp()->self->basety;
         ctx->result_name = newTemp(basety);
+        addIRC( IR_L_ALLOC,
+                basety,
+                ctx->result_name);
         addIRC( IRop, 
                 basety, 
                 ctx->result_name, 
@@ -1330,15 +1368,21 @@ void SemanticAnalysis::exitLOrExp(CACTParser::LOrExpContext *ctx){
 
 
 void SemanticAnalysis::enterEveryRule(antlr4::ParserRuleContext * ctx){
-    // int ruleIndex = ctx->getRuleIndex();
+    int ruleIndex = ctx->getRuleIndex();
+    node.push_back(ruleIndex);
+    
     // std::cout << "enter " << ruleIndex << std::endl;
 }
 void SemanticAnalysis::exitEveryRule(antlr4::ParserRuleContext * ctx){
-    // int ruleIndex = ctx->getRuleIndex();
-    // std::cout << "exit " << ruleIndex << std::endl;
+
+    int ruleIndex = ctx->getRuleIndex();
+    node.pop_back();
+
+    //打印下一次退出节点时需要弹出的，表示错误发生在exit该节点
+    // std::cout << node.back() << std::endl;
 }
 void SemanticAnalysis::visitTerminal(antlr4::tree::TerminalNode * node){}
 void SemanticAnalysis::visitErrorNode(antlr4::tree::ErrorNode * node){
-    std::cout << "Err: Syntax: "<< node->getText() << std::endl;
-    exit(Syntax_ERR);
+    // std::cout << "Err: Syntax: "<< node->getText() << std::endl;
+    // exit(Syntax_ERR);
 }

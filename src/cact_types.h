@@ -14,7 +14,10 @@ typedef enum {
     BTY_BOOL,
     BTY_FLOAT,
     BTY_DOUBLE,
-    BTY_ADDR,
+    BTY_INT_PTR,
+    BTY_BOOL_PTR,
+    BTY_FLOAT_PTR,
+    BTY_DOUBLE_PTR,
 } cact_basety_t;
 
 typedef std::vector<uint32_t> arrdims_t;
@@ -65,8 +68,6 @@ typedef struct cact_expr{
     cact_op_t       op;
     cact_basety_t   basety;
     subexprs_t      subexprs;
-    //作为维度长度，只有当op为OP_BASE且basety为int时才会使用
-    int             int_result;
     //作为函数实参，只有当op为OP_ARRAY时使用
     arrdims_t       arrdims;
 }cact_expr_t;
@@ -80,8 +81,7 @@ typedef enum{
     IR_PARAM,
     IR_CALL,
     IR_RETURN,
-    IR_LD,
-    IR_ST,
+    IR_ASSIGN,
     IR_ADD,
     IR_SUB,
     IR_MUL,
@@ -114,6 +114,7 @@ typedef struct{
     cact_basety_t basety;
     bool is_const;
     size_t length;
+    size_t offset;
 }IR_temp_t;
 #endif
 
@@ -134,14 +135,21 @@ class TypeUtils {
         {BTY_FLOAT,     "float"},
         {BTY_DOUBLE,    "double"},
         {BTY_UNKNOWN,   "unknown"},
-        {BTY_ADDR,      "addr"}
+        {BTY_INT_PTR,   "int_ptr"},
+        {BTY_BOOL_PTR,  "bool_ptr"},
+        {BTY_FLOAT_PTR, "float_ptr"},
+        {BTY_DOUBLE_PTR,"double_ptr"},
     };
-    std::map <cact_basety_t, size_t> val_to_size{
-        {BTY_VOID,  8},
+    std::map <cact_basety_t, size_t> basety_to_size{
+        {BTY_VOID,  0},
         {BTY_INT,   4},
         {BTY_BOOL,  1},
         {BTY_FLOAT, 4},
         {BTY_DOUBLE,8},
+        {BTY_INT_PTR,   8},
+        {BTY_BOOL_PTR,  8},
+        {BTY_FLOAT_PTR, 8},
+        {BTY_DOUBLE_PTR,8},
     };
     std::map <std::string, cact_op_t> str_to_op{
         {"=",   OP_ASSIGN},
@@ -188,8 +196,7 @@ class TypeUtils {
         {IR_PARAM,      "Param"},
         {IR_CALL,       "Call"},
         {IR_RETURN,     "Return"},
-        {IR_LD,         "LD"},
-        {IR_ST,         "ST"},
+        {IR_ASSIGN,     "ASSIGN"},
         {IR_ADD,        "ADD"},
         {IR_SUB,        "SUB"},
         {IR_MUL,        "MUL"},

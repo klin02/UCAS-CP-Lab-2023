@@ -1,8 +1,9 @@
       IRop|    Basety|    result|      arg1|      arg2|
-   G_Alloc|       int|        @0|        #0|          |
-   G_Alloc|       int|        @1|        #7|          |
+   G_Alloc|       int|        @0|       #0,|          |
+   G_Alloc|       int|        @1|       #7,|          |
 Func Begin|   unknown|      main|          |          |
+   L_Alloc|       int|        %0|          |          |
        DIV|       int|        %0|        #7|        #2|
-        ST|       int|        @0|        %0|          |
+    ASSIGN|       int|        @0|        %0|          |
     Return|       int|        #0|          |          |
   Func End|   unknown|      main|          |          |

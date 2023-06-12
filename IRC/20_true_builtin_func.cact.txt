@@ -2,11 +2,13 @@
 Func Begin|   unknown|      main|          |          |
    L_Alloc|     float|        ^0|          |          |
    L_Alloc|       int|        ^1|          |          |
+   L_Alloc|     float|        %0|          |          |
       Call|     float| get_float|        %0|          |
-        ST|     float|        ^0|        %0|          |
+    ASSIGN|     float|        ^0|        %0|          |
      Param|     float|        ^0|          |          |
       Call|      void|print_float|          |          |
+   L_Alloc|       int|        %1|          |          |
       Call|       int|   get_int|        %1|          |
-        ST|       int|        ^1|        %1|          |
+    ASSIGN|       int|        ^1|        %1|          |
     Return|       int|        ^1|          |          |
   Func End|   unknown|      main|          |          |

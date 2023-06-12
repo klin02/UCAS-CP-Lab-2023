@@ -1,7 +1,7 @@
       IRop|    Basety|    result|      arg1|      arg2|
 Func Begin|   unknown|      main|          |          |
    L_Alloc|       int|        ^0|          |          |
-   L_Alloc|       int|        ^1|        #2|          |
-        ST|       int|        ^0|        ^1|          |
+   L_Alloc|       int|        ^1|       #2,|          |
+    ASSIGN|       int|        ^0|        ^1|          |
     Return|       int|        ^0|          |          |
   Func End|   unknown|      main|          |          |
