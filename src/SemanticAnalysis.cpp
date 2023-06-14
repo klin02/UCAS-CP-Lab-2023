@@ -936,7 +936,7 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
 
         #ifdef IR_gen
         //形如abc>%2 或abc<%2
-        std::string infix = (op==OP_ARRAY) ? ADDR_INFIX : ITEM_INFIX;
+        char infix = (op==OP_ARRAY) ? ADDR_INFIX : ITEM_INFIX;
         ctx->result_name = IR_name + infix + byte_offset;
         #endif
     }

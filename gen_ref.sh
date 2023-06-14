@@ -2,7 +2,8 @@
 
 # 指定目录和命令
 # dir="samples/samples_lex_and_syntax"
-dir="samples/samples_semantic"
+# dir="samples/samples_semantic"
+dir="samples/samples_codegen"
 # dir="samples/extra_samples_pr1"
 # dir="samples/extra_samples_pr2"
 
@@ -11,8 +12,6 @@ tmp_dir="tmp"
 out_dir="asm_ref/"
 
 # 遍历目录中的所有文件
-# riscv64-unknown-elf-gcc -S -c samples/samples_semantic/00_true_use_after_decl.cact
-# riscv64-unknown-elf-gcc -S -c samples/samples_semantic/00_true_use_after_decl.cact
 
 rm -rf $tmp_dir
 mkdir $tmp_dir

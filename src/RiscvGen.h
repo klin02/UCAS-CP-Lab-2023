@@ -1,11 +1,12 @@
 #pragma once
 
-#ifdef ASM_gen
+#include <iostream>
 #include "cact_types.h"
 #include "SymbolTable.h"
+#include "SemanticAnalysis.h"
 
 extern SemanticAnalysis semantic_analysis;
-
+#ifdef ASM_gen
 class RiscvGen{
     public:
         size_t imm_cnt = 0; //浮点立即数计数
@@ -32,6 +33,8 @@ class RiscvGen{
 
         //通用API，传入名字和reg，解析名字，将对应的内容存到reg上，并写入ASM_array
         void var_to_reg(std::string var_name,std::string reg_name);
+        //将值从寄存器写到栈上
+        void reg_to_var(std::string var_name,std::string reg_name);
 
         void Gen_All(std::string outfile);
         
@@ -42,8 +45,7 @@ class RiscvGen{
         void Gen_Call(IR_code_t &irc);
         void Gen_Return(IR_code_t &irc);
         void Gen_Assign(IR_code_t &irc);
-        void Gen_BinaryOp(IR_code_t &irc);
-        void Gen_UnaryOp(IR_code_t &irc);
+        void Gen_Operation(IR_code_t &irc);
         void Gen_Branch(IR_code_t &irc);
         void Gen_Jump(IR_code_t &irc);
         void Gen_G_Alloc(IR_code_t &irc);

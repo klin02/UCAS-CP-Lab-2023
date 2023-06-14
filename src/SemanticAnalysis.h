@@ -13,14 +13,14 @@ extern TypeUtils    typeutils;
 #define Code_ERR     3   //代码编写中意料外的错误
 
 #ifdef IR_gen
-#define TEMP_PREFIX         "%"
-#define ADDR_INFIX         ">"     //表示子数组相对变量的偏移
-#define ITEM_INFIX          "<"     //表示子元素相对变量的偏移
-#define ARRAY_PLACEHOLDER   "$"
-#define IMM_PREFIX          "#"
-#define LABEL_PREFIX        "L"
-#define GVAR_PREFIX         "@"
-#define LVAR_PREFIX         "^"
+#define TEMP_PREFIX         '%'
+#define ADDR_INFIX          '>'     //表示子数组相对变量的偏移
+#define ITEM_INFIX          '<'     //表示子元素相对变量的偏移
+#define ARRAY_PLACEHOLDER   '$'
+#define IMM_PREFIX          '#'
+#define LABEL_PREFIX        'L'
+#define GVAR_PREFIX         '@'
+#define LVAR_PREFIX         '^'
 #endif
 
 class SemanticAnalysis: public CACTListener {
