@@ -1,0 +1,5890 @@
+	.file   "tim_sort.cact"
+	.option nopic
+	.attribute arch, "rv64i2p0_m2p0_a2p0_f2p0_d2p0_c2p0"
+	.attribute unaligned_access, 0
+	.attribute stack_align, 16
+	
+	.text
+	.align   1
+	.globl   binary_insert
+	.type    binary_insert, @function
+binary_insert:
+	addi    sp, sp, -160
+	sd      ra, 152(sp)
+	sd      s0, 144(sp)
+	addi    s0, sp, 160
+	sd      a0, -24(s0)
+	sw      a1, -28(s0)
+	sw      a2, -32(s0)
+	sw      a3, -36(s0)
+	lw     s7, -32(s0)
+	sw     s7, -44(s0)
+L0:
+	lw     t3, -44(s0)
+	lw     t4, -36(s0)
+	ble     t3, t4, L2
+	j       L1
+L2:
+	lw     t1, -44(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -88(s0)
+	lw     s3, -88(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     s7, 0(s4)
+	sw     s7, -84(s0)
+	lw     s7, -28(s0)
+	sw     s7, -60(s0)
+	lw     t1, -44(s0)
+	li      t2, 1
+	subw     t0, t1, t2
+	sw     t0, -92(s0)
+	lw     s7, -92(s0)
+	sw     s7, -68(s0)
+	lw     t1, -68(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -96(s0)
+	lw     t3, -84(s0)
+	lw     s3, -96(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     t4, 0(s4)
+	blt     t3, t4, L4
+	j       L3
+L4:
+L5:
+	lw     t3, -60(s0)
+	lw     t4, -68(s0)
+	ble     t3, t4, L7
+	j       L6
+L7:
+	lw     t1, -68(s0)
+	lw     t2, -60(s0)
+	subw     t0, t1, t2
+	sw     t0, -100(s0)
+	lw     t1, -100(s0)
+	li      t2, 2
+	div     t0, t1, t2
+	sw     t0, -104(s0)
+	lw     t1, -60(s0)
+	lw     t2, -104(s0)
+	addw     t0, t1, t2
+	sw     t0, -108(s0)
+	lw     s7, -108(s0)
+	sw     s7, -76(s0)
+	lw     t1, -76(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -112(s0)
+	lw     t3, -84(s0)
+	lw     s3, -112(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     t4, 0(s4)
+	blt     t3, t4, L9
+	j       L10
+L9:
+	lw     t1, -76(s0)
+	li      t2, 1
+	subw     t0, t1, t2
+	sw     t0, -116(s0)
+	lw     s7, -116(s0)
+	sw     s7, -68(s0)
+	j       L8
+L10:
+	lw     t1, -76(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -120(s0)
+	lw     s7, -120(s0)
+	sw     s7, -60(s0)
+L8:
+	j       L5
+L6:
+	lw     t1, -44(s0)
+	li      t2, 1
+	subw     t0, t1, t2
+	sw     t0, -124(s0)
+	lw     s7, -124(s0)
+	sw     s7, -52(s0)
+L11:
+	lw     t3, -52(s0)
+	lw     t4, -60(s0)
+	blt     t4, t3, L13
+	j       L12
+L13:
+	lw     t1, -52(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -128(s0)
+	lw     t1, -128(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -132(s0)
+	lw     t1, -52(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -136(s0)
+	lw     s3, -136(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     s7, 0(s4)
+	lw     s5, -132(s0)
+	ld      s6, -24(s0)
+	add     s6, s6, s5
+	sw     s7, 0(s6)
+	lw     t1, -52(s0)
+	li      t2, 1
+	subw     t0, t1, t2
+	sw     t0, -140(s0)
+	lw     s7, -140(s0)
+	sw     s7, -52(s0)
+	j       L11
+L12:
+	lw     t1, -60(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -144(s0)
+	lw     s7, -84(s0)
+	lw     s5, -144(s0)
+	ld      s6, -24(s0)
+	add     s6, s6, s5
+	sw     s7, 0(s6)
+L3:
+	lw     t1, -44(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -148(s0)
+	lw     s7, -148(s0)
+	sw     s7, -44(s0)
+	j       L0
+L1:
+	ld      ra, 152(sp)
+	ld      s0, 144(sp)
+	addi    sp, sp, 160
+	jr      ra
+	.size   binary_insert, .-binary_insert
+	
+	.text
+	.align   1
+	.globl   merge_sort
+	.type    merge_sort, @function
+merge_sort:
+	addi    sp, sp, -144
+	sd      ra, 136(sp)
+	sd      s0, 128(sp)
+	addi    s0, sp, 144
+	sd      a0, -24(s0)
+	sw      a1, -28(s0)
+	sw      a2, -32(s0)
+	sw      a3, -36(s0)
+	lw     s7, -28(s0)
+	sw     s7, -44(s0)
+	lw     s7, -32(s0)
+	sw     s7, -52(s0)
+	li      s7, 0
+	sw     s7, -60(s0)
+L14:
+	lw     t3, -44(s0)
+	lw     t4, -32(s0)
+	blt     t3, t4, L17
+	j       L15
+L17:
+	lw     t3, -52(s0)
+	lw     t4, -36(s0)
+	ble     t3, t4, L16
+	j       L15
+L16:
+	lw     t1, -44(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -64(s0)
+	lw     t1, -52(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -68(s0)
+	lw     s3, -64(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     t3, 0(s4)
+	lw     s3, -68(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     t4, 0(s4)
+	ble     t3, t4, L19
+	j       L20
+L19:
+	lw     t1, -60(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -72(s0)
+	lw     t1, -44(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -76(s0)
+	lw     s3, -76(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     s7, 0(s4)
+	lw     s5, -72(s0)
+	lui     s6, %hi(GVAR1)
+	add     s6, s6, s5
+	sw     s7, %lo(GVAR1)(s6)
+	lw     t1, -44(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -80(s0)
+	lw     s7, -80(s0)
+	sw     s7, -44(s0)
+	j       L18
+L20:
+	lw     t1, -60(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -84(s0)
+	lw     t1, -52(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -88(s0)
+	lw     s3, -88(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     s7, 0(s4)
+	lw     s5, -84(s0)
+	lui     s6, %hi(GVAR1)
+	add     s6, s6, s5
+	sw     s7, %lo(GVAR1)(s6)
+	lw     t1, -52(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -92(s0)
+	lw     s7, -92(s0)
+	sw     s7, -52(s0)
+L18:
+	lw     t1, -60(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -96(s0)
+	lw     s7, -96(s0)
+	sw     s7, -60(s0)
+	j       L14
+L15:
+L21:
+	lw     t3, -44(s0)
+	lw     t4, -32(s0)
+	blt     t3, t4, L23
+	j       L22
+L23:
+	lw     t1, -60(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -100(s0)
+	lw     t1, -44(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -104(s0)
+	lw     s3, -104(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     s7, 0(s4)
+	lw     s5, -100(s0)
+	lui     s6, %hi(GVAR1)
+	add     s6, s6, s5
+	sw     s7, %lo(GVAR1)(s6)
+	lw     t1, -44(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -108(s0)
+	lw     s7, -108(s0)
+	sw     s7, -44(s0)
+	lw     t1, -60(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -112(s0)
+	lw     s7, -112(s0)
+	sw     s7, -60(s0)
+	j       L21
+L22:
+L24:
+	lw     t3, -52(s0)
+	lw     t4, -36(s0)
+	ble     t3, t4, L26
+	j       L25
+L26:
+	lw     t1, -60(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -116(s0)
+	lw     t1, -52(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -120(s0)
+	lw     s3, -120(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     s7, 0(s4)
+	lw     s5, -116(s0)
+	lui     s6, %hi(GVAR1)
+	add     s6, s6, s5
+	sw     s7, %lo(GVAR1)(s6)
+	lw     t1, -52(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -124(s0)
+	lw     s7, -124(s0)
+	sw     s7, -52(s0)
+	lw     t1, -60(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -128(s0)
+	lw     s7, -128(s0)
+	sw     s7, -60(s0)
+	j       L24
+L25:
+	lw     s7, -28(s0)
+	sw     s7, -44(s0)
+L27:
+	lw     t3, -44(s0)
+	lw     t4, -36(s0)
+	ble     t3, t4, L29
+	j       L28
+L29:
+	lw     t1, -44(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -132(s0)
+	lw     t1, -44(s0)
+	lw     t2, -28(s0)
+	subw     t0, t1, t2
+	sw     t0, -136(s0)
+	lw     t1, -136(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -140(s0)
+	lw     s3, -140(s0)
+	lui     s4, %hi(GVAR1)
+	add     s4, s4, s3
+	lw     s7, %lo(GVAR1)(s4)
+	lw     s5, -132(s0)
+	ld      s6, -24(s0)
+	add     s6, s6, s5
+	sw     s7, 0(s6)
+	lw     t1, -44(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -144(s0)
+	lw     s7, -144(s0)
+	sw     s7, -44(s0)
+	j       L27
+L28:
+	ld      ra, 136(sp)
+	ld      s0, 128(sp)
+	addi    sp, sp, 144
+	jr      ra
+	.size   merge_sort, .-merge_sort
+	
+	.text
+	.align   1
+	.globl   simplified_tim_sort
+	.type    simplified_tim_sort, @function
+simplified_tim_sort:
+	addi    sp, sp, -272
+	sd      ra, 264(sp)
+	sd      s0, 256(sp)
+	addi    s0, sp, 272
+	sd      a0, -24(s0)
+	sw      a1, -28(s0)
+	lw     t1, -28(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -88(s0)
+	lw     s7, -88(s0)
+	sw     s7, -44(s0)
+L30:
+	lw     t3, -44(s0)
+	li      t4, 64
+	ble     t4, t3, L32
+	j       L31
+L32:
+	lw     t1, -44(s0)
+	li      t2, 2
+	div     t0, t1, t2
+	sw     t0, -92(s0)
+	lw     s7, -92(s0)
+	sw     s7, -44(s0)
+	j       L30
+L31:
+	lw     t1, -44(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -96(s0)
+	lw     s7, -96(s0)
+	sw     s7, -44(s0)
+	li      s7, -1
+	sw     s7, -52(s0)
+	li      s7, 0
+	sw     s7, -76(s0)
+L33:
+	lw     t3, -52(s0)
+	lw     t4, -28(s0)
+	blt     t3, t4, L35
+	j       L34
+L35:
+	lw     t1, -52(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -100(s0)
+	lw     s7, -100(s0)
+	sw     s7, -52(s0)
+	lw     t1, -76(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -104(s0)
+	lw     s7, -52(s0)
+	lw     s5, -104(s0)
+	lui     s6, %hi(GVAR0)
+	add     s6, s6, s5
+	sw     s7, %lo(GVAR0)(s6)
+	lw     t3, -52(s0)
+	lw     t4, -28(s0)
+	blt     t3, t4, L37
+	j       L36
+L37:
+	lw     t1, -52(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -108(s0)
+	lw     t1, -52(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -112(s0)
+	lw     t1, -112(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -116(s0)
+	lw     s3, -108(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     t3, 0(s4)
+	lw     s3, -116(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     t4, 0(s4)
+	ble     t3, t4, L39
+	j       L40
+L39:
+L41:
+	lw     t3, -52(s0)
+	lw     t4, -28(s0)
+	blt     t3, t4, L44
+	j       L42
+L44:
+	lw     t1, -52(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -120(s0)
+	lw     t1, -52(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -124(s0)
+	lw     t1, -124(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -128(s0)
+	lw     s3, -120(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     t3, 0(s4)
+	lw     s3, -128(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     t4, 0(s4)
+	ble     t3, t4, L43
+	j       L42
+L43:
+	lw     t1, -52(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -132(s0)
+	lw     s7, -132(s0)
+	sw     s7, -52(s0)
+	j       L41
+L42:
+	j       L38
+L40:
+L45:
+	lw     t3, -52(s0)
+	lw     t4, -28(s0)
+	blt     t3, t4, L48
+	j       L46
+L48:
+	lw     t1, -52(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -136(s0)
+	lw     t1, -52(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -140(s0)
+	lw     t1, -140(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -144(s0)
+	lw     s3, -136(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     t3, 0(s4)
+	lw     s3, -144(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     t4, 0(s4)
+	ble     t4, t3, L47
+	j       L46
+L47:
+	lw     t1, -52(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -148(s0)
+	lw     s7, -148(s0)
+	sw     s7, -52(s0)
+	j       L45
+L46:
+	lw     t1, -76(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -152(s0)
+	lw     s3, -152(s0)
+	lui     s4, %hi(GVAR0)
+	add     s4, s4, s3
+	lw     s7, %lo(GVAR0)(s4)
+	sw     s7, -60(s0)
+	lw     s7, -52(s0)
+	sw     s7, -68(s0)
+L49:
+	lw     t3, -60(s0)
+	lw     t4, -68(s0)
+	blt     t3, t4, L51
+	j       L50
+L51:
+	lw     t1, -60(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -156(s0)
+	lw     s3, -156(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     s7, 0(s4)
+	sw     s7, -36(s0)
+	lw     t1, -60(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -160(s0)
+	lw     t1, -68(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -164(s0)
+	lw     s3, -164(s0)
+	ld      s4, -24(s0)
+	add     s4, s4, s3
+	lw     s7, 0(s4)
+	lw     s5, -160(s0)
+	ld      s6, -24(s0)
+	add     s6, s6, s5
+	sw     s7, 0(s6)
+	lw     t1, -68(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -168(s0)
+	lw     s7, -36(s0)
+	lw     s5, -168(s0)
+	ld      s6, -24(s0)
+	add     s6, s6, s5
+	sw     s7, 0(s6)
+	lw     t1, -60(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -172(s0)
+	lw     s7, -172(s0)
+	sw     s7, -60(s0)
+	lw     t1, -68(s0)
+	li      t2, 1
+	subw     t0, t1, t2
+	sw     t0, -176(s0)
+	lw     s7, -176(s0)
+	sw     s7, -68(s0)
+	j       L49
+L50:
+L38:
+L36:
+	lw     t3, -76(s0)
+	li      t4, 0
+	ble     t4, t3, L54
+	j       L52
+L54:
+	lw     t1, -76(s0)
+	li      t2, 1
+	subw     t0, t1, t2
+	sw     t0, -180(s0)
+	lw     t1, -180(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -184(s0)
+	lw     s3, -184(s0)
+	lui     s4, %hi(GVAR0)
+	add     s4, s4, s3
+	lw     t1, %lo(GVAR0)(s4)
+	lw     t2, -44(s0)
+	addw     t0, t1, t2
+	sw     t0, -188(s0)
+	lw     t3, -52(s0)
+	lw     t4, -188(s0)
+	blt     t3, t4, L53
+	j       L52
+L53:
+	lw     t1, -76(s0)
+	li      t2, 1
+	subw     t0, t1, t2
+	sw     t0, -192(s0)
+	lw     t1, -192(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -196(s0)
+	lw     t1, -76(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -200(s0)
+	ld      a0, -24(s0)
+	lw     s3, -196(s0)
+	lui     s4, %hi(GVAR0)
+	add     s4, s4, s3
+	lw     a1, %lo(GVAR0)(s4)
+	lw     s3, -200(s0)
+	lui     s4, %hi(GVAR0)
+	add     s4, s4, s3
+	lw     a2, %lo(GVAR0)(s4)
+	lw     a3, -52(s0)
+	call    binary_insert
+	nop
+	lw     t1, -76(s0)
+	li      t2, 1
+	subw     t0, t1, t2
+	sw     t0, -204(s0)
+	lw     s7, -204(s0)
+	sw     s7, -76(s0)
+L52:
+L55:
+	lw     t3, -76(s0)
+	li      t4, 0
+	ble     t4, t3, L57
+	j       L56
+L57:
+	lw     t1, -76(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -208(s0)
+	lw     t1, -52(s0)
+	lw     s3, -208(s0)
+	lui     s4, %hi(GVAR0)
+	add     s4, s4, s3
+	lw     t2, %lo(GVAR0)(s4)
+	subw     t0, t1, t2
+	sw     t0, -212(s0)
+	lw     t1, -212(s0)
+	li      t2, 2
+	mul     t0, t1, t2
+	sw     t0, -216(s0)
+	lw     t1, -76(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -220(s0)
+	lw     t1, -76(s0)
+	li      t2, 1
+	subw     t0, t1, t2
+	sw     t0, -224(s0)
+	lw     t1, -224(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -228(s0)
+	lw     s3, -220(s0)
+	lui     s4, %hi(GVAR0)
+	add     s4, s4, s3
+	lw     t1, %lo(GVAR0)(s4)
+	lw     s3, -228(s0)
+	lui     s4, %hi(GVAR0)
+	add     s4, s4, s3
+	lw     t2, %lo(GVAR0)(s4)
+	subw     t0, t1, t2
+	sw     t0, -232(s0)
+	lw     t3, -216(s0)
+	lw     t4, -232(s0)
+	ble     t3, t4, L59
+	j       L58
+L59:
+	j       L56
+L58:
+	lw     t1, -76(s0)
+	li      t2, 1
+	subw     t0, t1, t2
+	sw     t0, -236(s0)
+	lw     t1, -236(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -240(s0)
+	lw     t1, -76(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -244(s0)
+	ld      a0, -24(s0)
+	lw     s3, -240(s0)
+	lui     s4, %hi(GVAR0)
+	add     s4, s4, s3
+	lw     a1, %lo(GVAR0)(s4)
+	lw     s3, -244(s0)
+	lui     s4, %hi(GVAR0)
+	add     s4, s4, s3
+	lw     a2, %lo(GVAR0)(s4)
+	lw     a3, -52(s0)
+	call    merge_sort
+	nop
+	lw     t1, -76(s0)
+	li      t2, 1
+	subw     t0, t1, t2
+	sw     t0, -248(s0)
+	lw     s7, -248(s0)
+	sw     s7, -76(s0)
+	j       L55
+L56:
+	lw     t1, -76(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -252(s0)
+	lw     s7, -252(s0)
+	sw     s7, -76(s0)
+	j       L33
+L34:
+L60:
+	lw     t3, -76(s0)
+	li      t4, 1
+	ble     t4, t3, L62
+	j       L61
+L62:
+	lw     t1, -76(s0)
+	li      t2, 2
+	subw     t0, t1, t2
+	sw     t0, -256(s0)
+	lw     t1, -256(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -260(s0)
+	lw     t1, -76(s0)
+	li      t2, 1
+	subw     t0, t1, t2
+	sw     t0, -264(s0)
+	lw     t1, -264(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -268(s0)
+	ld      a0, -24(s0)
+	lw     s3, -260(s0)
+	lui     s4, %hi(GVAR0)
+	add     s4, s4, s3
+	lw     a1, %lo(GVAR0)(s4)
+	lw     s3, -268(s0)
+	lui     s4, %hi(GVAR0)
+	add     s4, s4, s3
+	lw     a2, %lo(GVAR0)(s4)
+	lw     a3, -52(s0)
+	call    merge_sort
+	nop
+	lw     t1, -76(s0)
+	li      t2, 1
+	subw     t0, t1, t2
+	sw     t0, -272(s0)
+	lw     s7, -272(s0)
+	sw     s7, -76(s0)
+	j       L60
+L61:
+	ld      ra, 264(sp)
+	ld      s0, 256(sp)
+	addi    sp, sp, 272
+	jr      ra
+	.size   simplified_tim_sort, .-simplified_tim_sort
+	
+	.text
+	.align   1
+	.globl   main
+	.type    main, @function
+main:
+	addi    sp, sp, -48
+	sd      ra, 40(sp)
+	sd      s0, 32(sp)
+	addi    s0, sp, 48
+	li      s1, 0
+	sw      s1, -24(s0)
+	call    get_int
+	nop
+	sw     a0, -36(s0)
+	lw     s7, -36(s0)
+	sw     s7, -32(s0)
+	lui     s4, %hi(GVAR2)
+	addi    a0, s4, %lo(GVAR2)
+	lw     a1, -32(s0)
+	call    simplified_tim_sort
+	nop
+L63:
+	lw     t3, -24(s0)
+	lw     t4, -32(s0)
+	ble     t3, t4, L65
+	j       L64
+L65:
+	lw     t1, -24(s0)
+	li      t2, 4
+	mul     t0, t1, t2
+	sw     t0, -40(s0)
+	lw     s3, -40(s0)
+	lui     s4, %hi(GVAR2)
+	add     s4, s4, s3
+	lw     a0, %lo(GVAR2)(s4)
+	call    print_int
+	nop
+	lw     t1, -24(s0)
+	li      t2, 1
+	addw     t0, t1, t2
+	sw     t0, -44(s0)
+	lw     s7, -44(s0)
+	sw     s7, -24(s0)
+	j       L63
+L64:
+	li      a0, 0
+	ld      ra, 40(sp)
+	ld      s0, 32(sp)
+	addi    sp, sp, 48
+	jr      ra
+	.size   main, .-main
+	
+	.globl  GVAR0
+	.bss
+	.align  3
+	.type   GVAR0, @object
+	.size   GVAR0, 20040
+GVAR0:
+	.zero   20040
+	
+	.globl  GVAR1
+	.bss
+	.align  3
+	.type   GVAR1, @object
+	.size   GVAR1, 20040
+GVAR1:
+	.zero   20040
+	
+	.globl  GVAR2
+	.data
+	.align  3
+	.type   GVAR2, @object
+	.size   GVAR2, 20000
+GVAR2:
+	.word   -1245
+	.word   1223
+	.word   -1398
+	.word   821
+	.word   1089
+	.word   -414
+	.word   -341
+	.word   -81
+	.word   -1208
+	.word   -851
+	.word   -334
+	.word   -1315
+	.word   -792
+	.word   188
+	.word   -1417
+	.word   131
+	.word   605
+	.word   -1414
+	.word   -430
+	.word   -187
+	.word   159
+	.word   -143
+	.word   -377
+	.word   -952
+	.word   -44
+	.word   -1033
+	.word   -263
+	.word   -757
+	.word   -1225
+	.word   1309
+	.word   1097
+	.word   -210
+	.word   -1059
+	.word   18
+	.word   1022
+	.word   1065
+	.word   -529
+	.word   -12
+	.word   1034
+	.word   1125
+	.word   -522
+	.word   -1321
+	.word   -1390
+	.word   -1064
+	.word   -716
+	.word   78
+	.word   -1269
+	.word   226
+	.word   -519
+	.word   -695
+	.word   1326
+	.word   -541
+	.word   699
+	.word   -2
+	.word   -1290
+	.word   -1410
+	.word   1100
+	.word   1318
+	.word   824
+	.word   1280
+	.word   119
+	.word   874
+	.word   -114
+	.word   -492
+	.word   -690
+	.word   -109
+	.word   145
+	.word   -375
+	.word   -1311
+	.word   -1311
+	.word   -847
+	.word   1129
+	.word   1236
+	.word   1237
+	.word   1342
+	.word   -666
+	.word   -300
+	.word   1050
+	.word   1361
+	.word   -1036
+	.word   1352
+	.word   -1368
+	.word   1034
+	.word   -356
+	.word   1203
+	.word   1393
+	.word   -630
+	.word   290
+	.word   132
+	.word   -1382
+	.word   -468
+	.word   242
+	.word   1048
+	.word   -1141
+	.word   -1050
+	.word   -1049
+	.word   239
+	.word   1410
+	.word   959
+	.word   -1174
+	.word   -219
+	.word   957
+	.word   575
+	.word   234
+	.word   -348
+	.word   891
+	.word   -33
+	.word   -177
+	.word   1168
+	.word   -1300
+	.word   957
+	.word   -866
+	.word   851
+	.word   -1397
+	.word   -501
+	.word   -1112
+	.word   1262
+	.word   818
+	.word   213
+	.word   -450
+	.word   -67
+	.word   -773
+	.word   -1085
+	.word   39
+	.word   432
+	.word   1382
+	.word   762
+	.word   459
+	.word   1059
+	.word   746
+	.word   -681
+	.word   66
+	.word   -194
+	.word   1422
+	.word   -234
+	.word   712
+	.word   767
+	.word   959
+	.word   331
+	.word   600
+	.word   -1423
+	.word   698
+	.word   23
+	.word   1264
+	.word   -1025
+	.word   -600
+	.word   1202
+	.word   541
+	.word   -186
+	.word   -560
+	.word   -727
+	.word   1035
+	.word   442
+	.word   844
+	.word   1257
+	.word   -286
+	.word   852
+	.word   -1061
+	.word   -383
+	.word   153
+	.word   -212
+	.word   -922
+	.word   887
+	.word   -714
+	.word   -811
+	.word   879
+	.word   -72
+	.word   1141
+	.word   -600
+	.word   -1397
+	.word   -405
+	.word   1053
+	.word   -990
+	.word   270
+	.word   -692
+	.word   137
+	.word   694
+	.word   863
+	.word   555
+	.word   264
+	.word   -184
+	.word   -1120
+	.word   -538
+	.word   1293
+	.word   -1367
+	.word   689
+	.word   -1022
+	.word   -744
+	.word   244
+	.word   -425
+	.word   1289
+	.word   -601
+	.word   434
+	.word   -670
+	.word   -468
+	.word   394
+	.word   -1153
+	.word   -336
+	.word   -276
+	.word   -837
+	.word   -981
+	.word   -772
+	.word   716
+	.word   -1019
+	.word   1145
+	.word   226
+	.word   -445
+	.word   785
+	.word   1108
+	.word   137
+	.word   -494
+	.word   383
+	.word   -907
+	.word   1414
+	.word   63
+	.word   -347
+	.word   207
+	.word   79
+	.word   1041
+	.word   -104
+	.word   -899
+	.word   -730
+	.word   1208
+	.word   -86
+	.word   391
+	.word   727
+	.word   58
+	.word   364
+	.word   -1216
+	.word   1149
+	.word   1
+	.word   -998
+	.word   375
+	.word   749
+	.word   369
+	.word   -180
+	.word   122
+	.word   1358
+	.word   634
+	.word   -337
+	.word   963
+	.word   120
+	.word   -903
+	.word   -1366
+	.word   995
+	.word   -1111
+	.word   -560
+	.word   1169
+	.word   -294
+	.word   1156
+	.word   -927
+	.word   1259
+	.word   571
+	.word   335
+	.word   -747
+	.word   1198
+	.word   1415
+	.word   577
+	.word   547
+	.word   826
+	.word   -1256
+	.word   -367
+	.word   1285
+	.word   -550
+	.word   587
+	.word   10
+	.word   -1131
+	.word   -1232
+	.word   584
+	.word   343
+	.word   1166
+	.word   882
+	.word   -14
+	.word   352
+	.word   -1305
+	.word   -725
+	.word   -15
+	.word   -703
+	.word   -432
+	.word   553
+	.word   -697
+	.word   60
+	.word   -1294
+	.word   1249
+	.word   -1407
+	.word   -13
+	.word   -1031
+	.word   -950
+	.word   -647
+	.word   -561
+	.word   1370
+	.word   -1390
+	.word   -809
+	.word   -1127
+	.word   -242
+	.word   -250
+	.word   431
+	.word   690
+	.word   1142
+	.word   -779
+	.word   -1227
+	.word   872
+	.word   36
+	.word   322
+	.word   -456
+	.word   -961
+	.word   -296
+	.word   643
+	.word   203
+	.word   -1243
+	.word   -696
+	.word   43
+	.word   -580
+	.word   -1204
+	.word   -935
+	.word   -1086
+	.word   -1371
+	.word   516
+	.word   1201
+	.word   705
+	.word   -126
+	.word   -708
+	.word   -1277
+	.word   773
+	.word   -1320
+	.word   -697
+	.word   271
+	.word   -238
+	.word   8
+	.word   81
+	.word   -174
+	.word   502
+	.word   -150
+	.word   -842
+	.word   1200
+	.word   -524
+	.word   -1277
+	.word   617
+	.word   -1344
+	.word   -1242
+	.word   648
+	.word   826
+	.word   1337
+	.word   -136
+	.word   -35
+	.word   -628
+	.word   1192
+	.word   -249
+	.word   107
+	.word   1098
+	.word   904
+	.word   148
+	.word   -1198
+	.word   -1345
+	.word   -817
+	.word   -861
+	.word   -815
+	.word   -759
+	.word   1091
+	.word   -1127
+	.word   -869
+	.word   1095
+	.word   358
+	.word   -651
+	.word   1275
+	.word   -451
+	.word   -1025
+	.word   -712
+	.word   -1181
+	.word   1261
+	.word   -437
+	.word   -295
+	.word   1311
+	.word   -724
+	.word   -966
+	.word   -766
+	.word   -994
+	.word   111
+	.word   468
+	.word   826
+	.word   -615
+	.word   1065
+	.word   -916
+	.word   987
+	.word   -247
+	.word   1361
+	.word   205
+	.word   -997
+	.word   800
+	.word   -44
+	.word   -1313
+	.word   -1361
+	.word   -491
+	.word   1161
+	.word   661
+	.word   1017
+	.word   -848
+	.word   -226
+	.word   663
+	.word   1339
+	.word   846
+	.word   788
+	.word   -1324
+	.word   -146
+	.word   -947
+	.word   -1187
+	.word   -583
+	.word   11
+	.word   -828
+	.word   -1221
+	.word   677
+	.word   1215
+	.word   -589
+	.word   525
+	.word   -1001
+	.word   -117
+	.word   1106
+	.word   630
+	.word   1350
+	.word   -581
+	.word   -100
+	.word   -355
+	.word   -1261
+	.word   1152
+	.word   -741
+	.word   -1306
+	.word   -1394
+	.word   -915
+	.word   742
+	.word   451
+	.word   1205
+	.word   41
+	.word   -177
+	.word   -87
+	.word   75
+	.word   1024
+	.word   1413
+	.word   644
+	.word   -1163
+	.word   -406
+	.word   -1370
+	.word   -1370
+	.word   -535
+	.word   177
+	.word   -423
+	.word   1359
+	.word   -829
+	.word   -1058
+	.word   62
+	.word   553
+	.word   -489
+	.word   167
+	.word   -131
+	.word   -1201
+	.word   -633
+	.word   -761
+	.word   -151
+	.word   -1043
+	.word   -1072
+	.word   1421
+	.word   -554
+	.word   -224
+	.word   -3
+	.word   1279
+	.word   -740
+	.word   1063
+	.word   -651
+	.word   1375
+	.word   1169
+	.word   477
+	.word   -1147
+	.word   1039
+	.word   -175
+	.word   -569
+	.word   -603
+	.word   1337
+	.word   637
+	.word   -1148
+	.word   -1404
+	.word   -794
+	.word   -1368
+	.word   1372
+	.word   -902
+	.word   -956
+	.word   -1076
+	.word   873
+	.word   -1020
+	.word   -322
+	.word   -111
+	.word   -737
+	.word   1327
+	.word   796
+	.word   -361
+	.word   1005
+	.word   619
+	.word   732
+	.word   -195
+	.word   -404
+	.word   -1312
+	.word   1150
+	.word   -675
+	.word   -477
+	.word   -1067
+	.word   -1341
+	.word   -563
+	.word   797
+	.word   1026
+	.word   516
+	.word   487
+	.word   -539
+	.word   -286
+	.word   -397
+	.word   -1278
+	.word   -104
+	.word   -427
+	.word   617
+	.word   118
+	.word   302
+	.word   -341
+	.word   1386
+	.word   1249
+	.word   -425
+	.word   -325
+	.word   68
+	.word   -189
+	.word   978
+	.word   692
+	.word   -826
+	.word   55
+	.word   1158
+	.word   248
+	.word   -1051
+	.word   -732
+	.word   162
+	.word   893
+	.word   -527
+	.word   221
+	.word   333
+	.word   129
+	.word   -438
+	.word   -379
+	.word   655
+	.word   12
+	.word   262
+	.word   547
+	.word   -1201
+	.word   -970
+	.word   -394
+	.word   958
+	.word   -857
+	.word   1323
+	.word   -715
+	.word   1116
+	.word   647
+	.word   -305
+	.word   -75
+	.word   -557
+	.word   1213
+	.word   1408
+	.word   517
+	.word   -93
+	.word   721
+	.word   -1427
+	.word   -1251
+	.word   594
+	.word   836
+	.word   -816
+	.word   1272
+	.word   1360
+	.word   103
+	.word   -590
+	.word   853
+	.word   1035
+	.word   -1164
+	.word   -1081
+	.word   -419
+	.word   1321
+	.word   -1077
+	.word   -418
+	.word   -426
+	.word   231
+	.word   397
+	.word   1159
+	.word   1406
+	.word   -378
+	.word   -611
+	.word   977
+	.word   -816
+	.word   -466
+	.word   -600
+	.word   -222
+	.word   -721
+	.word   132
+	.word   541
+	.word   962
+	.word   643
+	.word   -1291
+	.word   -16
+	.word   31
+	.word   654
+	.word   -650
+	.word   1404
+	.word   -240
+	.word   -612
+	.word   540
+	.word   1004
+	.word   -1282
+	.word   -142
+	.word   1406
+	.word   -565
+	.word   1038
+	.word   -70
+	.word   -521
+	.word   -1396
+	.word   -849
+	.word   42
+	.word   53
+	.word   539
+	.word   -664
+	.word   -153
+	.word   -396
+	.word   -1132
+	.word   -935
+	.word   -601
+	.word   -581
+	.word   442
+	.word   1377
+	.word   -1015
+	.word   1152
+	.word   -518
+	.word   1164
+	.word   -413
+	.word   -677
+	.word   -1278
+	.word   -457
+	.word   547
+	.word   791
+	.word   -543
+	.word   -483
+	.word   -464
+	.word   -112
+	.word   -727
+	.word   -541
+	.word   -921
+	.word   953
+	.word   921
+	.word   -1253
+	.word   896
+	.word   850
+	.word   696
+	.word   1401
+	.word   827
+	.word   -26
+	.word   1292
+	.word   -876
+	.word   -469
+	.word   -1198
+	.word   1360
+	.word   528
+	.word   -1107
+	.word   397
+	.word   1135
+	.word   -1395
+	.word   284
+	.word   -1148
+	.word   508
+	.word   -1243
+	.word   1215
+	.word   331
+	.word   1323
+	.word   -85
+	.word   -759
+	.word   -929
+	.word   115
+	.word   1356
+	.word   -1024
+	.word   -809
+	.word   -492
+	.word   150
+	.word   1381
+	.word   -24
+	.word   1287
+	.word   1222
+	.word   -339
+	.word   366
+	.word   -733
+	.word   1183
+	.word   -32
+	.word   -311
+	.word   501
+	.word   -877
+	.word   -286
+	.word   -352
+	.word   -574
+	.word   346
+	.word   -544
+	.word   686
+	.word   -706
+	.word   317
+	.word   230
+	.word   -463
+	.word   78
+	.word   -380
+	.word   -160
+	.word   -256
+	.word   400
+	.word   -1032
+	.word   95
+	.word   198
+	.word   -1295
+	.word   1228
+	.word   149
+	.word   -356
+	.word   -1151
+	.word   1245
+	.word   -1227
+	.word   -310
+	.word   -617
+	.word   876
+	.word   551
+	.word   -1102
+	.word   460
+	.word   -1209
+	.word   -867
+	.word   1141
+	.word   693
+	.word   77
+	.word   -84
+	.word   781
+	.word   1264
+	.word   -233
+	.word   -142
+	.word   790
+	.word   -1404
+	.word   27
+	.word   -1081
+	.word   419
+	.word   701
+	.word   828
+	.word   457
+	.word   -605
+	.word   -1208
+	.word   -821
+	.word   812
+	.word   -108
+	.word   572
+	.word   -340
+	.word   -293
+	.word   212
+	.word   -205
+	.word   898
+	.word   647
+	.word   -530
+	.word   -201
+	.word   -1164
+	.word   -1303
+	.word   -1221
+	.word   74
+	.word   -1220
+	.word   -901
+	.word   1067
+	.word   -311
+	.word   -528
+	.word   -360
+	.word   162
+	.word   -643
+	.word   92
+	.word   -18
+	.word   -1201
+	.word   -1389
+	.word   1006
+	.word   -808
+	.word   974
+	.word   -327
+	.word   116
+	.word   451
+	.word   1166
+	.word   245
+	.word   597
+	.word   -260
+	.word   130
+	.word   -817
+	.word   -562
+	.word   -324
+	.word   -132
+	.word   -1153
+	.word   894
+	.word   -610
+	.word   1026
+	.word   -126
+	.word   -101
+	.word   -1165
+	.word   211
+	.word   -1049
+	.word   -391
+	.word   -808
+	.word   376
+	.word   -70
+	.word   539
+	.word   -437
+	.word   -196
+	.word   -1361
+	.word   -1210
+	.word   359
+	.word   -267
+	.word   -1403
+	.word   1363
+	.word   -427
+	.word   -446
+	.word   -906
+	.word   675
+	.word   -1253
+	.word   490
+	.word   -189
+	.word   1062
+	.word   -592
+	.word   -161
+	.word   -586
+	.word   -1055
+	.word   -1152
+	.word   962
+	.word   919
+	.word   837
+	.word   423
+	.word   -253
+	.word   -835
+	.word   -402
+	.word   -1247
+	.word   505
+	.word   -347
+	.word   338
+	.word   -539
+	.word   20
+	.word   -264
+	.word   -108
+	.word   1320
+	.word   -1088
+	.word   259
+	.word   874
+	.word   -11
+	.word   -114
+	.word   771
+	.word   -418
+	.word   1362
+	.word   -471
+	.word   -232
+	.word   1224
+	.word   -730
+	.word   -1119
+	.word   258
+	.word   202
+	.word   -103
+	.word   300
+	.word   -1293
+	.word   799
+	.word   -558
+	.word   1359
+	.word   -241
+	.word   -524
+	.word   -957
+	.word   145
+	.word   -1001
+	.word   -1122
+	.word   -802
+	.word   -848
+	.word   -127
+	.word   -607
+	.word   653
+	.word   -12
+	.word   1386
+	.word   32
+	.word   -5
+	.word   487
+	.word   828
+	.word   -1082
+	.word   405
+	.word   1413
+	.word   -1175
+	.word   583
+	.word   -1274
+	.word   -1340
+	.word   -124
+	.word   -101
+	.word   -518
+	.word   -420
+	.word   626
+	.word   742
+	.word   555
+	.word   134
+	.word   166
+	.word   -1250
+	.word   1295
+	.word   -838
+	.word   -10
+	.word   1180
+	.word   -689
+	.word   -1328
+	.word   -1049
+	.word   945
+	.word   -559
+	.word   -296
+	.word   -1274
+	.word   681
+	.word   -293
+	.word   651
+	.word   -688
+	.word   -517
+	.word   -677
+	.word   21
+	.word   680
+	.word   108
+	.word   92
+	.word   1222
+	.word   -1011
+	.word   784
+	.word   450
+	.word   1366
+	.word   614
+	.word   33
+	.word   -790
+	.word   204
+	.word   -173
+	.word   -674
+	.word   -57
+	.word   1186
+	.word   567
+	.word   192
+	.word   -950
+	.word   242
+	.word   579
+	.word   -313
+	.word   -987
+	.word   251
+	.word   -890
+	.word   -1269
+	.word   636
+	.word   -497
+	.word   -736
+	.word   116
+	.word   -1335
+	.word   -1390
+	.word   -1239
+	.word   -334
+	.word   -953
+	.word   857
+	.word   -855
+	.word   613
+	.word   177
+	.word   906
+	.word   -1318
+	.word   962
+	.word   1382
+	.word   -718
+	.word   981
+	.word   81
+	.word   963
+	.word   1390
+	.word   1055
+	.word   -1314
+	.word   -17
+	.word   -290
+	.word   -1343
+	.word   487
+	.word   -952
+	.word   1303
+	.word   -69
+	.word   -569
+	.word   1098
+	.word   416
+	.word   1079
+	.word   -1286
+	.word   -1027
+	.word   -34
+	.word   -1072
+	.word   503
+	.word   -767
+	.word   -310
+	.word   -973
+	.word   -727
+	.word   1421
+	.word   259
+	.word   -1003
+	.word   -859
+	.word   1282
+	.word   667
+	.word   -1162
+	.word   -97
+	.word   -480
+	.word   -711
+	.word   -290
+	.word   478
+	.word   -818
+	.word   -541
+	.word   -885
+	.word   267
+	.word   359
+	.word   -1370
+	.word   -653
+	.word   -220
+	.word   232
+	.word   1345
+	.word   580
+	.word   -213
+	.word   984
+	.word   712
+	.word   979
+	.word   -1284
+	.word   -710
+	.word   866
+	.word   -1359
+	.word   1181
+	.word   1335
+	.word   -94
+	.word   -616
+	.word   -503
+	.word   -547
+	.word   -712
+	.word   -755
+	.word   -537
+	.word   886
+	.word   -283
+	.word   -460
+	.word   236
+	.word   -783
+	.word   431
+	.word   831
+	.word   664
+	.word   -1198
+	.word   -495
+	.word   347
+	.word   1200
+	.word   1169
+	.word   1304
+	.word   -616
+	.word   954
+	.word   -972
+	.word   883
+	.word   1204
+	.word   -84
+	.word   -1159
+	.word   123
+	.word   -1110
+	.word   1116
+	.word   422
+	.word   1166
+	.word   1031
+	.word   -348
+	.word   584
+	.word   917
+	.word   -888
+	.word   1365
+	.word   1253
+	.word   144
+	.word   -565
+	.word   -843
+	.word   623
+	.word   -385
+	.word   -218
+	.word   -988
+	.word   -281
+	.word   446
+	.word   128
+	.word   -957
+	.word   311
+	.word   -198
+	.word   1227
+	.word   425
+	.word   -810
+	.word   -764
+	.word   495
+	.word   336
+	.word   19
+	.word   -992
+	.word   1402
+	.word   1239
+	.word   482
+	.word   -789
+	.word   535
+	.word   -727
+	.word   0
+	.word   1222
+	.word   -958
+	.word   -16
+	.word   -862
+	.word   -923
+	.word   -207
+	.word   -850
+	.word   748
+	.word   -475
+	.word   594
+	.word   -299
+	.word   697
+	.word   -678
+	.word   895
+	.word   -641
+	.word   1392
+	.word   901
+	.word   612
+	.word   752
+	.word   -990
+	.word   526
+	.word   527
+	.word   -467
+	.word   165
+	.word   732
+	.word   1014
+	.word   362
+	.word   800
+	.word   1173
+	.word   1075
+	.word   260
+	.word   68
+	.word   -729
+	.word   -69
+	.word   669
+	.word   1374
+	.word   -432
+	.word   112
+	.word   -184
+	.word   648
+	.word   -1344
+	.word   795
+	.word   1155
+	.word   26
+	.word   1092
+	.word   -149
+	.word   588
+	.word   1219
+	.word   231
+	.word   1307
+	.word   -1295
+	.word   -565
+	.word   519
+	.word   612
+	.word   -1104
+	.word   -1338
+	.word   -1227
+	.word   1084
+	.word   -202
+	.word   729
+	.word   238
+	.word   -866
+	.word   862
+	.word   -1218
+	.word   -394
+	.word   1290
+	.word   -152
+	.word   51
+	.word   -1207
+	.word   176
+	.word   994
+	.word   -1217
+	.word   -781
+	.word   840
+	.word   367
+	.word   -875
+	.word   1171
+	.word   367
+	.word   963
+	.word   31
+	.word   564
+	.word   -859
+	.word   1334
+	.word   273
+	.word   -1183
+	.word   718
+	.word   852
+	.word   313
+	.word   -600
+	.word   -405
+	.word   916
+	.word   424
+	.word   -662
+	.word   -1158
+	.word   -464
+	.word   -562
+	.word   1040
+	.word   557
+	.word   -1321
+	.word   -820
+	.word   920
+	.word   -969
+	.word   -609
+	.word   -1397
+	.word   -441
+	.word   -429
+	.word   1158
+	.word   727
+	.word   -1118
+	.word   405
+	.word   669
+	.word   -643
+	.word   1058
+	.word   -566
+	.word   -650
+	.word   1118
+	.word   596
+	.word   1301
+	.word   496
+	.word   -1064
+	.word   -474
+	.word   147
+	.word   1025
+	.word   1252
+	.word   -197
+	.word   -479
+	.word   -640
+	.word   -1402
+	.word   -551
+	.word   -338
+	.word   1012
+	.word   595
+	.word   -652
+	.word   1248
+	.word   960
+	.word   1357
+	.word   866
+	.word   153
+	.word   -1259
+	.word   1160
+	.word   -1104
+	.word   -281
+	.word   -1184
+	.word   1154
+	.word   302
+	.word   -1093
+	.word   -188
+	.word   808
+	.word   564
+	.word   544
+	.word   541
+	.word   -694
+	.word   1097
+	.word   -1299
+	.word   -451
+	.word   -1081
+	.word   -509
+	.word   -728
+	.word   216
+	.word   -1257
+	.word   1179
+	.word   -1002
+	.word   174
+	.word   6
+	.word   -227
+	.word   675
+	.word   -1273
+	.word   -83
+	.word   1352
+	.word   -1092
+	.word   811
+	.word   -1183
+	.word   532
+	.word   -133
+	.word   50
+	.word   1395
+	.word   -117
+	.word   -1388
+	.word   -1012
+	.word   -645
+	.word   -575
+	.word   429
+	.word   -1353
+	.word   -292
+	.word   1410
+	.word   -1384
+	.word   -1358
+	.word   601
+	.word   881
+	.word   -333
+	.word   -937
+	.word   -578
+	.word   -299
+	.word   -1327
+	.word   -883
+	.word   -394
+	.word   -1325
+	.word   -730
+	.word   685
+	.word   -699
+	.word   1350
+	.word   -579
+	.word   -1329
+	.word   -224
+	.word   -539
+	.word   -240
+	.word   -1010
+	.word   -398
+	.word   -1148
+	.word   1348
+	.word   656
+	.word   17
+	.word   1339
+	.word   -411
+	.word   303
+	.word   140
+	.word   712
+	.word   -230
+	.word   -1252
+	.word   835
+	.word   888
+	.word   -891
+	.word   -557
+	.word   -46
+	.word   616
+	.word   -119
+	.word   -860
+	.word   10
+	.word   360
+	.word   -1133
+	.word   301
+	.word   1156
+	.word   187
+	.word   388
+	.word   444
+	.word   740
+	.word   -513
+	.word   -285
+	.word   -1147
+	.word   919
+	.word   321
+	.word   -875
+	.word   -1243
+	.word   182
+	.word   866
+	.word   1211
+	.word   868
+	.word   149
+	.word   1377
+	.word   -883
+	.word   -103
+	.word   588
+	.word   676
+	.word   -31
+	.word   37
+	.word   -503
+	.word   -417
+	.word   31
+	.word   -1382
+	.word   1079
+	.word   333
+	.word   -793
+	.word   -43
+	.word   604
+	.word   92
+	.word   -1327
+	.word   1149
+	.word   222
+	.word   718
+	.word   -817
+	.word   -888
+	.word   -181
+	.word   -1262
+	.word   380
+	.word   260
+	.word   174
+	.word   -1153
+	.word   974
+	.word   1011
+	.word   -1315
+	.word   1058
+	.word   -1146
+	.word   -296
+	.word   -86
+	.word   -1114
+	.word   -925
+	.word   -325
+	.word   -1295
+	.word   393
+	.word   -633
+	.word   -179
+	.word   924
+	.word   123
+	.word   -872
+	.word   -939
+	.word   628
+	.word   926
+	.word   1127
+	.word   -488
+	.word   -1081
+	.word   782
+	.word   759
+	.word   -799
+	.word   -913
+	.word   1247
+	.word   -851
+	.word   -822
+	.word   1351
+	.word   -773
+	.word   1149
+	.word   428
+	.word   -477
+	.word   918
+	.word   -736
+	.word   803
+	.word   -1137
+	.word   179
+	.word   -1052
+	.word   -1087
+	.word   858
+	.word   -1088
+	.word   982
+	.word   1061
+	.word   1226
+	.word   -304
+	.word   239
+	.word   279
+	.word   -360
+	.word   -281
+	.word   778
+	.word   -564
+	.word   1307
+	.word   -90
+	.word   543
+	.word   -1260
+	.word   -266
+	.word   -612
+	.word   -347
+	.word   754
+	.word   826
+	.word   1381
+	.word   1052
+	.word   859
+	.word   1390
+	.word   1232
+	.word   375
+	.word   -1282
+	.word   -1289
+	.word   -1329
+	.word   -931
+	.word   -169
+	.word   -176
+	.word   690
+	.word   643
+	.word   -841
+	.word   -647
+	.word   -1396
+	.word   -909
+	.word   -1308
+	.word   40
+	.word   -713
+	.word   427
+	.word   -1246
+	.word   937
+	.word   452
+	.word   568
+	.word   1208
+	.word   -296
+	.word   -1176
+	.word   326
+	.word   935
+	.word   -350
+	.word   -919
+	.word   -207
+	.word   874
+	.word   -43
+	.word   85
+	.word   33
+	.word   1165
+	.word   799
+	.word   1122
+	.word   -370
+	.word   -1291
+	.word   535
+	.word   -890
+	.word   -19
+	.word   -1317
+	.word   -1062
+	.word   319
+	.word   428
+	.word   -946
+	.word   1114
+	.word   882
+	.word   -920
+	.word   761
+	.word   1176
+	.word   -1357
+	.word   -972
+	.word   739
+	.word   -872
+	.word   -1064
+	.word   526
+	.word   -1330
+	.word   -1275
+	.word   286
+	.word   -1102
+	.word   1128
+	.word   -76
+	.word   -1314
+	.word   533
+	.word   292
+	.word   179
+	.word   1216
+	.word   -1218
+	.word   840
+	.word   -371
+	.word   -388
+	.word   325
+	.word   813
+	.word   420
+	.word   -453
+	.word   -335
+	.word   1010
+	.word   807
+	.word   966
+	.word   1075
+	.word   72
+	.word   515
+	.word   945
+	.word   892
+	.word   112
+	.word   -711
+	.word   621
+	.word   -648
+	.word   -224
+	.word   -230
+	.word   697
+	.word   -1017
+	.word   -694
+	.word   1077
+	.word   407
+	.word   467
+	.word   -81
+	.word   332
+	.word   -1026
+	.word   1047
+	.word   -296
+	.word   33
+	.word   -534
+	.word   -1299
+	.word   -949
+	.word   -728
+	.word   464
+	.word   -974
+	.word   1011
+	.word   -220
+	.word   556
+	.word   1185
+	.word   -1338
+	.word   165
+	.word   -463
+	.word   813
+	.word   -207
+	.word   -693
+	.word   1171
+	.word   -1258
+	.word   -1
+	.word   -353
+	.word   669
+	.word   -218
+	.word   1370
+	.word   917
+	.word   349
+	.word   -363
+	.word   -1286
+	.word   -1240
+	.word   1005
+	.word   -196
+	.word   -1145
+	.word   -948
+	.word   -709
+	.word   1098
+	.word   614
+	.word   905
+	.word   -1387
+	.word   237
+	.word   -669
+	.word   -79
+	.word   -791
+	.word   761
+	.word   -1400
+	.word   342
+	.word   1150
+	.word   189
+	.word   -168
+	.word   -922
+	.word   561
+	.word   -8
+	.word   -104
+	.word   -667
+	.word   -913
+	.word   -770
+	.word   -758
+	.word   -539
+	.word   -267
+	.word   -269
+	.word   -92
+	.word   1021
+	.word   -483
+	.word   893
+	.word   959
+	.word   976
+	.word   -24
+	.word   -567
+	.word   1164
+	.word   918
+	.word   -165
+	.word   1215
+	.word   -238
+	.word   1344
+	.word   -21
+	.word   -65
+	.word   476
+	.word   -993
+	.word   61
+	.word   -1412
+	.word   -609
+	.word   -1401
+	.word   -552
+	.word   -92
+	.word   441
+	.word   -1189
+	.word   539
+	.word   -642
+	.word   -1020
+	.word   -533
+	.word   887
+	.word   -1046
+	.word   -810
+	.word   -272
+	.word   -464
+	.word   711
+	.word   991
+	.word   753
+	.word   723
+	.word   -265
+	.word   760
+	.word   19
+	.word   1225
+	.word   -891
+	.word   789
+	.word   -1149
+	.word   467
+	.word   -841
+	.word   505
+	.word   1078
+	.word   -1023
+	.word   1027
+	.word   881
+	.word   889
+	.word   -1162
+	.word   -522
+	.word   -1341
+	.word   1122
+	.word   1235
+	.word   -362
+	.word   296
+	.word   1017
+	.word   -275
+	.word   -1251
+	.word   133
+	.word   -514
+	.word   225
+	.word   998
+	.word   54
+	.word   915
+	.word   -23
+	.word   -1017
+	.word   692
+	.word   1016
+	.word   -896
+	.word   751
+	.word   941
+	.word   -1087
+	.word   912
+	.word   -794
+	.word   -140
+	.word   -1250
+	.word   -848
+	.word   -1267
+	.word   864
+	.word   -1105
+	.word   748
+	.word   1061
+	.word   623
+	.word   -353
+	.word   -1092
+	.word   -631
+	.word   1425
+	.word   1375
+	.word   855
+	.word   -541
+	.word   666
+	.word   -618
+	.word   -1408
+	.word   120
+	.word   1172
+	.word   -730
+	.word   1263
+	.word   1410
+	.word   -1246
+	.word   -1331
+	.word   1407
+	.word   54
+	.word   47
+	.word   496
+	.word   -507
+	.word   -691
+	.word   870
+	.word   -1017
+	.word   -1043
+	.word   74
+	.word   -344
+	.word   -409
+	.word   859
+	.word   -462
+	.word   -1289
+	.word   193
+	.word   -742
+	.word   143
+	.word   1136
+	.word   1348
+	.word   1227
+	.word   2
+	.word   1080
+	.word   339
+	.word   1336
+	.word   894
+	.word   470
+	.word   -339
+	.word   908
+	.word   -740
+	.word   573
+	.word   -1115
+	.word   355
+	.word   1274
+	.word   754
+	.word   -406
+	.word   -1107
+	.word   -1100
+	.word   756
+	.word   -912
+	.word   -681
+	.word   -184
+	.word   1156
+	.word   -209
+	.word   -953
+	.word   -235
+	.word   -301
+	.word   764
+	.word   949
+	.word   468
+	.word   -734
+	.word   749
+	.word   1247
+	.word   -807
+	.word   216
+	.word   1143
+	.word   1295
+	.word   1002
+	.word   790
+	.word   -994
+	.word   -338
+	.word   1425
+	.word   267
+	.word   1106
+	.word   -1297
+	.word   631
+	.word   294
+	.word   192
+	.word   -11
+	.word   408
+	.word   -613
+	.word   -1287
+	.word   -1035
+	.word   -117
+	.word   207
+	.word   -891
+	.word   -641
+	.word   481
+	.word   853
+	.word   1078
+	.word   -914
+	.word   -593
+	.word   1413
+	.word   -1138
+	.word   -1048
+	.word   945
+	.word   1255
+	.word   -165
+	.word   1120
+	.word   106
+	.word   -118
+	.word   434
+	.word   1332
+	.word   1382
+	.word   -367
+	.word   -1339
+	.word   -96
+	.word   350
+	.word   720
+	.word   -1287
+	.word   -436
+	.word   1026
+	.word   118
+	.word   -895
+	.word   571
+	.word   240
+	.word   -1033
+	.word   163
+	.word   1298
+	.word   262
+	.word   -267
+	.word   -149
+	.word   -202
+	.word   175
+	.word   -506
+	.word   -1297
+	.word   -217
+	.word   -431
+	.word   -19
+	.word   1306
+	.word   -366
+	.word   -521
+	.word   -198
+	.word   825
+	.word   -1395
+	.word   -843
+	.word   657
+	.word   -1313
+	.word   -5
+	.word   1071
+	.word   268
+	.word   -23
+	.word   -456
+	.word   -240
+	.word   700
+	.word   1157
+	.word   854
+	.word   -358
+	.word   -351
+	.word   -62
+	.word   485
+	.word   -1346
+	.word   1262
+	.word   -586
+	.word   -1382
+	.word   482
+	.word   30
+	.word   236
+	.word   -73
+	.word   -297
+	.word   187
+	.word   844
+	.word   -153
+	.word   1392
+	.word   -1016
+	.word   1352
+	.word   193
+	.word   -1362
+	.word   225
+	.word   -178
+	.word   -190
+	.word   -97
+	.word   910
+	.word   628
+	.word   1408
+	.word   -425
+	.word   1096
+	.word   -1287
+	.word   669
+	.word   1316
+	.word   -84
+	.word   -355
+	.word   -671
+	.word   1252
+	.word   -456
+	.word   1329
+	.word   1375
+	.word   854
+	.word   -313
+	.word   264
+	.word   488
+	.word   977
+	.word   1003
+	.word   -830
+	.word   778
+	.word   1188
+	.word   -921
+	.word   928
+	.word   58
+	.word   456
+	.word   785
+	.word   -172
+	.word   -1410
+	.word   201
+	.word   1255
+	.word   -355
+	.word   -862
+	.word   -773
+	.word   -438
+	.word   -178
+	.word   1313
+	.word   -1152
+	.word   -8
+	.word   -650
+	.word   -1174
+	.word   205
+	.word   537
+	.word   1381
+	.word   27
+	.word   -684
+	.word   86
+	.word   193
+	.word   760
+	.word   322
+	.word   -726
+	.word   -356
+	.word   -1119
+	.word   1006
+	.word   -1277
+	.word   -56
+	.word   -438
+	.word   172
+	.word   222
+	.word   -397
+	.word   700
+	.word   -1228
+	.word   -939
+	.word   -1209
+	.word   441
+	.word   -1176
+	.word   -529
+	.word   221
+	.word   134
+	.word   996
+	.word   368
+	.word   -986
+	.word   -900
+	.word   -551
+	.word   -831
+	.word   1356
+	.word   1186
+	.word   848
+	.word   -1031
+	.word   1197
+	.word   935
+	.word   925
+	.word   -933
+	.word   -1348
+	.word   -1180
+	.word   -983
+	.word   -900
+	.word   -1348
+	.word   -419
+	.word   1360
+	.word   1176
+	.word   -1414
+	.word   758
+	.word   1322
+	.word   151
+	.word   -102
+	.word   -127
+	.word   -1000
+	.word   432
+	.word   -874
+	.word   -1138
+	.word   -162
+	.word   137
+	.word   -865
+	.word   1079
+	.word   -793
+	.word   -1115
+	.word   166
+	.word   1073
+	.word   1388
+	.word   1035
+	.word   1267
+	.word   720
+	.word   377
+	.word   -570
+	.word   24
+	.word   -128
+	.word   126
+	.word   -1129
+	.word   -208
+	.word   731
+	.word   -1197
+	.word   1359
+	.word   -160
+	.word   -729
+	.word   -1353
+	.word   -760
+	.word   535
+	.word   198
+	.word   -1116
+	.word   -1264
+	.word   -192
+	.word   -1279
+	.word   -99
+	.word   112
+	.word   699
+	.word   -565
+	.word   -1371
+	.word   306
+	.word   -971
+	.word   1311
+	.word   1386
+	.word   -337
+	.word   402
+	.word   -1106
+	.word   396
+	.word   57
+	.word   -615
+	.word   -443
+	.word   -1325
+	.word   -1010
+	.word   -1079
+	.word   -1383
+	.word   303
+	.word   1318
+	.word   -1361
+	.word   -204
+	.word   -1195
+	.word   661
+	.word   201
+	.word   -157
+	.word   834
+	.word   -726
+	.word   905
+	.word   -1218
+	.word   1308
+	.word   425
+	.word   599
+	.word   1256
+	.word   1379
+	.word   886
+	.word   984
+	.word   427
+	.word   -1413
+	.word   -624
+	.word   771
+	.word   1384
+	.word   525
+	.word   -832
+	.word   1246
+	.word   -339
+	.word   -1139
+	.word   -1032
+	.word   -585
+	.word   -1196
+	.word   80
+	.word   265
+	.word   973
+	.word   -621
+	.word   1216
+	.word   -261
+	.word   1316
+	.word   -291
+	.word   861
+	.word   -832
+	.word   558
+	.word   -1422
+	.word   9
+	.word   183
+	.word   -423
+	.word   43
+	.word   -918
+	.word   711
+	.word   -1354
+	.word   1183
+	.word   -1005
+	.word   -521
+	.word   -708
+	.word   505
+	.word   -154
+	.word   -1152
+	.word   -581
+	.word   -610
+	.word   1100
+	.word   -1060
+	.word   -614
+	.word   -357
+	.word   -19
+	.word   -835
+	.word   985
+	.word   -1041
+	.word   831
+	.word   127
+	.word   443
+	.word   -1216
+	.word   1199
+	.word   216
+	.word   1346
+	.word   -1295
+	.word   -997
+	.word   -252
+	.word   -694
+	.word   -267
+	.word   -1280
+	.word   428
+	.word   -943
+	.word   974
+	.word   1220
+	.word   -1425
+	.word   54
+	.word   829
+	.word   139
+	.word   -1028
+	.word   527
+	.word   -360
+	.word   1419
+	.word   449
+	.word   -1147
+	.word   -512
+	.word   1287
+	.word   1372
+	.word   931
+	.word   289
+	.word   565
+	.word   -38
+	.word   -754
+	.word   -1105
+	.word   1006
+	.word   1330
+	.word   968
+	.word   -1207
+	.word   539
+	.word   -1099
+	.word   597
+	.word   -1168
+	.word   -472
+	.word   1100
+	.word   661
+	.word   1266
+	.word   970
+	.word   203
+	.word   1268
+	.word   391
+	.word   -195
+	.word   -873
+	.word   -50
+	.word   1223
+	.word   -1375
+	.word   -82
+	.word   -358
+	.word   758
+	.word   45
+	.word   407
+	.word   -775
+	.word   1130
+	.word   -9
+	.word   -820
+	.word   1166
+	.word   907
+	.word   -435
+	.word   771
+	.word   -1241
+	.word   -447
+	.word   -767
+	.word   1102
+	.word   634
+	.word   560
+	.word   995
+	.word   70
+	.word   -699
+	.word   998
+	.word   -1188
+	.word   11
+	.word   -1152
+	.word   855
+	.word   937
+	.word   788
+	.word   -1157
+	.word   -979
+	.word   -550
+	.word   -48
+	.word   -1070
+	.word   -1173
+	.word   -476
+	.word   973
+	.word   -519
+	.word   685
+	.word   1202
+	.word   -562
+	.word   -247
+	.word   463
+	.word   420
+	.word   -48
+	.word   -856
+	.word   1388
+	.word   -785
+	.word   435
+	.word   -254
+	.word   -16
+	.word   -441
+	.word   -38
+	.word   -1399
+	.word   -1425
+	.word   1157
+	.word   1406
+	.word   -211
+	.word   -21
+	.word   1338
+	.word   543
+	.word   -415
+	.word   -188
+	.word   378
+	.word   -1107
+	.word   -599
+	.word   9
+	.word   724
+	.word   -556
+	.word   -1373
+	.word   -140
+	.word   1322
+	.word   790
+	.word   859
+	.word   800
+	.word   -801
+	.word   493
+	.word   -1009
+	.word   649
+	.word   -134
+	.word   1186
+	.word   -379
+	.word   -1257
+	.word   -576
+	.word   1152
+	.word   -157
+	.word   -280
+	.word   893
+	.word   1089
+	.word   -987
+	.word   1267
+	.word   -1203
+	.word   -800
+	.word   1212
+	.word   1081
+	.word   -1089
+	.word   1184
+	.word   -690
+	.word   54
+	.word   352
+	.word   913
+	.word   -2
+	.word   -1081
+	.word   -734
+	.word   -755
+	.word   867
+	.word   1221
+	.word   -677
+	.word   1370
+	.word   -1020
+	.word   -280
+	.word   865
+	.word   142
+	.word   898
+	.word   -454
+	.word   -77
+	.word   898
+	.word   -1054
+	.word   1350
+	.word   1156
+	.word   463
+	.word   219
+	.word   -1032
+	.word   -477
+	.word   426
+	.word   -211
+	.word   952
+	.word   -172
+	.word   617
+	.word   -255
+	.word   -754
+	.word   1238
+	.word   -284
+	.word   1103
+	.word   1265
+	.word   -951
+	.word   -1104
+	.word   1313
+	.word   -521
+	.word   -910
+	.word   -211
+	.word   -1344
+	.word   -1276
+	.word   510
+	.word   297
+	.word   -1110
+	.word   1229
+	.word   859
+	.word   -755
+	.word   -437
+	.word   1387
+	.word   -1072
+	.word   1274
+	.word   -473
+	.word   -8
+	.word   32
+	.word   269
+	.word   1280
+	.word   187
+	.word   -804
+	.word   -211
+	.word   -1137
+	.word   -120
+	.word   -16
+	.word   -367
+	.word   1162
+	.word   -492
+	.word   -1242
+	.word   -1414
+	.word   1066
+	.word   93
+	.word   -1165
+	.word   -104
+	.word   45
+	.word   -496
+	.word   958
+	.word   476
+	.word   -694
+	.word   -513
+	.word   1370
+	.word   -227
+	.word   1057
+	.word   -734
+	.word   423
+	.word   1060
+	.word   85
+	.word   -675
+	.word   -286
+	.word   536
+	.word   -440
+	.word   -1235
+	.word   -1293
+	.word   -749
+	.word   -1025
+	.word   1222
+	.word   -1347
+	.word   959
+	.word   -655
+	.word   331
+	.word   446
+	.word   -578
+	.word   -1073
+	.word   1002
+	.word   -1148
+	.word   -268
+	.word   -792
+	.word   993
+	.word   548
+	.word   1062
+	.word   1052
+	.word   976
+	.word   992
+	.word   -1109
+	.word   -248
+	.word   280
+	.word   370
+	.word   -1347
+	.word   -182
+	.word   188
+	.word   -179
+	.word   -601
+	.word   137
+	.word   -1237
+	.word   257
+	.word   1083
+	.word   1126
+	.word   -1356
+	.word   -774
+	.word   300
+	.word   700
+	.word   -93
+	.word   -78
+	.word   -138
+	.word   28
+	.word   552
+	.word   -977
+	.word   -901
+	.word   526
+	.word   948
+	.word   -1029
+	.word   376
+	.word   631
+	.word   1362
+	.word   731
+	.word   -218
+	.word   306
+	.word   -707
+	.word   -715
+	.word   -694
+	.word   312
+	.word   -663
+	.word   -607
+	.word   635
+	.word   247
+	.word   -1180
+	.word   903
+	.word   -1198
+	.word   645
+	.word   -254
+	.word   333
+	.word   -937
+	.word   922
+	.word   -1356
+	.word   9
+	.word   238
+	.word   -189
+	.word   489
+	.word   -75
+	.word   -673
+	.word   -644
+	.word   -900
+	.word   275
+	.word   -619
+	.word   -203
+	.word   -1069
+	.word   -406
+	.word   1329
+	.word   -684
+	.word   -799
+	.word   349
+	.word   102
+	.word   1171
+	.word   964
+	.word   1236
+	.word   -137
+	.word   696
+	.word   1086
+	.word   1175
+	.word   -382
+	.word   -1381
+	.word   313
+	.word   -79
+	.word   872
+	.word   754
+	.word   306
+	.word   302
+	.word   -686
+	.word   -123
+	.word   -397
+	.word   -1385
+	.word   1289
+	.word   -73
+	.word   160
+	.word   -382
+	.word   621
+	.word   -487
+	.word   462
+	.word   739
+	.word   670
+	.word   389
+	.word   980
+	.word   133
+	.word   883
+	.word   1386
+	.word   -1126
+	.word   -375
+	.word   -960
+	.word   -387
+	.word   -1032
+	.word   -523
+	.word   -948
+	.word   704
+	.word   -791
+	.word   327
+	.word   168
+	.word   1003
+	.word   -249
+	.word   241
+	.word   -414
+	.word   -845
+	.word   511
+	.word   796
+	.word   798
+	.word   -808
+	.word   1094
+	.word   117
+	.word   -664
+	.word   815
+	.word   737
+	.word   -989
+	.word   -124
+	.word   -668
+	.word   -410
+	.word   -457
+	.word   465
+	.word   -1131
+	.word   -155
+	.word   -586
+	.word   700
+	.word   -1005
+	.word   -186
+	.word   -1023
+	.word   749
+	.word   -1381
+	.word   930
+	.word   -1156
+	.word   399
+	.word   -37
+	.word   -958
+	.word   271
+	.word   -1057
+	.word   466
+	.word   1377
+	.word   -931
+	.word   -223
+	.word   216
+	.word   -1294
+	.word   1396
+	.word   190
+	.word   -851
+	.word   693
+	.word   1354
+	.word   -1238
+	.word   -1202
+	.word   -53
+	.word   -837
+	.word   -538
+	.word   203
+	.word   945
+	.word   717
+	.word   -703
+	.word   -786
+	.word   -1131
+	.word   -379
+	.word   937
+	.word   1005
+	.word   -1207
+	.word   -1398
+	.word   -1294
+	.word   90
+	.word   740
+	.word   1372
+	.word   -906
+	.word   135
+	.word   -940
+	.word   -504
+	.word   -667
+	.word   898
+	.word   1114
+	.word   821
+	.word   -1080
+	.word   -951
+	.word   680
+	.word   150
+	.word   740
+	.word   -875
+	.word   -1122
+	.word   -961
+	.word   -482
+	.word   766
+	.word   939
+	.word   -297
+	.word   -174
+	.word   398
+	.word   -908
+	.word   -1318
+	.word   32
+	.word   -670
+	.word   1258
+	.word   91
+	.word   1005
+	.word   -945
+	.word   -81
+	.word   593
+	.word   -109
+	.word   -1166
+	.word   -1068
+	.word   -980
+	.word   -117
+	.word   579
+	.word   -248
+	.word   26
+	.word   -668
+	.word   -1190
+	.word   -351
+	.word   258
+	.word   841
+	.word   826
+	.word   1123
+	.word   -1188
+	.word   -255
+	.word   619
+	.word   283
+	.word   1340
+	.word   284
+	.word   -845
+	.word   1084
+	.word   -956
+	.word   -1253
+	.word   -790
+	.word   624
+	.word   -62
+	.word   -802
+	.word   471
+	.word   -1116
+	.word   526
+	.word   -772
+	.word   1396
+	.word   708
+	.word   364
+	.word   -979
+	.word   -815
+	.word   170
+	.word   -581
+	.word   -844
+	.word   1240
+	.word   1421
+	.word   1175
+	.word   -939
+	.word   -212
+	.word   76
+	.word   205
+	.word   346
+	.word   835
+	.word   -355
+	.word   1203
+	.word   -1290
+	.word   9
+	.word   704
+	.word   152
+	.word   -945
+	.word   -1044
+	.word   1374
+	.word   -418
+	.word   -402
+	.word   -1416
+	.word   821
+	.word   -1256
+	.word   -833
+	.word   1243
+	.word   1124
+	.word   -1406
+	.word   142
+	.word   1310
+	.word   -616
+	.word   -1131
+	.word   -1116
+	.word   427
+	.word   1049
+	.word   -1109
+	.word   -582
+	.word   -105
+	.word   247
+	.word   -1282
+	.word   987
+	.word   968
+	.word   -1385
+	.word   10
+	.word   -428
+	.word   -1182
+	.word   993
+	.word   -815
+	.word   -410
+	.word   513
+	.word   -843
+	.word   489
+	.word   -998
+	.word   -880
+	.word   243
+	.word   126
+	.word   51
+	.word   -211
+	.word   357
+	.word   -304
+	.word   -835
+	.word   118
+	.word   1404
+	.word   284
+	.word   -586
+	.word   -339
+	.word   1010
+	.word   -520
+	.word   174
+	.word   324
+	.word   -521
+	.word   320
+	.word   1296
+	.word   884
+	.word   518
+	.word   -58
+	.word   -660
+	.word   -471
+	.word   263
+	.word   -745
+	.word   -293
+	.word   -635
+	.word   -849
+	.word   469
+	.word   -1320
+	.word   -1342
+	.word   1301
+	.word   1087
+	.word   -909
+	.word   -1323
+	.word   781
+	.word   -391
+	.word   -643
+	.word   -787
+	.word   -1296
+	.word   397
+	.word   -34
+	.word   -315
+	.word   1079
+	.word   695
+	.word   -670
+	.word   492
+	.word   -277
+	.word   -476
+	.word   33
+	.word   843
+	.word   1104
+	.word   517
+	.word   -1122
+	.word   1009
+	.word   -1201
+	.word   674
+	.word   804
+	.word   224
+	.word   186
+	.word   -70
+	.word   -328
+	.word   -10
+	.word   775
+	.word   -40
+	.word   -1050
+	.word   1082
+	.word   633
+	.word   442
+	.word   -1075
+	.word   -320
+	.word   -49
+	.word   222
+	.word   -687
+	.word   842
+	.word   855
+	.word   -307
+	.word   -778
+	.word   -1035
+	.word   245
+	.word   -922
+	.word   -855
+	.word   132
+	.word   -694
+	.word   584
+	.word   627
+	.word   -453
+	.word   1110
+	.word   69
+	.word   -1228
+	.word   506
+	.word   146
+	.word   -426
+	.word   -268
+	.word   1171
+	.word   -1126
+	.word   1070
+	.word   1217
+	.word   -902
+	.word   -941
+	.word   -1228
+	.word   797
+	.word   -768
+	.word   -418
+	.word   -1117
+	.word   1368
+	.word   1201
+	.word   48
+	.word   815
+	.word   -1173
+	.word   1237
+	.word   134
+	.word   -1406
+	.word   -906
+	.word   -308
+	.word   271
+	.word   -408
+	.word   -528
+	.word   194
+	.word   -258
+	.word   1223
+	.word   698
+	.word   969
+	.word   -740
+	.word   -1024
+	.word   -39
+	.word   -183
+	.word   -1422
+	.word   -1031
+	.word   832
+	.word   -94
+	.word   -257
+	.word   -1238
+	.word   360
+	.word   -253
+	.word   429
+	.word   1132
+	.word   413
+	.word   -1299
+	.word   -1026
+	.word   -1336
+	.word   -556
+	.word   -1412
+	.word   485
+	.word   -838
+	.word   491
+	.word   -875
+	.word   1310
+	.word   -921
+	.word   -1349
+	.word   -894
+	.word   1036
+	.word   1245
+	.word   482
+	.word   486
+	.word   -108
+	.word   154
+	.word   652
+	.word   -854
+	.word   1147
+	.word   611
+	.word   680
+	.word   1332
+	.word   514
+	.word   152
+	.word   -629
+	.word   -1077
+	.word   1063
+	.word   6
+	.word   -1321
+	.word   -271
+	.word   -572
+	.word   -676
+	.word   -1218
+	.word   -632
+	.word   -90
+	.word   164
+	.word   1072
+	.word   812
+	.word   -896
+	.word   763
+	.word   1127
+	.word   15
+	.word   -1114
+	.word   708
+	.word   -607
+	.word   982
+	.word   -1273
+	.word   -836
+	.word   1323
+	.word   -330
+	.word   -1111
+	.word   -182
+	.word   1174
+	.word   750
+	.word   972
+	.word   -659
+	.word   1427
+	.word   1194
+	.word   -433
+	.word   246
+	.word   1196
+	.word   -468
+	.word   -71
+	.word   981
+	.word   1187
+	.word   273
+	.word   1370
+	.word   1078
+	.word   354
+	.word   -638
+	.word   -580
+	.word   448
+	.word   -179
+	.word   -455
+	.word   -493
+	.word   -805
+	.word   639
+	.word   -1018
+	.word   -492
+	.word   713
+	.word   1319
+	.word   -446
+	.word   -140
+	.word   -741
+	.word   639
+	.word   1250
+	.word   494
+	.word   159
+	.word   -1129
+	.word   -1229
+	.word   -11
+	.word   -220
+	.word   -615
+	.word   -599
+	.word   -686
+	.word   1084
+	.word   1034
+	.word   245
+	.word   -498
+	.word   -44
+	.word   1228
+	.word   -1335
+	.word   -1122
+	.word   -245
+	.word   741
+	.word   -419
+	.word   342
+	.word   1081
+	.word   -873
+	.word   949
+	.word   103
+	.word   325
+	.word   1196
+	.word   -1203
+	.word   -22
+	.word   -351
+	.word   939
+	.word   429
+	.word   503
+	.word   40
+	.word   -1296
+	.word   -1021
+	.word   -405
+	.word   -18
+	.word   -1030
+	.word   197
+	.word   -534
+	.word   -800
+	.word   -896
+	.word   1244
+	.word   1067
+	.word   -1234
+	.word   1281
+	.word   -1227
+	.word   1175
+	.word   -1070
+	.word   353
+	.word   176
+	.word   523
+	.word   -230
+	.word   -1202
+	.word   -607
+	.word   -854
+	.word   -878
+	.word   -562
+	.word   1252
+	.word   1365
+	.word   -514
+	.word   -821
+	.word   -1189
+	.word   342
+	.word   304
+	.word   -1126
+	.word   -795
+	.word   -393
+	.word   -730
+	.word   583
+	.word   407
+	.word   1155
+	.word   1406
+	.word   52
+	.word   1009
+	.word   -1386
+	.word   1369
+	.word   562
+	.word   599
+	.word   1037
+	.word   -216
+	.word   1173
+	.word   -527
+	.word   1263
+	.word   -955
+	.word   1124
+	.word   -1113
+	.word   781
+	.word   -1143
+	.word   195
+	.word   700
+	.word   636
+	.word   -1039
+	.word   -115
+	.word   1384
+	.word   285
+	.word   1336
+	.word   1038
+	.word   1339
+	.word   -114
+	.word   305
+	.word   -530
+	.word   -77
+	.word   -1362
+	.word   291
+	.word   1097
+	.word   1326
+	.word   229
+	.word   -210
+	.word   833
+	.word   91
+	.word   -176
+	.word   1308
+	.word   -627
+	.word   -816
+	.word   -909
+	.word   1069
+	.word   -1299
+	.word   668
+	.word   -398
+	.word   -235
+	.word   -716
+	.word   -618
+	.word   -380
+	.word   1031
+	.word   -1391
+	.word   941
+	.word   204
+	.word   -99
+	.word   -446
+	.word   -638
+	.word   1254
+	.word   550
+	.word   -1326
+	.word   -240
+	.word   -933
+	.word   -970
+	.word   294
+	.word   676
+	.word   1128
+	.word   -1104
+	.word   -137
+	.word   40
+	.word   -851
+	.word   887
+	.word   871
+	.word   19
+	.word   934
+	.word   1079
+	.word   -563
+	.word   -1114
+	.word   -728
+	.word   1109
+	.word   -1247
+	.word   -896
+	.word   -795
+	.word   -833
+	.word   143
+	.word   928
+	.word   1008
+	.word   38
+	.word   851
+	.word   -473
+	.word   -308
+	.word   369
+	.word   483
+	.word   -979
+	.word   -1020
+	.word   462
+	.word   651
+	.word   -39
+	.word   -143
+	.word   1330
+	.word   -62
+	.word   -1288
+	.word   -1011
+	.word   -376
+	.word   754
+	.word   -212
+	.word   -65
+	.word   -692
+	.word   -192
+	.word   1386
+	.word   -623
+	.word   536
+	.word   -1311
+	.word   -471
+	.word   935
+	.word   -673
+	.word   -1110
+	.word   -547
+	.word   -269
+	.word   1081
+	.word   69
+	.word   17
+	.word   -432
+	.word   1193
+	.word   -1260
+	.word   -209
+	.word   -196
+	.word   -123
+	.word   -1015
+	.word   -705
+	.word   -674
+	.word   836
+	.word   -35
+	.word   -1075
+	.word   -920
+	.word   512
+	.word   837
+	.word   971
+	.word   -495
+	.word   1002
+	.word   106
+	.word   922
+	.word   -1297
+	.word   -563
+	.word   732
+	.word   1012
+	.word   699
+	.word   -111
+	.word   -776
+	.word   -1406
+	.word   -1420
+	.word   -1364
+	.word   -333
+	.word   -1341
+	.word   -1148
+	.word   -918
+	.word   5
+	.word   219
+	.word   669
+	.word   -772
+	.word   933
+	.word   -1264
+	.word   -606
+	.word   54
+	.word   -415
+	.word   -421
+	.word   1005
+	.word   590
+	.word   461
+	.word   -597
+	.word   -758
+	.word   -847
+	.word   83
+	.word   938
+	.word   554
+	.word   370
+	.word   799
+	.word   1023
+	.word   -447
+	.word   981
+	.word   740
+	.word   807
+	.word   -3
+	.word   -1303
+	.word   -856
+	.word   -1003
+	.word   1159
+	.word   53
+	.word   -796
+	.word   662
+	.word   -105
+	.word   836
+	.word   -114
+	.word   -846
+	.word   -941
+	.word   670
+	.word   1064
+	.word   440
+	.word   822
+	.word   1088
+	.word   218
+	.word   70
+	.word   236
+	.word   -192
+	.word   -704
+	.word   -160
+	.word   -398
+	.word   -291
+	.word   -260
+	.word   1052
+	.word   -543
+	.word   -660
+	.word   -1066
+	.word   206
+	.word   318
+	.word   612
+	.word   -1373
+	.word   341
+	.word   -514
+	.word   -243
+	.word   -466
+	.word   1274
+	.word   -1343
+	.word   794
+	.word   -1380
+	.word   403
+	.word   1179
+	.word   -837
+	.word   1307
+	.word   345
+	.word   1355
+	.word   -908
+	.word   641
+	.word   659
+	.word   -601
+	.word   919
+	.word   -1395
+	.word   1219
+	.word   -1276
+	.word   487
+	.word   -1147
+	.word   -1254
+	.word   -102
+	.word   -11
+	.word   -481
+	.word   -1397
+	.word   -57
+	.word   57
+	.word   -88
+	.word   -1050
+	.word   -386
+	.word   1403
+	.word   -618
+	.word   170
+	.word   -309
+	.word   423
+	.word   540
+	.word   558
+	.word   -84
+	.word   -1131
+	.word   -915
+	.word   -819
+	.word   -1121
+	.word   -36
+	.word   789
+	.word   1384
+	.word   -426
+	.word   282
+	.word   1383
+	.word   282
+	.word   822
+	.word   1192
+	.word   483
+	.word   -200
+	.word   -14
+	.word   1384
+	.word   -401
+	.word   927
+	.word   -663
+	.word   690
+	.word   -565
+	.word   724
+	.word   736
+	.word   -418
+	.word   -710
+	.word   718
+	.word   -319
+	.word   -308
+	.word   -901
+	.word   -309
+	.word   1142
+	.word   1395
+	.word   32
+	.word   170
+	.word   -970
+	.word   436
+	.word   1238
+	.word   745
+	.word   570
+	.word   -1065
+	.word   -1031
+	.word   -901
+	.word   641
+	.word   1333
+	.word   1103
+	.word   198
+	.word   210
+	.word   -954
+	.word   -1346
+	.word   -218
+	.word   -978
+	.word   -103
+	.word   21
+	.word   -388
+	.word   1311
+	.word   1400
+	.word   34
+	.word   878
+	.word   -1402
+	.word   499
+	.word   555
+	.word   1155
+	.word   -1386
+	.word   -815
+	.word   74
+	.word   218
+	.word   -714
+	.word   -1187
+	.word   -767
+	.word   -93
+	.word   1158
+	.word   1007
+	.word   1367
+	.word   1237
+	.word   -134
+	.word   354
+	.word   958
+	.word   -1135
+	.word   1293
+	.word   -1296
+	.word   266
+	.word   -1329
+	.word   1122
+	.word   -146
+	.word   -1392
+	.word   -673
+	.word   -599
+	.word   1346
+	.word   -30
+	.word   323
+	.word   624
+	.word   -1291
+	.word   114
+	.word   929
+	.word   -806
+	.word   826
+	.word   259
+	.word   -1032
+	.word   -656
+	.word   265
+	.word   -1024
+	.word   -502
+	.word   941
+	.word   543
+	.word   702
+	.word   -100
+	.word   1240
+	.word   -243
+	.word   -562
+	.word   -1053
+	.word   487
+	.word   -1325
+	.word   -520
+	.word   -978
+	.word   -1428
+	.word   -1254
+	.word   1022
+	.word   -427
+	.word   -546
+	.word   584
+	.word   -624
+	.word   393
+	.word   393
+	.word   -834
+	.word   1272
+	.word   -154
+	.word   -867
+	.word   1170
+	.word   -426
+	.word   783
+	.word   994
+	.word   1341
+	.word   45
+	.word   -1165
+	.word   349
+	.word   -1350
+	.word   649
+	.word   888
+	.word   429
+	.word   152
+	.word   -1303
+	.word   -750
+	.word   1423
+	.word   598
+	.word   275
+	.word   -392
+	.word   -150
+	.word   41
+	.word   -255
+	.word   520
+	.word   708
+	.word   750
+	.word   -1100
+	.word   351
+	.word   -525
+	.word   -1061
+	.word   135
+	.word   -1067
+	.word   1072
+	.word   872
+	.word   1344
+	.word   -305
+	.word   -1313
+	.word   -688
+	.word   -167
+	.word   16
+	.word   -849
+	.word   1104
+	.word   1145
+	.word   1228
+	.word   -569
+	.word   -807
+	.word   -640
+	.word   -653
+	.word   226
+	.word   377
+	.word   -1193
+	.word   1293
+	.word   -422
+	.word   661
+	.word   -774
+	.word   30
+	.word   1235
+	.word   1134
+	.word   -78
+	.word   -893
+	.word   1112
+	.word   480
+	.word   -538
+	.word   -1285
+	.word   752
+	.word   616
+	.word   -1178
+	.word   1208
+	.word   -1213
+	.word   1071
+	.word   149
+	.word   756
+	.word   426
+	.word   -1340
+	.word   -169
+	.word   1056
+	.word   -275
+	.word   -586
+	.word   -175
+	.word   256
+	.word   1031
+	.word   -167
+	.word   -905
+	.word   -1274
+	.word   -604
+	.word   -209
+	.word   1138
+	.word   -645
+	.word   -714
+	.word   -227
+	.word   74
+	.word   1052
+	.word   383
+	.word   -237
+	.word   -561
+	.word   952
+	.word   -733
+	.word   1043
+	.word   546
+	.word   621
+	.word   596
+	.word   -353
+	.word   957
+	.word   -573
+	.word   1302
+	.word   307
+	.word   -20
+	.word   -944
+	.word   -162
+	.word   -808
+	.word   1202
+	.word   1251
+	.word   1249
+	.word   17
+	.word   558
+	.word   304
+	.word   68
+	.word   -1293
+	.word   -656
+	.word   1382
+	.word   1347
+	.word   779
+	.word   1087
+	.word   1350
+	.word   699
+	.word   871
+	.word   -1031
+	.word   -89
+	.word   69
+	.word   -736
+	.word   -1360
+	.word   368
+	.word   -450
+	.word   170
+	.word   1145
+	.word   663
+	.word   605
+	.word   1374
+	.word   235
+	.word   196
+	.word   -194
+	.word   -1348
+	.word   -962
+	.word   336
+	.word   227
+	.word   1361
+	.word   1323
+	.word   461
+	.word   -40
+	.word   -1405
+	.word   -449
+	.word   562
+	.word   466
+	.word   1187
+	.word   -417
+	.word   407
+	.word   1108
+	.word   338
+	.word   521
+	.word   440
+	.word   -999
+	.word   1354
+	.word   -1258
+	.word   311
+	.word   1078
+	.word   1053
+	.word   145
+	.word   239
+	.word   -1160
+	.word   299
+	.word   -392
+	.word   1055
+	.word   946
+	.word   582
+	.word   360
+	.word   -704
+	.word   267
+	.word   198
+	.word   1255
+	.word   -1396
+	.word   -1173
+	.word   -690
+	.word   -881
+	.word   -95
+	.word   94
+	.word   3
+	.word   -37
+	.word   -133
+	.word   -573
+	.word   61
+	.word   -921
+	.word   1337
+	.word   -1054
+	.word   1340
+	.word   -1010
+	.word   980
+	.word   402
+	.word   514
+	.word   1300
+	.word   -1168
+	.word   49
+	.word   1380
+	.word   505
+	.word   1174
+	.word   -1370
+	.word   1425
+	.word   -250
+	.word   1263
+	.word   319
+	.word   -1102
+	.word   -114
+	.word   -1303
+	.word   1015
+	.word   273
+	.word   -188
+	.word   -784
+	.word   -37
+	.word   -451
+	.word   450
+	.word   -868
+	.word   -1035
+	.word   -1285
+	.word   384
+	.word   1220
+	.word   900
+	.word   1414
+	.word   1102
+	.word   -1054
+	.word   1286
+	.word   201
+	.word   880
+	.word   -1090
+	.word   530
+	.word   1289
+	.word   -1130
+	.word   -517
+	.word   907
+	.word   1032
+	.word   1428
+	.word   -799
+	.word   1305
+	.word   523
+	.word   269
+	.word   531
+	.word   984
+	.word   -677
+	.word   734
+	.word   769
+	.word   649
+	.word   -637
+	.word   433
+	.word   -332
+	.word   -1008
+	.word   744
+	.word   307
+	.word   864
+	.word   -1028
+	.word   658
+	.word   759
+	.word   1259
+	.word   -1230
+	.word   234
+	.word   822
+	.word   -8
+	.word   1402
+	.word   -81
+	.word   -718
+	.word   -17
+	.word   437
+	.word   -338
+	.word   -359
+	.word   1271
+	.word   737
+	.word   -721
+	.word   -1136
+	.word   83
+	.word   551
+	.word   1328
+	.word   -705
+	.word   524
+	.word   -1077
+	.word   -233
+	.word   466
+	.word   -800
+	.word   580
+	.word   1006
+	.word   -1188
+	.word   -544
+	.word   -1118
+	.word   588
+	.word   -1119
+	.word   781
+	.word   454
+	.word   160
+	.word   252
+	.word   -520
+	.word   392
+	.word   1378
+	.word   828
+	.word   -885
+	.word   -69
+	.word   822
+	.word   454
+	.word   353
+	.word   -17
+	.word   410
+	.word   501
+	.word   1369
+	.word   -1022
+	.word   723
+	.word   840
+	.word   1318
+	.word   506
+	.word   1098
+	.word   585
+	.word   -1085
+	.word   -710
+	.word   181
+	.word   -276
+	.word   -1340
+	.word   496
+	.word   -1306
+	.word   309
+	.word   -1194
+	.word   -493
+	.word   1242
+	.word   -926
+	.word   863
+	.word   595
+	.word   1141
+	.word   1324
+	.word   137
+	.word   520
+	.word   -1414
+	.word   -232
+	.word   -1372
+	.word   372
+	.word   1045
+	.word   643
+	.word   1172
+	.word   386
+	.word   -19
+	.word   -877
+	.word   235
+	.word   -421
+	.word   275
+	.word   -54
+	.word   -211
+	.word   -966
+	.word   -401
+	.word   355
+	.word   -1300
+	.word   -529
+	.word   728
+	.word   89
+	.word   576
+	.word   1297
+	.word   1172
+	.word   849
+	.word   33
+	.word   -999
+	.word   -593
+	.word   -1188
+	.word   107
+	.word   429
+	.word   -334
+	.word   79
+	.word   584
+	.word   -1018
+	.word   1114
+	.word   1323
+	.word   -610
+	.word   -1043
+	.word   -678
+	.word   1102
+	.word   286
+	.word   1345
+	.word   -177
+	.word   1294
+	.word   454
+	.word   1175
+	.word   -832
+	.word   -1287
+	.word   1326
+	.word   -355
+	.word   778
+	.word   161
+	.word   -1006
+	.word   -20
+	.word   -199
+	.word   406
+	.word   -722
+	.word   950
+	.word   778
+	.word   1107
+	.word   956
+	.word   1008
+	.word   -15
+	.word   1028
+	.word   -1054
+	.word   -1198
+	.word   1179
+	.word   784
+	.word   400
+	.word   548
+	.word   1049
+	.word   272
+	.word   -316
+	.word   -1344
+	.word   420
+	.word   -85
+	.word   798
+	.word   699
+	.word   342
+	.word   -476
+	.word   440
+	.word   -1154
+	.word   -336
+	.word   -326
+	.word   1165
+	.word   1138
+	.word   890
+	.word   454
+	.word   -977
+	.word   -808
+	.word   -215
+	.word   -880
+	.word   -954
+	.word   -922
+	.word   664
+	.word   -1115
+	.word   1378
+	.word   128
+	.word   -459
+	.word   1207
+	.word   -859
+	.word   1138
+	.word   683
+	.word   -1141
+	.word   539
+	.word   1288
+	.word   -317
+	.word   -105
+	.word   -546
+	.word   1053
+	.word   -1268
+	.word   -848
+	.word   166
+	.word   216
+	.word   -353
+	.word   -1113
+	.word   983
+	.word   873
+	.word   -1193
+	.word   271
+	.word   -365
+	.word   1046
+	.word   513
+	.word   -470
+	.word   -1307
+	.word   -140
+	.word   -1042
+	.word   332
+	.word   -1366
+	.word   1096
+	.word   1123
+	.word   1404
+	.word   631
+	.word   -391
+	.word   586
+	.word   1136
+	.word   -13
+	.word   389
+	.word   1241
+	.word   238
+	.word   -771
+	.word   -688
+	.word   -538
+	.word   -852
+	.word   580
+	.word   -175
+	.word   848
+	.word   -1182
+	.word   251
+	.word   -933
+	.word   1126
+	.word   866
+	.word   -1211
+	.word   -925
+	.word   -858
+	.word   -1201
+	.word   -1343
+	.word   -1151
+	.word   -471
+	.word   292
+	.word   -117
+	.word   160
+	.word   -1081
+	.word   -185
+	.word   914
+	.word   -963
+	.word   -332
+	.word   1255
+	.word   670
+	.word   -545
+	.word   1262
+	.word   -1359
+	.word   929
+	.word   783
+	.word   -259
+	.word   104
+	.word   -1023
+	.word   -914
+	.word   -856
+	.word   52
+	.word   -423
+	.word   -316
+	.word   -474
+	.word   -868
+	.word   983
+	.word   -1388
+	.word   545
+	.word   -1224
+	.word   -1234
+	.word   -1086
+	.word   -75
+	.word   516
+	.word   -1340
+	.word   626
+	.word   312
+	.word   1080
+	.word   -1119
+	.word   222
+	.word   -1149
+	.word   780
+	.word   -613
+	.word   988
+	.word   1331
+	.word   700
+	.word   375
+	.word   -554
+	.word   -900
+	.word   303
+	.word   -882
+	.word   272
+	.word   1151
+	.word   -1016
+	.word   -445
+	.word   -1068
+	.word   -680
+	.word   1274
+	.word   553
+	.word   128
+	.word   -987
+	.word   167
+	.word   -1057
+	.word   587
+	.word   -1013
+	.word   1208
+	.word   744
+	.word   476
+	.word   -168
+	.word   -859
+	.word   864
+	.word   -1298
+	.word   -1030
+	.word   357
+	.word   595
+	.word   -452
+	.word   -298
+	.word   68
+	.word   575
+	.word   1133
+	.word   -467
+	.word   -970
+	.word   905
+	.word   539
+	.word   -1163
+	.word   1283
+	.word   420
+	.word   -750
+	.word   313
+	.word   204
+	.word   -498
+	.word   1048
+	.word   1156
+	.word   300
+	.word   1214
+	.word   1184
+	.word   864
+	.word   -985
+	.word   14
+	.word   366
+	.word   800
+	.word   1060
+	.word   50
+	.word   1021
+	.word   -1037
+	.word   1020
+	.word   1136
+	.word   877
+	.word   -630
+	.word   -531
+	.word   181
+	.word   582
+	.word   -199
+	.word   252
+	.word   565
+	.word   -1388
+	.word   936
+	.word   788
+	.word   -186
+	.word   -598
+	.word   1414
+	.word   -837
+	.word   1091
+	.word   1254
+	.word   779
+	.word   256
+	.word   -281
+	.word   420
+	.word   351
+	.word   814
+	.word   -1085
+	.word   -326
+	.word   -1294
+	.word   -475
+	.word   352
+	.word   -1367
+	.word   -102
+	.word   -1330
+	.word   310
+	.word   -1008
+	.word   -1014
+	.word   1223
+	.word   352
+	.word   188
+	.word   -604
+	.word   -1369
+	.word   -1216
+	.word   790
+	.word   -1029
+	.word   -951
+	.word   391
+	.word   -839
+	.word   1150
+	.word   -1047
+	.word   -112
+	.word   -483
+	.word   1022
+	.word   996
+	.word   714
+	.word   -200
+	.word   202
+	.word   -728
+	.word   842
+	.word   -1157
+	.word   30
+	.word   -1405
+	.word   -493
+	.word   616
+	.word   1326
+	.word   -1335
+	.word   1295
+	.word   -200
+	.word   796
+	.word   -1251
+	.word   -154
+	.word   836
+	.word   282
+	.word   288
+	.word   588
+	.word   164
+	.word   300
+	.word   357
+	.word   453
+	.word   -404
+	.word   453
+	.word   584
+	.word   701
+	.word   -632
+	.word   -930
+	.word   -1404
+	.word   -1006
+	.word   -177
+	.word   852
+	.word   -995
+	.word   1170
+	.word   -138
+	.word   1420
+	.word   146
+	.word   1065
+	.word   89
+	.word   370
+	.word   270
+	.word   131
+	.word   1360
+	.word   964
+	.word   -1027
+	.word   945
+	.word   -1277
+	.word   -1387
+	.word   -466
+	.word   -92
+	.word   1073
+	.word   1385
+	.word   -616
+	.word   -767
+	.word   -1344
+	.word   1112
+	.word   -1008
+	.word   258
+	.word   -617
+	.word   692
+	.word   1080
+	.word   -1266
+	.word   -311
+	.word   -897
+	.word   464
+	.word   -943
+	.word   1095
+	.word   914
+	.word   -779
+	.word   986
+	.word   -550
+	.word   -1410
+	.word   341
+	.word   1137
+	.word   302
+	.word   625
+	.word   -1346
+	.word   1018
+	.word   239
+	.word   259
+	.word   -1076
+	.word   145
+	.word   -1034
+	.word   1122
+	.word   -1162
+	.word   855
+	.word   1175
+	.word   -208
+	.word   528
+	.word   -564
+	.word   723
+	.word   -1398
+	.word   116
+	.word   1074
+	.word   84
+	.word   388
+	.word   60
+	.word   -755
+	.word   72
+	.word   437
+	.word   -495
+	.word   -31
+	.word   -261
+	.word   -1158
+	.word   -421
+	.word   -157
+	.word   -793
+	.word   187
+	.word   87
+	.word   -198
+	.word   399
+	.word   699
+	.word   -82
+	.word   547
+	.word   5
+	.word   516
+	.word   -1006
+	.word   -191
+	.word   -999
+	.word   1013
+	.word   -1009
+	.word   1076
+	.word   -231
+	.word   673
+	.word   577
+	.word   -662
+	.word   1206
+	.word   -669
+	.word   -1166
+	.word   -872
+	.word   -1096
+	.word   -1406
+	.word   -1315
+	.word   1085
+	.word   -539
+	.word   142
+	.word   -186
+	.word   1015
+	.word   52
+	.word   131
+	.word   -933
+	.word   937
+	.word   271
+	.word   -126
+	.word   196
+	.word   311
+	.word   531
+	.word   1243
+	.word   743
+	.word   -724
+	.word   -73
+	.word   -1027
+	.word   3
+	.word   671
+	.word   -633
+	.word   827
+	.word   1118
+	.word   -1160
+	.word   -102
+	.word   553
+	.word   642
+	.word   332
+	.word   -493
+	.word   972
+	.word   -570
+	.word   -809
+	.word   41
+	.word   16
+	.word   -430
+	.word   533
+	.word   -123
+	.word   1257
+	.word   -1277
+	.word   530
+	.word   163
+	.word   368
+	.word   1168
+	.word   987
+	.word   13
+	.word   -838
+	.word   854
+	.word   1137
+	.word   -1055
+	.word   -624
+	.word   1248
+	.word   1283
+	.word   -957
+	.word   -785
+	.word   -739
+	.word   871
+	.word   300
+	.word   318
+	.word   24
+	.word   -715
+	.word   -151
+	.word   -1217
+	.word   1160
+	.word   185
+	.word   486
+	.word   -38
+	.word   817
+	.word   61
+	.word   -966
+	.word   181
+	.word   -750
+	.word   -1147
+	.word   1022
+	.word   1424
+	.word   -1219
+	.word   1325
+	.word   -190
+	.word   1181
+	.word   -1032
+	.word   668
+	.word   -272
+	.word   -131
+	.word   -269
+	.word   -1098
+	.word   -418
+	.word   -560
+	.word   -1179
+	.word   358
+	.word   -249
+	.word   -63
+	.word   852
+	.word   -401
+	.word   -1406
+	.word   -582
+	.word   289
+	.word   -1233
+	.word   342
+	.word   -295
+	.word   -55
+	.word   657
+	.word   -1026
+	.word   1230
+	.word   -450
+	.word   -672
+	.word   -742
+	.word   567
+	.word   674
+	.word   -621
+	.word   445
+	.word   250
+	.word   -1272
+	.word   -843
+	.word   942
+	.word   -849
+	.word   -797
+	.word   251
+	.word   1385
+	.word   1067
+	.word   442
+	.word   1024
+	.word   -1424
+	.word   -187
+	.word   -1104
+	.word   -775
+	.word   -836
+	.word   -118
+	.word   913
+	.word   -913
+	.word   -88
+	.word   283
+	.word   -172
+	.word   -1048
+	.word   -1197
+	.word   615
+	.word   888
+	.word   -228
+	.word   899
+	.word   -277
+	.word   986
+	.word   -1308
+	.word   -678
+	.word   -848
+	.word   -438
+	.word   -429
+	.word   -447
+	.word   -1031
+	.word   -795
+	.word   -628
+	.word   -365
+	.word   578
+	.word   450
+	.word   908
+	.word   1050
+	.word   -32
+	.word   -1148
+	.word   -723
+	.word   59
+	.word   -168
+	.word   -1392
+	.word   -489
+	.word   276
+	.word   -247
+	.word   151
+	.word   -31
+	.word   -1158
+	.word   -231
+	.word   1371
+	.word   263
+	.word   -234
+	.word   -597
+	.word   -868
+	.word   -71
+	.word   -133
+	.word   701
+	.word   -864
+	.word   732
+	.word   -1138
+	.word   573
+	.word   1176
+	.word   51
+	.word   419
+	.word   -1151
+	.word   -989
+	.word   -299
+	.word   -854
+	.word   585
+	.word   984
+	.word   1085
+	.word   1341
+	.word   -1097
+	.word   -689
+	.word   98
+	.word   -1277
+	.word   -98
+	.word   -655
+	.word   1069
+	.word   -1329
+	.word   -709
+	.word   -1072
+	.word   -841
+	.word   -338
+	.word   1414
+	.word   806
+	.word   1229
+	.word   90
+	.word   399
+	.word   -706
+	.word   378
+	.word   812
+	.word   -1049
+	.word   512
+	.word   473
+	.word   -408
+	.word   1154
+	.word   97
+	.word   -552
+	.word   462
+	.word   -332
+	.word   -915
+	.word   191
+	.word   79
+	.word   -1224
+	.word   966
+	.word   -946
+	.word   -80
+	.word   151
+	.word   469
+	.word   -680
+	.word   1113
+	.word   -1265
+	.word   -1411
+	.word   1123
+	.word   768
+	.word   640
+	.word   -99
+	.word   -1412
+	.word   -361
+	.word   1381
+	.word   393
+	.word   -184
+	.word   -421
+	.word   -693
+	.word   -1272
+	.word   1086
+	.word   -1101
+	.word   345
+	.word   1373
+	.word   -285
+	.word   -516
+	.word   -634
+	.word   326
+	.word   364
+	.word   347
+	.word   -568
+	.word   185
+	.word   -1250
+	.word   533
+	.word   3
+	.word   539
+	.word   797
+	.word   -552
+	.word   218
+	.word   -1171
+	.word   149
+	.word   549
+	.word   428
+	.word   -1236
+	.word   974
+	.word   -225
+	.word   -437
+	.word   734
+	.word   -401
+	.word   1129
+	.word   1346
+	.word   -550
+	.word   621
+	.word   -681
+	.word   1001
+	.word   -23
+	.word   -421
+	.word   -436
+	.word   514
+	.word   1402
+	.word   1085
+	.word   -1054
+	.word   -966
+	.word   760
+	.word   -210
+	.word   1136
+	.word   -899
+	.word   101
+	.word   811
+	.word   -1259
+	.word   559
+	.word   -285
+	.word   -541
+	.word   439
+	.word   -1301
+	.word   -509
+	.word   -1310
+	.word   -787
+	.word   -648
+	.word   1218
+	.word   71
+	.word   -768
+	.word   -34
+	.word   965
+	.word   858
+	.word   -733
+	.word   -851
+	.word   -1367
+	.word   -164
+	.word   633
+	.word   -485
+	.word   -247
+	.word   -9
+	.word   1381
+	.word   323
+	.word   -745
+	.word   1422
+	.word   845
+	.word   106
+	.word   -261
+	.word   166
+	.word   640
+	.word   440
+	.word   803
+	.word   -1243
+	.word   -616
+	.word   -1349
+	.word   428
+	.word   -1149
+	.word   1081
+	.word   747
+	.word   699
+	.word   1317
+	.word   827
+	.word   372
+	.word   -248
+	.word   117
+	.word   -434
+	.word   351
+	.word   503
+	.word   430
+	.word   -464
+	.word   362
+	.word   1395
+	.word   1293
+	.word   -689
+	.word   -445
+	.word   -339
+	.word   404
+	.word   -759
+	.word   -791
+	.word   87
+	.word   1380
+	.word   -309
+	.word   1391
+	.word   -1018
+	.word   -1373
+	.word   -634
+	.word   -1417
+	.word   -184
+	.word   -1118
+	.word   -309
+	.word   -712
+	.word   1052
+	.word   240
+	.word   550
+	.word   -1350
+	.word   986
+	.word   -1427
+	.word   -999
+	.word   -522
+	.word   511
+	.word   -751
+	.word   164
+	.word   490
+	.word   1379
+	.word   314
+	.word   -1130
+	.word   -180
+	.word   964
+	.word   -599
+	.word   956
+	.word   -1253
+	.word   1409
+	.word   277
+	.word   731
+	.word   -288
+	.word   -1122
+	.word   1130
+	.word   693
+	.word   883
+	.word   -698
+	.word   46
+	.word   -1049
+	.word   1426
+	.word   1218
+	.word   779
+	.word   -1058
+	.word   -393
+	.word   74
+	.word   -852
+	.word   -840
+	.word   123
+	.word   -1022
+	.word   122
+	.word   -1422
+	.word   529
+	.word   1104
+	.word   198
+	.word   -327
+	.word   -774
+	.word   -665
+	.word   -481
+	.word   -995
+	.word   -1389
+	.word   403
+	.word   -1137
+	.word   704
+	.word   -1147
+	.word   73
+	.word   1241
+	.word   -23
+	.word   1145
+	.word   -1387
+	.word   165
+	.word   735
+	.word   -537
+	.word   -297
+	.word   -1157
+	.word   -198
+	.word   -416
+	.word   700
+	.word   -435
+	.word   -222
+	.word   -525
+	.word   -11
+	.word   384
+	.word   -18
+	.word   649
+	.word   -929
+	.word   613
+	.word   -167
+	.word   -1369
+	.word   1123
+	.word   1374
+	.word   1324
+	.word   -406
+	.word   -1331
+	.word   24
+	.word   -336
+	.word   401
+	.word   -820
+	.word   1375
+	.word   1223
+	.word   -897
+	.word   -842
+	.word   628
+	.word   -1334
+	.word   -952
+	.word   -230
+	.word   -743
+	.word   528
+	.word   -86
+	.word   282
+	.word   1037
+	.word   -811
+	.word   1071
+	.word   1148
+	.word   -184
+	.word   1349
+	.word   666
+	.word   435
+	.word   505
+	.word   351
+	.word   697
+	.word   278
+	.word   -911
+	.word   -1177
+	.word   881
+	.word   -154
+	.word   1067
+	.word   -1183
+	.word   -138
+	.word   1240
+	.word   -977
+	.word   -322
+	.word   487
+	.word   -376
+	.word   985
+	.word   580
+	.word   111
+	.word   -687
+	.word   135
+	.word   1283
+	.word   548
+	.word   -1397
+	.word   -462
+	.word   -328
+	.word   -97
+	.word   -200
+	.word   894
+	.word   -160
+	.word   -286
+	.word   1242
+	.word   1423
+	.word   -672
+	.word   530
+	.word   296
+	.word   -1226
+	.word   -1162
+	.word   -404
+	.word   621
+	.word   350
+	.word   -565
+	.word   -259
+	.word   240
+	.word   -1373
+	.word   -1372
+	.word   -793
+	.word   -1380
+	.word   -267
+	.word   -1130
+	.word   1134
+	.word   -486
+	.word   6
+	.word   1157
+	.word   646
+	.word   -404
+	.word   -1249
+	.word   566
+	.word   -1357
+	.word   165
+	.word   401
+	.word   569
+	.word   1341
+	.word   1316
+	.word   382
+	.word   -1121
+	.word   912
+	.word   808
+	.word   194
+	.word   -213
+	.word   -839
+	.word   39
+	.word   -822
+	.word   -1102
+	.word   1222
+	.word   643
+	.word   -1113
+	.word   -1228
+	.word   -114
+	.word   1306
+	.word   533
+	.word   1022
+	.word   537
+	.word   -39
+	.word   706
+	.word   -959
+	.word   -591
+	.word   1080
+	.word   -132
+	.word   -1293
+	.word   920
+	.word   417
+	.word   -231
+	.word   767
+	.word   -1240
+	.word   -1256
+	.word   141
+	.word   304
+	.word   -479
+	.word   1171
+	.word   -347
+	.word   518
+	.word   -764
+	.word   1030
+	.word   -1111
+	.word   540
+	.word   696
+	.word   -767
+	.word   43
+	.word   756
+	.word   685
+	.word   -1243
+	.word   -653
+	.word   -736
+	.word   924
+	.word   232
+	.word   301
+	.word   -650
+	.word   -366
+	.word   110
+	.word   487
+	.word   -852
+	.word   -472
+	.word   -580
+	.word   -381
+	.word   390
+	.word   191
+	.word   1231
+	.word   1095
+	.word   -67
+	.word   810
+	.word   -40
+	.word   644
+	.word   1282
+	.word   -1246
+	.word   670
+	.word   47
+	.word   500
+	.word   387
+	.word   219
+	.word   -122
+	.word   536
+	.word   949
+	.word   494
+	.word   555
+	.word   -683
+	.word   -1279
+	.word   989
+	.word   448
+	.word   -832
+	.word   -1120
+	.word   874
+	.word   -914
+	.word   -964
+	.word   -181
+	.word   -931
+	.word   -1272
+	.word   -1035
+	.word   531
+	.word   -1400
+	.word   -888
+	.word   -1393
+	.word   -755
+	.word   1031
+	.word   279
+	.word   531
+	.word   354
+	.word   737
+	.word   -1341
+	.word   -1223
+	.word   47
+	.word   -1213
+	.word   -723
+	.word   1391
+	.word   317
+	.word   -218
+	.word   -1089
+	.word   -866
+	.word   -1398
+	.word   564
+	.word   1407
+	.word   -987
+	.word   483
+	.word   1396
+	.word   786
+	.word   883
+	.word   -408
+	.word   349
+	.word   715
+	.word   513
+	.word   -727
+	.word   362
+	.word   781
+	.word   1024
+	.word   1036
+	.word   1191
+	.word   -1161
+	.word   -513
+	.word   -785
+	.word   -847
+	.word   -853
+	.word   -78
+	.word   -922
+	.word   185
+	.word   -1060
+	.word   -1292
+	.word   912
+	.word   -373
+	.word   -169
+	.word   320
+	.word   223
+	.word   1232
+	.word   418
+	.word   813
+	.word   819
+	.word   627
+	.word   -556
+	.word   -603
+	.word   286
+	.word   -979
+	.word   -1260
+	.word   -1296
+	.word   1286
+	.word   -282
+	.word   -62
+	.word   1306
+	.word   254
+	.word   56
+	.word   1207
+	.word   567
+	.word   -443
+	.word   286
+	.word   -855
+	.word   -1088
+	.word   -904
+	.word   1144
+	.word   -1239
+	.word   1022
+	.word   97
+	.word   204
+	.word   1341
+	.word   -1279
+	.word   -1259
+	.word   208
+	.word   1107
+	.word   1315
+	.word   -179
+	.word   842
+	.word   823
+	.word   271
+	.word   1085
+	.word   -142
+	.word   139
+	.word   49
+	.word   -141
+	.word   -536
+	.word   917
+	.word   -52
+	.word   837
+	.word   1040
+	.word   363
+	.word   -179
+	.word   1310
+	.word   830
+	.word   -850
+	.word   1071
+	.word   522
+	.word   -751
+	.word   -88
+	.word   1027
+	.word   411
+	.word   -536
+	.word   1378
+	.word   1336
+	.word   429
+	.word   1292
+	.word   -455
+	.word   793
+	.word   248
+	.word   696
+	.word   444
+	.word   -1387
+	.word   333
+	.word   906
+	.word   -1107
+	.word   867
+	.word   1238
+	.word   368
+	.word   1230
+	.word   599
+	.word   -407
+	.word   -198
+	.word   -172
+	.word   -803
+	.word   860
+	.word   1379
+	.word   970
+	.word   -571
+	.word   -1290
+	.word   1283
+	.word   -1339
+	.word   -755
+	.word   -905
+	.word   -1251
+	.word   717
+	.word   -523
+	.word   936
+	.word   760
+	.word   -1220
+	.word   712
+	.word   388
+	.word   -1292
+	.word   4
+	.word   266
+	.word   -302
+	.word   232
+	.word   -1370
+	.word   889
+	.word   1120
+	.word   -813
+	.word   -1219
+	.word   -355
+	.word   -157
+	.word   97
+	.word   -726
+	.word   138
+	.word   525
+	.word   -724
+	.word   -266
+	.word   447
+	.word   -272
+	.word   248
+	.word   1056
+	.word   -432
+	.word   -1383
+	.word   401
+	.word   -559
+	.word   1140
+	.word   -112
+	.word   -1264
+	.word   1058
+	.word   -439
+	.word   222
+	.word   -747
+	.word   1292
+	.word   591
+	.word   719
+	.word   -1370
+	.word   -310
+	.word   -355
+	.word   -1414
+	.word   480
+	.word   -548
+	.word   411
+	.word   -258
+	.word   374
+	.word   468
+	.word   -842
+	.word   587
+	.word   -84
+	.word   -371
+	.word   -518
+	.word   1381
+	.word   -1054
+	.word   1255
+	.word   -420
+	.word   516
+	.word   98
+	.word   -766
+	.word   1121
+	.word   -321
+	.word   792
+	.word   773
+	.word   849
+	.word   48
+	.word   -1395
+	.word   1291
+	.word   571
+	.word   -273
+	.word   -92
+	.word   566
+	.word   1082
+	.word   1334
+	.word   -413
+	.word   -688
+	.word   344
+	.word   343
+	.word   817
+	.word   -1005
+	.word   293
+	.word   667
+	.word   207
+	.word   183
+	.word   1188
+	.word   -548
+	.word   713
+	.word   1348
+	
+	.section    .rodata

@@ -853,7 +853,9 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
         else{
             op = OP_ARRAY;
         }
-        ctx->self.reset(new cact_expr_t{.op=op, .basety=iter_type.basety, .arrdims=iter_type.arrdims});
+        //这里由于服务器gcc版本不支持非平凡的初始值选项，按位置改动，相应需要添加空的subexprs
+        subexprs_t subexprs;
+        ctx->self.reset(new cact_expr_t{op, iter_type.basety, subexprs, iter_type.arrdims});
         
         #ifdef IR_gen
         ctx->result_name = IR_name;
@@ -932,7 +934,9 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
                 arrdims.push_back(iter_type.arrdims[i]);
             }
         }
-        ctx->self.reset(new cact_expr_t{.op=op, .basety=iter_type.basety, .arrdims=arrdims});
+        //这里由于服务器gcc版本不支持非平凡的初始值选项，按位置改动，相应需要添加空的subexprs
+        subexprs_t subexprs;
+        ctx->self.reset(new cact_expr_t{op, iter_type.basety, subexprs, arrdims});
 
         #ifdef IR_gen
         //形如abc>%2 或abc<%2

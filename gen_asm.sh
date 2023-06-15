@@ -7,7 +7,7 @@ dir="samples/samples_codegen"
 # dir="samples/extra_samples_pr1"
 # dir="samples/extra_samples_pr2"
 
-out_dir="asm_gen/"
+out_dir="asm"
 
 # 遍历目录中的所有文件
 
