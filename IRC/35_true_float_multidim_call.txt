@@ -1,0 +1,22 @@
+      IRop|    Basety|    result|      arg1|      arg2|
+Func Begin|   unknown|       foo|          |          |
+   L_Alloc|       int|        %0|          |          |
+       MUL|       int|        %0|        #0|        #8|
+   L_Alloc|       int|        %1|          |          |
+       MUL|       int|        %1|        #0|        #8|
+   L_Alloc|    double|        %2|          |          |
+       ADD|    double|        %2|     ^0<%0|     ^1<%1|
+    Return|    double|        %2|          |          |
+  Func End|   unknown|       foo|          |          |
+Func Begin|   unknown|      main|          |          |
+   L_Alloc|    double|        ^2|#1.0,2.0,4.5e-2,$,|          |
+   L_Alloc|       int|        %3|          |          |
+       MUL|       int|        %3|        #0|       #16|
+   L_Alloc|       int|        %4|          |          |
+       MUL|       int|        %4|        #1|       #16|
+     Param|double_ptr|     ^2>%3|          |          |
+     Param|double_ptr|     ^2>%4|          |          |
+   L_Alloc|    double|        %5|          |          |
+      Call|    double|       foo|        %5|          |
+    Return|       int|        #0|          |          |
+  Func End|   unknown|      main|          |          |

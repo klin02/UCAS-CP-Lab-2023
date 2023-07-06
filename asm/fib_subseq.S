@@ -1,4 +1,4 @@
-	.file   "fib_subseq.cact"
+	.file   "fib_subseq.S.cact"
 	.option nopic
 	.attribute arch, "rv64i2p0_m2p0_a2p0_f2p0_d2p0_c2p0"
 	.attribute unaligned_access, 0
@@ -46,15 +46,15 @@ L5:
 	sw     t0, -56(s0)
 	li      t1, 2
 	lw     s3, -56(s0)
-	lui     s4, %hi(GVAR1)
+	la      s4, GVAR1
 	add     s4, s4, s3
-	lw     t2, %lo(GVAR1)(s4)
+	lw     t2, 0(s4)
 	mul     t0, t1, t2
 	sw     t0, -60(s0)
 	lw     s3, -52(s0)
-	lui     s4, %hi(GVAR1)
+	la      s4, GVAR1
 	add     s4, s4, s3
-	lw     t3, %lo(GVAR1)(s4)
+	lw     t3, 0(s4)
 	lw     t4, -60(s0)
 	ble     t4, t3, L7
 	j       L6
@@ -70,13 +70,13 @@ L6:
 	mul     t0, t1, t2
 	sw     t0, -108(s0)
 	lw     s3, -104(s0)
-	lui     s4, %hi(GVAR1)
+	la      s4, GVAR1
 	add     s4, s4, s3
-	lw     t1, %lo(GVAR1)(s4)
+	lw     t1, 0(s4)
 	lw     s3, -108(s0)
-	lui     s4, %hi(GVAR1)
+	la      s4, GVAR1
 	add     s4, s4, s3
-	lw     t2, %lo(GVAR1)(s4)
+	lw     t2, 0(s4)
 	subw     t0, t1, t2
 	sw     t0, -112(s0)
 	lw     s7, -112(s0)
@@ -116,9 +116,9 @@ L10:
 	mul     t0, t1, t2
 	sw     t0, -132(s0)
 	lw     s3, -132(s0)
-	lui     s4, %hi(GVAR1)
+	la      s4, GVAR1
 	add     s4, s4, s3
-	lw     t3, %lo(GVAR1)(s4)
+	lw     t3, 0(s4)
 	lw     t4, -68(s0)
 	beq     t3, t4, L12
 	j       L13
@@ -133,9 +133,9 @@ L13:
 	mul     t0, t1, t2
 	sw     t0, -136(s0)
 	lw     s3, -136(s0)
-	lui     s4, %hi(GVAR1)
+	la      s4, GVAR1
 	add     s4, s4, s3
-	lw     t3, %lo(GVAR1)(s4)
+	lw     t3, 0(s4)
 	lw     t4, -68(s0)
 	blt     t3, t4, L15
 	j       L16
@@ -188,17 +188,17 @@ L18:
 	addw     t0, t1, t2
 	sw     t0, -156(s0)
 	lw     s3, -156(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     t1, %lo(GVAR0)(s4)
+	lw     t1, 0(s4)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -164(s0)
 	lw     s7, -164(s0)
 	lw     s5, -148(s0)
-	lui     s6, %hi(GVAR0)
+	la      s6, GVAR0
 	add     s6, s6, s5
-	sw     s7, %lo(GVAR0)(s6)
+	sw     s7, 0(s6)
 	lw     t1, -28(s0)
 	li      t2, 1064
 	mul     t0, t1, t2
@@ -212,9 +212,9 @@ L18:
 	addw     t0, t1, t2
 	sw     t0, -168(s0)
 	lw     s3, -168(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     t3, %lo(GVAR0)(s4)
+	lw     t3, 0(s4)
 	li      t4, 3
 	blt     t3, t4, L20
 	j       L19
@@ -233,9 +233,9 @@ L20:
 	sw     t0, -176(s0)
 	li      s7, 3
 	lw     s5, -176(s0)
-	lui     s6, %hi(GVAR0)
+	la      s6, GVAR0
 	add     s6, s6, s5
-	sw     s7, %lo(GVAR0)(s6)
+	sw     s7, 0(s6)
 L19:
 	lw     t1, -28(s0)
 	li      t2, 1064
@@ -250,9 +250,9 @@ L19:
 	addw     t0, t1, t2
 	sw     t0, -184(s0)
 	lw     s3, -184(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     t3, %lo(GVAR0)(s4)
+	lw     t3, 0(s4)
 	lw     t4, -36(s0)
 	ble     t4, t3, L22
 	j       L21
@@ -270,9 +270,9 @@ L22:
 	addw     t0, t1, t2
 	sw     t0, -192(s0)
 	lw     s3, -192(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     s7, %lo(GVAR0)(s4)
+	lw     s7, 0(s4)
 	sw     s7, -36(s0)
 L21:
 L17:

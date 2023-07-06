@@ -1,4 +1,4 @@
-	.file   "matrix.cact"
+	.file   "matrix.S.cact"
 	.option nopic
 	.attribute arch, "rv64i2p0_m2p0_a2p0_f2p0_d2p0_c2p0"
 	.attribute unaligned_access, 0
@@ -89,27 +89,27 @@ L8:
 	addw     t0, t1, t2
 	sw     t0, -80(s0)
 	lw     s3, -72(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	flw     ft1, %lo(GVAR0)(s4)
+	flw     ft1, 0(s4)
 	lw     s3, -80(s0)
-	lui     s4, %hi(GVAR1)
+	la      s4, GVAR1
 	add     s4, s4, s3
-	flw     ft2, %lo(GVAR1)(s4)
+	flw     ft2, 0(s4)
 	fmul.s     ft0, ft1, ft2
 	fsw     ft0, -88(s0)
 	lw     s3, -64(s0)
-	lui     s4, %hi(GVAR2)
+	la      s4, GVAR2
 	add     s4, s4, s3
-	flw     ft1, %lo(GVAR2)(s4)
+	flw     ft1, 0(s4)
 	flw     ft2, -88(s0)
 	fadd.s     ft0, ft1, ft2
 	fsw     ft0, -92(s0)
 	flw     fs7, -92(s0)
 	lw     s5, -56(s0)
-	lui     s6, %hi(GVAR2)
+	la      s6, GVAR2
 	add     s6, s6, s5
-	fsw     fs7, %lo(GVAR2)(s6)
+	fsw     fs7, 0(s6)
 	lw     t1, -44(s0)
 	li      t2, 1
 	addw     t0, t1, t2
@@ -216,13 +216,13 @@ L14:
 	addw     t0, t1, t2
 	sw     t0, -72(s0)
 	lw     s3, -60(s0)
-	lui     s4, %hi(GVAR3)
+	la      s4, GVAR3
 	add     s4, s4, s3
-	fld     ft1, %lo(GVAR3)(s4)
+	fld     ft1, 0(s4)
 	lw     s3, -72(s0)
-	lui     s4, %hi(GVAR3)
+	la      s4, GVAR3
 	add     s4, s4, s3
-	fld     ft2, %lo(GVAR3)(s4)
+	fld     ft2, 0(s4)
 	fadd.d     ft0, ft1, ft2
 	fsd     ft0, -88(s0)
 	lw     t1, -40(s0)
@@ -243,9 +243,9 @@ L14:
 	sw     t0, -96(s0)
 	fld     ft1, -88(s0)
 	lw     s3, -96(s0)
-	lui     s4, %hi(GVAR3)
+	la      s4, GVAR3
 	add     s4, s4, s3
-	fld     ft2, %lo(GVAR3)(s4)
+	fld     ft2, 0(s4)
 	fadd.d     ft0, ft1, ft2
 	fsd     ft0, -112(s0)
 	lw     t1, -32(s0)
@@ -266,9 +266,9 @@ L14:
 	sw     t0, -120(s0)
 	fld     ft1, -112(s0)
 	lw     s3, -120(s0)
-	lui     s4, %hi(GVAR3)
+	la      s4, GVAR3
 	add     s4, s4, s3
-	fld     ft2, %lo(GVAR3)(s4)
+	fld     ft2, 0(s4)
 	fadd.d     ft0, ft1, ft2
 	fsd     ft0, -136(s0)
 	lw     t1, -32(s0)
@@ -289,16 +289,16 @@ L14:
 	sw     t0, -144(s0)
 	fld     ft1, -136(s0)
 	lw     s3, -144(s0)
-	lui     s4, %hi(GVAR3)
+	la      s4, GVAR3
 	add     s4, s4, s3
-	fld     ft2, %lo(GVAR3)(s4)
+	fld     ft2, 0(s4)
 	fadd.d     ft0, ft1, ft2
 	fsd     ft0, -160(s0)
 	fld     fs7, -160(s0)
 	lw     s5, -52(s0)
-	lui     s6, %hi(GVAR4)
+	la      s6, GVAR4
 	add     s6, s6, s5
-	fsd     fs7, %lo(GVAR4)(s6)
+	fsd     fs7, 0(s6)
 	lw     t1, -40(s0)
 	li      t2, 1
 	addw     t0, t1, t2
@@ -376,16 +376,16 @@ L17:
 	mul     t0, t1, t2
 	sw     t0, -104(s0)
 	lw     s3, -100(s0)
-	lui     s4, %hi(GVAR5)
+	la      s4, GVAR5
 	add     s4, s4, s3
-	lw     t1, %lo(GVAR5)(s4)
+	lw     t1, 0(s4)
 	li      t2, 128
 	mul     t0, t1, t2
 	sw     t0, -108(s0)
 	lw     s3, -104(s0)
-	lui     s4, %hi(GVAR6)
+	la      s4, GVAR6
 	add     s4, s4, s3
-	lw     t1, %lo(GVAR6)(s4)
+	lw     t1, 0(s4)
 	li      t2, 4
 	mul     t0, t1, t2
 	sw     t0, -112(s0)
@@ -394,9 +394,9 @@ L17:
 	addw     t0, t1, t2
 	sw     t0, -108(s0)
 	lw     s3, -108(s0)
-	lui     s4, %hi(GVAR2)
+	la      s4, GVAR2
 	add     s4, s4, s3
-	flw     fs7, %lo(GVAR2)(s4)
+	flw     fs7, 0(s4)
 	fsw     fs7, -80(s0)
 	flw     fa0, -80(s0)
 	call    print_float
@@ -410,16 +410,16 @@ L17:
 	mul     t0, t1, t2
 	sw     t0, -120(s0)
 	lw     s3, -116(s0)
-	lui     s4, %hi(GVAR5)
+	la      s4, GVAR5
 	add     s4, s4, s3
-	lw     t1, %lo(GVAR5)(s4)
+	lw     t1, 0(s4)
 	li      t2, 256
 	mul     t0, t1, t2
 	sw     t0, -124(s0)
 	lw     s3, -120(s0)
-	lui     s4, %hi(GVAR6)
+	la      s4, GVAR6
 	add     s4, s4, s3
-	lw     t1, %lo(GVAR6)(s4)
+	lw     t1, 0(s4)
 	li      t2, 8
 	mul     t0, t1, t2
 	sw     t0, -128(s0)
@@ -428,9 +428,9 @@ L17:
 	addw     t0, t1, t2
 	sw     t0, -124(s0)
 	lw     s3, -124(s0)
-	lui     s4, %hi(GVAR4)
+	la      s4, GVAR4
 	add     s4, s4, s3
-	fld     fa0, %lo(GVAR4)(s4)
+	fld     fa0, 0(s4)
 	call    print_double
 	nop
 	lw     t1, -56(s0)

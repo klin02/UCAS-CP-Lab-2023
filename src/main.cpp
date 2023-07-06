@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string.h>
 
 #include "antlr4-runtime.h"
 
@@ -13,14 +14,36 @@
 
 using namespace antlr4;
 
+int                 OPTIM_LEVEL;
+
 SyntaxAnalysis      syntax_analysis;
 SymbolTable         symbol_table;
 TypeUtils           typeutils;
 SemanticAnalysis    semantic_analysis;
 RiscvGen            riscv_gen;
+
 int main(int argc, const char* argv[]) {
     std::ifstream stream;
-    stream.open(argv[1]);
+    std::string cact_path;
+    if(argc==2){
+        OPTIM_LEVEL = 0;
+        stream.open(argv[1]);
+        cact_path = argv[1];
+    }
+    else{
+        if(strcmp(argv[1],"-O0")==0)
+            OPTIM_LEVEL = 0;
+        else if(argv[1]=="-O1")
+            OPTIM_LEVEL = 1;
+        else if(argv[1]=="-O2")
+            OPTIM_LEVEL = 2;
+        else{
+            std::cout << "Illegal optim arg: " << argv[1] << std::endl;
+            return 3;
+        }
+        stream.open(argv[2]);
+        cact_path = argv[2];
+    }
     ANTLRInputStream input(stream);
     CACTLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
@@ -39,9 +62,8 @@ int main(int argc, const char* argv[]) {
     tree::ParseTreeWalker::DEFAULT.walk(&semantic_analysis, tree);
 
     #ifdef IR_gen
-    std::string cact_path = argv[1];
     //substr(start_pos,len)
-    std::string file_name = cact_path.substr(cact_path.rfind('/')+1,cact_path.rfind('.')-cact_path.rfind('/')-1);
+    std::string file_name = cact_path.substr(cact_path.rfind('/')+1,cact_path.rfind('.')-cact_path.rfind('/')-1) + ".S";
 
     // std::cout << "----------------------------IR Code: ------------------------------" << std::endl;
     // std::cout <<file_name <<" " <<file_name2 << cact_path.find('.cact')<< std::endl;

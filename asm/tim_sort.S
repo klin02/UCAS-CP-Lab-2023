@@ -1,4 +1,4 @@
-	.file   "tim_sort.cact"
+	.file   "tim_sort.S.cact"
 	.option nopic
 	.attribute arch, "rv64i2p0_m2p0_a2p0_f2p0_d2p0_c2p0"
 	.attribute unaligned_access, 0
@@ -229,9 +229,9 @@ L19:
 	add     s4, s4, s3
 	lw     s7, 0(s4)
 	lw     s5, -72(s0)
-	lui     s6, %hi(GVAR1)
+	la      s6, GVAR1
 	add     s6, s6, s5
-	sw     s7, %lo(GVAR1)(s6)
+	sw     s7, 0(s6)
 	lw     t1, -44(s0)
 	li      t2, 1
 	addw     t0, t1, t2
@@ -253,9 +253,9 @@ L20:
 	add     s4, s4, s3
 	lw     s7, 0(s4)
 	lw     s5, -84(s0)
-	lui     s6, %hi(GVAR1)
+	la      s6, GVAR1
 	add     s6, s6, s5
-	sw     s7, %lo(GVAR1)(s6)
+	sw     s7, 0(s6)
 	lw     t1, -52(s0)
 	li      t2, 1
 	addw     t0, t1, t2
@@ -290,9 +290,9 @@ L23:
 	add     s4, s4, s3
 	lw     s7, 0(s4)
 	lw     s5, -100(s0)
-	lui     s6, %hi(GVAR1)
+	la      s6, GVAR1
 	add     s6, s6, s5
-	sw     s7, %lo(GVAR1)(s6)
+	sw     s7, 0(s6)
 	lw     t1, -44(s0)
 	li      t2, 1
 	addw     t0, t1, t2
@@ -326,9 +326,9 @@ L26:
 	add     s4, s4, s3
 	lw     s7, 0(s4)
 	lw     s5, -116(s0)
-	lui     s6, %hi(GVAR1)
+	la      s6, GVAR1
 	add     s6, s6, s5
-	sw     s7, %lo(GVAR1)(s6)
+	sw     s7, 0(s6)
 	lw     t1, -52(s0)
 	li      t2, 1
 	addw     t0, t1, t2
@@ -364,9 +364,9 @@ L29:
 	mul     t0, t1, t2
 	sw     t0, -140(s0)
 	lw     s3, -140(s0)
-	lui     s4, %hi(GVAR1)
+	la      s4, GVAR1
 	add     s4, s4, s3
-	lw     s7, %lo(GVAR1)(s4)
+	lw     s7, 0(s4)
 	lw     s5, -132(s0)
 	ld      s6, -24(s0)
 	add     s6, s6, s5
@@ -444,9 +444,9 @@ L35:
 	sw     t0, -104(s0)
 	lw     s7, -52(s0)
 	lw     s5, -104(s0)
-	lui     s6, %hi(GVAR0)
+	la      s6, GVAR0
 	add     s6, s6, s5
-	sw     s7, %lo(GVAR0)(s6)
+	sw     s7, 0(s6)
 	lw     t3, -52(s0)
 	lw     t4, -28(s0)
 	blt     t3, t4, L37
@@ -556,9 +556,9 @@ L46:
 	mul     t0, t1, t2
 	sw     t0, -152(s0)
 	lw     s3, -152(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     s7, %lo(GVAR0)(s4)
+	lw     s7, 0(s4)
 	sw     s7, -60(s0)
 	lw     s7, -52(s0)
 	sw     s7, -68(s0)
@@ -632,9 +632,9 @@ L54:
 	mul     t0, t1, t2
 	sw     t0, -184(s0)
 	lw     s3, -184(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     t1, %lo(GVAR0)(s4)
+	lw     t1, 0(s4)
 	lw     t2, -44(s0)
 	addw     t0, t1, t2
 	sw     t0, -188(s0)
@@ -657,13 +657,13 @@ L53:
 	sw     t0, -200(s0)
 	ld      a0, -24(s0)
 	lw     s3, -196(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     a1, %lo(GVAR0)(s4)
+	lw     a1, 0(s4)
 	lw     s3, -200(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     a2, %lo(GVAR0)(s4)
+	lw     a2, 0(s4)
 	lw     a3, -52(s0)
 	call    binary_insert
 	nop
@@ -686,9 +686,9 @@ L57:
 	sw     t0, -208(s0)
 	lw     t1, -52(s0)
 	lw     s3, -208(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     t2, %lo(GVAR0)(s4)
+	lw     t2, 0(s4)
 	subw     t0, t1, t2
 	sw     t0, -212(s0)
 	lw     t1, -212(s0)
@@ -708,13 +708,13 @@ L57:
 	mul     t0, t1, t2
 	sw     t0, -228(s0)
 	lw     s3, -220(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     t1, %lo(GVAR0)(s4)
+	lw     t1, 0(s4)
 	lw     s3, -228(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     t2, %lo(GVAR0)(s4)
+	lw     t2, 0(s4)
 	subw     t0, t1, t2
 	sw     t0, -232(s0)
 	lw     t3, -216(s0)
@@ -738,13 +738,13 @@ L58:
 	sw     t0, -244(s0)
 	ld      a0, -24(s0)
 	lw     s3, -240(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     a1, %lo(GVAR0)(s4)
+	lw     a1, 0(s4)
 	lw     s3, -244(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     a2, %lo(GVAR0)(s4)
+	lw     a2, 0(s4)
 	lw     a3, -52(s0)
 	call    merge_sort
 	nop
@@ -788,13 +788,13 @@ L62:
 	sw     t0, -268(s0)
 	ld      a0, -24(s0)
 	lw     s3, -260(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     a1, %lo(GVAR0)(s4)
+	lw     a1, 0(s4)
 	lw     s3, -268(s0)
-	lui     s4, %hi(GVAR0)
+	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     a2, %lo(GVAR0)(s4)
+	lw     a2, 0(s4)
 	lw     a3, -52(s0)
 	call    merge_sort
 	nop
@@ -828,8 +828,7 @@ main:
 	sw     a0, -36(s0)
 	lw     s7, -36(s0)
 	sw     s7, -32(s0)
-	lui     s4, %hi(GVAR2)
-	addi    a0, s4, %lo(GVAR2)
+	la      a0, GVAR2
 	lw     a1, -32(s0)
 	call    simplified_tim_sort
 	nop
@@ -844,9 +843,9 @@ L65:
 	mul     t0, t1, t2
 	sw     t0, -40(s0)
 	lw     s3, -40(s0)
-	lui     s4, %hi(GVAR2)
+	la      s4, GVAR2
 	add     s4, s4, s3
-	lw     a0, %lo(GVAR2)(s4)
+	lw     a0, 0(s4)
 	call    print_int
 	nop
 	lw     t1, -24(s0)

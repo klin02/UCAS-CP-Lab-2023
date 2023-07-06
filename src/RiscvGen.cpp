@@ -99,34 +99,37 @@ void RiscvGen:: var_to_reg(std::string var_name,std::string reg_name){
         basety = semantic_analysis.Gvar_array[order].basety;
         is_array = semantic_analysis.Gvar_array[order].length != 1;
         //is_array 三种表示示例 reg_name = t0/ft0 offset_reg = s3
-        //self: lui s4, %hi(GVAR0)
-        //      addi t0, s4, %lo(GVAR0)
-        //addr: lui s4, %hi(GVAR0)
+        //self: la t0, GVAR0
+        //addr: la s4, GVAR0
+        //      add t0, s4, s3
+        //item: la s4, GVAR0
         //      add s4, s4, s3
-        //      add t0, s4, %lo(GVAR0)
-        //item: lui s4, %hi(GVAR0)
-        //      add s4, s4, s3
-        //      flw ft0, %lo(GVAR0)(s4)
+        //      flw ft0, 0(s4)
 
         //not array 表示示例
-        //lui s4, %hi(GVAR0)
-        //flw ft0, %lo(GVAR0)(s4)
+        //la s4, GVAR0
+        //flw ft0, 0(s4)
 
         //提取公共部分，节约代码
-        ASM_array.push_back("lui     s4, %hi("+stack_label+")");
-        if(is_array && (is_addr || is_item)){
-            ASM_array.push_back("add     s4, s4, s3");
-        }
-        if(is_array && !is_item){
-            ASM_array.push_back("addi    "+reg_name+", s4, %lo("+stack_label+")");
+        if(is_array && !(is_addr || is_item)){
+            ASM_array.push_back("la      "+reg_name+", "+stack_label);
         }
         else{
-            //全局变量没有PTR
-            std::string op = basety == BTY_DOUBLE ? "fld" : 
-                             basety == BTY_FLOAT  ? "flw" : 
-                             basety == BTY_INT    ? "lw"  :
-                             basety == BTY_BOOL   ? "lb"  : "";
-            ASM_array.push_back(op+"     "+reg_name+", %lo("+stack_label+")(s4)");
+            ASM_array.push_back("la      s4, "+stack_label);
+            if(is_array && is_addr){
+                ASM_array.push_back("add     "+reg_name+", s4, s3");
+            }
+            else{
+                if(is_array && is_item){
+                    ASM_array.push_back("add     s4, s4, s3");
+                }
+                //全局变量没有PTR
+                std::string op = basety == BTY_DOUBLE ? "fld" : 
+                                 basety == BTY_FLOAT  ? "flw" : 
+                                 basety == BTY_INT    ? "lw"  :
+                                 basety == BTY_BOOL   ? "lb"  : "";
+                ASM_array.push_back(op+"     "+reg_name+", 0(s4)");
+            }
         }
     }
     else if(is_lvar){
@@ -212,9 +215,9 @@ void RiscvGen:: var_to_reg(std::string var_name,std::string reg_name){
             cact_basety_t basety = is_float ? BTY_FLOAT : BTY_DOUBLE;
             stack_initval(var_name,basety,1);
             //主体代码
-            ASM_array.push_back("lui     s4, %lo("+stack_label+")");
+            ASM_array.push_back("la   s4, "+stack_label+")");
             std::string op = is_float ? "flw" : "fld";
-            ASM_array.push_back(op+"     "+reg_name+", %hi("+stack_label+")(s4)");
+            ASM_array.push_back(op+"     "+reg_name+", 0(s4)");
         }
         else{ //int bool
             std::string valstr = var_name.substr(1);
@@ -250,11 +253,11 @@ void RiscvGen:: reg_to_var(std::string var_name,std::string reg_name){
     //store部分示例：使用的额外寄存器 s5 s6/fs6
     //考虑到is_array.self和other的情况相同，在lvar对ptr特别区分即可
     //is_gvar: offset_reg = s5 reg_name = fs7
-    //self: lui s6, %hi(GVAR0)
-    //      fsw fs7, %lo(GVAR0)(s6)
-    //item: lui s6, %hi(GVAR0)
+    //self: la s6, GVAR0
+    //      fsw fs7, 0(s6)
+    //item: la s6, GVAR0
     //      add s6, s6, s5
-    //      fsw fs7, %lo(GVAR0)(s6)
+    //      fsw fs7, 0(s6)
 
     //is_lvar: stack_offset=20 offset_reg=s5
     //is_array:
@@ -278,11 +281,11 @@ void RiscvGen:: reg_to_var(std::string var_name,std::string reg_name){
                          basety == BTY_INT    ? "sw"  :
                          basety == BTY_BOOL   ? "sb"  : "" ;
         std::string stack_label = "GVAR"+std::to_string(order);
-        ASM_array.push_back("lui     s6, %hi("+stack_label+")");
+        ASM_array.push_back("la      s6, "+stack_label);
         if(is_item){
             ASM_array.push_back("add     s6, s6, s5");
         }
-        ASM_array.push_back(op+"     "+reg_name+", %lo("+stack_label+")(s6)");
+        ASM_array.push_back(op+"     "+reg_name+", 0(s6)");
     }
     else if(is_lvar){
         //存储到某个局部变量，情形可能为^2<%3 这里^2可能为指针类型
@@ -293,9 +296,9 @@ void RiscvGen:: reg_to_var(std::string var_name,std::string reg_name){
                          basety == BTY_BOOL   || basety == BTY_BOOL_PTR   ? "sb"  : "" ;
         std::string stack_offset = "-"+std::to_string(semantic_analysis.Lvar_array[order].offset);
         bool is_ptr = basety == BTY_DOUBLE_PTR || basety == BTY_FLOAT_PTR || basety == BTY_INT_PTR || basety == BTY_BOOL_PTR ;
-            //item: ld s6, -20(s0)
-    //      add s6, s6, s5
-    //      fsw fs7, 0(s6)
+        //item: ld s6, -20(s0)
+        //      add s6, s6, s5
+        //      fsw fs7, 0(s6)
         if(is_item){
             if(is_ptr){
                 ASM_array.push_back("ld      s6, "+stack_offset+"(s0)");
@@ -747,8 +750,7 @@ void RiscvGen:: Gen_L_Alloc(IR_code_t &irc){
     //主体代码，将值从标号转移到栈上
     if(len > 1){
         //将地址存到寄存器s2
-        ASM_array.push_back("lui     s2, %hi(" + stack_label + ")");
-        ASM_array.push_back("addi    s2, s2, %lo(" + stack_label + ")");
+        ASM_array.push_back("la      s2, " + stack_label);
         //从标号转移多少个byte
         int total_size = base_size * len;
         int done_size = 0; //已经转移的字节数
@@ -790,8 +792,8 @@ void RiscvGen:: Gen_L_Alloc(IR_code_t &irc){
         }
         else{
             std::string suffix = (basety == BTY_FLOAT) ? "w" : "d";
-            ASM_array.push_back("lui     s2, %hi(" + stack_label + ")");
-            ASM_array.push_back("fl"+suffix+"     fs1, %lo("+stack_label+")(s2)");
+            ASM_array.push_back("la      s2, " + stack_label);
+            ASM_array.push_back("fl"+suffix+"     fs1, 0(s2)");
             ASM_array.push_back("fs"+suffix+"     fs1, -"+std::to_string(offset)+"(s0)");
         }
     }
