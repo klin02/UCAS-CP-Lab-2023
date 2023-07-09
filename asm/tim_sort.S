@@ -23,11 +23,12 @@ L0:
 	lw     t3, -44(s0)
 	lw     t4, -36(s0)
 	ble     t3, t4, L2
+L3:
 	j       L1
 L2:
 	lw     t1, -44(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -88(s0)
 	lw     s3, -88(s0)
 	ld      s4, -24(s0)
@@ -43,30 +44,32 @@ L2:
 	lw     s7, -92(s0)
 	sw     s7, -68(s0)
 	lw     t1, -68(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -96(s0)
 	lw     t3, -84(s0)
 	lw     s3, -96(s0)
 	ld      s4, -24(s0)
 	add     s4, s4, s3
 	lw     t4, 0(s4)
-	blt     t3, t4, L4
-	j       L3
-L4:
+	blt     t3, t4, L5
+L6:
+	j       L4
 L5:
+L7:
 	lw     t3, -60(s0)
 	lw     t4, -68(s0)
-	ble     t3, t4, L7
-	j       L6
-L7:
+	ble     t3, t4, L9
+L10:
+	j       L8
+L9:
 	lw     t1, -68(s0)
 	lw     t2, -60(s0)
 	subw     t0, t1, t2
 	sw     t0, -100(s0)
 	lw     t1, -100(s0)
-	li      t2, 2
-	div     t0, t1, t2
+	li      t2, 1
+	sra     t0, t1, t2
 	sw     t0, -104(s0)
 	lw     t1, -60(s0)
 	lw     t2, -104(s0)
@@ -75,57 +78,67 @@ L7:
 	lw     s7, -108(s0)
 	sw     s7, -76(s0)
 	lw     t1, -76(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -112(s0)
 	lw     t3, -84(s0)
 	lw     s3, -112(s0)
 	ld      s4, -24(s0)
 	add     s4, s4, s3
 	lw     t4, 0(s4)
-	blt     t3, t4, L9
-	j       L10
-L9:
+	blt     t3, t4, L12
+L14:
+	j       L13
+L12:
 	lw     t1, -76(s0)
 	li      t2, 1
 	subw     t0, t1, t2
 	sw     t0, -116(s0)
 	lw     s7, -116(s0)
 	sw     s7, -68(s0)
+	lw     t3, -60(s0)
+	lw     t4, -68(s0)
+	ble     t3, t4, L9
+L108:
 	j       L8
-L10:
+L13:
 	lw     t1, -76(s0)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -120(s0)
 	lw     s7, -120(s0)
 	sw     s7, -60(s0)
+L11:
+	lw     t3, -60(s0)
+	lw     t4, -68(s0)
+	ble     t3, t4, L9
+L104:
+	j       L8
 L8:
-	j       L5
-L6:
 	lw     t1, -44(s0)
 	li      t2, 1
 	subw     t0, t1, t2
 	sw     t0, -124(s0)
 	lw     s7, -124(s0)
 	sw     s7, -52(s0)
-L11:
+L15:
 	lw     t3, -52(s0)
 	lw     t4, -60(s0)
-	blt     t4, t3, L13
-	j       L12
-L13:
+	ble     t4, t3, L17
+L18:
+	j       L16
+L17:
 	lw     t1, -52(s0)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -128(s0)
 	lw     t1, -128(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -132(s0)
 	lw     t1, -52(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -136(s0)
 	lw     s3, -136(s0)
 	ld      s4, -24(s0)
@@ -141,25 +154,33 @@ L13:
 	sw     t0, -140(s0)
 	lw     s7, -140(s0)
 	sw     s7, -52(s0)
-	j       L11
-L12:
+	lw     t3, -52(s0)
+	lw     t4, -60(s0)
+	ble     t4, t3, L17
+L103:
+	j       L16
+L16:
 	lw     t1, -60(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -144(s0)
 	lw     s7, -84(s0)
 	lw     s5, -144(s0)
 	ld      s6, -24(s0)
 	add     s6, s6, s5
 	sw     s7, 0(s6)
-L3:
+L4:
 	lw     t1, -44(s0)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -148(s0)
 	lw     s7, -148(s0)
 	sw     s7, -44(s0)
-	j       L0
+	lw     t3, -44(s0)
+	lw     t4, -36(s0)
+	ble     t3, t4, L2
+L105:
+	j       L1
 L1:
 	ld      ra, 152(sp)
 	ld      s0, 144(sp)
@@ -186,24 +207,26 @@ merge_sort:
 	sw     s7, -52(s0)
 	li      s7, 0
 	sw     s7, -60(s0)
-L14:
+L19:
 	lw     t3, -44(s0)
 	lw     t4, -32(s0)
-	blt     t3, t4, L17
-	j       L15
-L17:
+	blt     t3, t4, L22
+L23:
+	j       L20
+L22:
 	lw     t3, -52(s0)
 	lw     t4, -36(s0)
-	ble     t3, t4, L16
-	j       L15
-L16:
+	ble     t3, t4, L21
+L24:
+	j       L20
+L21:
 	lw     t1, -44(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -64(s0)
 	lw     t1, -52(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -68(s0)
 	lw     s3, -64(s0)
 	ld      s4, -24(s0)
@@ -213,16 +236,17 @@ L16:
 	ld      s4, -24(s0)
 	add     s4, s4, s3
 	lw     t4, 0(s4)
-	ble     t3, t4, L19
-	j       L20
-L19:
+	ble     t3, t4, L26
+L28:
+	j       L27
+L26:
 	lw     t1, -60(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -72(s0)
 	lw     t1, -44(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -76(s0)
 	lw     s3, -76(s0)
 	ld      s4, -24(s0)
@@ -238,15 +262,15 @@ L19:
 	sw     t0, -80(s0)
 	lw     s7, -80(s0)
 	sw     s7, -44(s0)
-	j       L18
-L20:
+	j       L25
+L27:
 	lw     t1, -60(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -84(s0)
 	lw     t1, -52(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -88(s0)
 	lw     s3, -88(s0)
 	ld      s4, -24(s0)
@@ -262,28 +286,33 @@ L20:
 	sw     t0, -92(s0)
 	lw     s7, -92(s0)
 	sw     s7, -52(s0)
-L18:
+L25:
 	lw     t1, -60(s0)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -96(s0)
 	lw     s7, -96(s0)
 	sw     s7, -60(s0)
-	j       L14
-L15:
-L21:
 	lw     t3, -44(s0)
 	lw     t4, -32(s0)
-	blt     t3, t4, L23
-	j       L22
-L23:
+	blt     t3, t4, L22
+L107:
+	j       L20
+L20:
+L29:
+	lw     t3, -44(s0)
+	lw     t4, -32(s0)
+	blt     t3, t4, L31
+L32:
+	j       L30
+L31:
 	lw     t1, -60(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -100(s0)
 	lw     t1, -44(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -104(s0)
 	lw     s3, -104(s0)
 	ld      s4, -24(s0)
@@ -305,21 +334,26 @@ L23:
 	sw     t0, -112(s0)
 	lw     s7, -112(s0)
 	sw     s7, -60(s0)
-	j       L21
-L22:
-L24:
+	lw     t3, -44(s0)
+	lw     t4, -32(s0)
+	blt     t3, t4, L31
+L98:
+	j       L30
+L30:
+L33:
 	lw     t3, -52(s0)
 	lw     t4, -36(s0)
-	ble     t3, t4, L26
-	j       L25
-L26:
+	ble     t3, t4, L35
+L36:
+	j       L34
+L35:
 	lw     t1, -60(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -116(s0)
 	lw     t1, -52(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -120(s0)
 	lw     s3, -120(s0)
 	ld      s4, -24(s0)
@@ -341,27 +375,32 @@ L26:
 	sw     t0, -128(s0)
 	lw     s7, -128(s0)
 	sw     s7, -60(s0)
-	j       L24
-L25:
+	lw     t3, -52(s0)
+	lw     t4, -36(s0)
+	ble     t3, t4, L35
+L106:
+	j       L34
+L34:
 	lw     s7, -28(s0)
 	sw     s7, -44(s0)
-L27:
+L37:
 	lw     t3, -44(s0)
 	lw     t4, -36(s0)
-	ble     t3, t4, L29
-	j       L28
-L29:
+	ble     t3, t4, L39
+L40:
+	j       L38
+L39:
 	lw     t1, -44(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -132(s0)
 	lw     t1, -44(s0)
 	lw     t2, -28(s0)
 	subw     t0, t1, t2
 	sw     t0, -136(s0)
 	lw     t1, -136(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -140(s0)
 	lw     s3, -140(s0)
 	la      s4, GVAR1
@@ -377,8 +416,12 @@ L29:
 	sw     t0, -144(s0)
 	lw     s7, -144(s0)
 	sw     s7, -44(s0)
-	j       L27
-L28:
+	lw     t3, -44(s0)
+	lw     t4, -36(s0)
+	ble     t3, t4, L39
+L102:
+	j       L38
+L38:
 	ld      ra, 136(sp)
 	ld      s0, 128(sp)
 	addi    sp, sp, 144
@@ -402,20 +445,25 @@ simplified_tim_sort:
 	sw     t0, -88(s0)
 	lw     s7, -88(s0)
 	sw     s7, -44(s0)
-L30:
+L41:
 	lw     t3, -44(s0)
 	li      t4, 64
-	ble     t4, t3, L32
-	j       L31
-L32:
+	blt     t4, t3, L43
+L44:
+	j       L42
+L43:
 	lw     t1, -44(s0)
-	li      t2, 2
-	div     t0, t1, t2
+	li      t2, 1
+	sra     t0, t1, t2
 	sw     t0, -92(s0)
 	lw     s7, -92(s0)
 	sw     s7, -44(s0)
-	j       L30
-L31:
+	lw     t3, -44(s0)
+	li      t4, 64
+	blt     t4, t3, L43
+L99:
+	j       L42
+L42:
 	lw     t1, -44(s0)
 	li      t2, 1
 	addw     t0, t1, t2
@@ -426,12 +474,13 @@ L31:
 	sw     s7, -52(s0)
 	li      s7, 0
 	sw     s7, -76(s0)
-L33:
+L45:
 	lw     t3, -52(s0)
 	lw     t4, -28(s0)
-	blt     t3, t4, L35
-	j       L34
-L35:
+	blt     t3, t4, L47
+L48:
+	j       L46
+L47:
 	lw     t1, -52(s0)
 	li      t2, 1
 	addw     t0, t1, t2
@@ -439,8 +488,8 @@ L35:
 	lw     s7, -100(s0)
 	sw     s7, -52(s0)
 	lw     t1, -76(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -104(s0)
 	lw     s7, -52(s0)
 	lw     s5, -104(s0)
@@ -449,20 +498,25 @@ L35:
 	sw     s7, 0(s6)
 	lw     t3, -52(s0)
 	lw     t4, -28(s0)
-	blt     t3, t4, L37
-	j       L36
-L37:
+	blt     t3, t4, L50
+L51:
+	lw     t3, -76(s0)
+	li      t4, 0
+	blt     t4, t3, L74
+L95:
+	j       L72
+L50:
 	lw     t1, -52(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -108(s0)
 	lw     t1, -52(s0)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -112(s0)
 	lw     t1, -112(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -116(s0)
 	lw     s3, -108(s0)
 	ld      s4, -24(s0)
@@ -472,26 +526,28 @@ L37:
 	ld      s4, -24(s0)
 	add     s4, s4, s3
 	lw     t4, 0(s4)
-	ble     t3, t4, L39
-	j       L40
-L39:
-L41:
+	ble     t3, t4, L53
+L55:
+	j       L54
+L53:
+L56:
 	lw     t3, -52(s0)
 	lw     t4, -28(s0)
-	blt     t3, t4, L44
-	j       L42
-L44:
+	blt     t3, t4, L59
+L60:
+	j       L52
+L59:
 	lw     t1, -52(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -120(s0)
 	lw     t1, -52(s0)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -124(s0)
 	lw     t1, -124(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -128(s0)
 	lw     s3, -120(s0)
 	ld      s4, -24(s0)
@@ -501,36 +557,40 @@ L44:
 	ld      s4, -24(s0)
 	add     s4, s4, s3
 	lw     t4, 0(s4)
-	ble     t3, t4, L43
-	j       L42
-L43:
+	ble     t3, t4, L58
+L61:
+	j       L52
+L58:
 	lw     t1, -52(s0)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -132(s0)
 	lw     s7, -132(s0)
 	sw     s7, -52(s0)
-	j       L41
-L42:
-	j       L38
-L40:
-L45:
 	lw     t3, -52(s0)
 	lw     t4, -28(s0)
-	blt     t3, t4, L48
-	j       L46
-L48:
+	blt     t3, t4, L59
+L97:
+	j       L52
+L54:
+L62:
+	lw     t3, -52(s0)
+	lw     t4, -28(s0)
+	blt     t3, t4, L65
+L66:
+	j       L63
+L65:
 	lw     t1, -52(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -136(s0)
 	lw     t1, -52(s0)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -140(s0)
 	lw     t1, -140(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -144(s0)
 	lw     s3, -136(s0)
 	ld      s4, -24(s0)
@@ -540,20 +600,25 @@ L48:
 	ld      s4, -24(s0)
 	add     s4, s4, s3
 	lw     t4, 0(s4)
-	ble     t4, t3, L47
-	j       L46
-L47:
+	blt     t4, t3, L64
+L67:
+	j       L63
+L64:
 	lw     t1, -52(s0)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -148(s0)
 	lw     s7, -148(s0)
 	sw     s7, -52(s0)
-	j       L45
-L46:
+	lw     t3, -52(s0)
+	lw     t4, -28(s0)
+	blt     t3, t4, L65
+L101:
+	j       L63
+L63:
 	lw     t1, -76(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -152(s0)
 	lw     s3, -152(s0)
 	la      s4, GVAR0
@@ -562,28 +627,27 @@ L46:
 	sw     s7, -60(s0)
 	lw     s7, -52(s0)
 	sw     s7, -68(s0)
-L49:
+L68:
 	lw     t3, -60(s0)
 	lw     t4, -68(s0)
-	blt     t3, t4, L51
-	j       L50
-L51:
+	blt     t3, t4, L70
+L71:
+	j       L69
+L70:
 	lw     t1, -60(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -156(s0)
 	lw     s3, -156(s0)
 	ld      s4, -24(s0)
 	add     s4, s4, s3
 	lw     s7, 0(s4)
 	sw     s7, -36(s0)
-	lw     t1, -60(s0)
-	li      t2, 4
-	mul     t0, t1, t2
-	sw     t0, -160(s0)
+	lw     s7, -156(s0)
+	sw     s7, -160(s0)
 	lw     t1, -68(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -164(s0)
 	lw     s3, -164(s0)
 	ld      s4, -24(s0)
@@ -593,10 +657,8 @@ L51:
 	ld      s6, -24(s0)
 	add     s6, s6, s5
 	sw     s7, 0(s6)
-	lw     t1, -68(s0)
-	li      t2, 4
-	mul     t0, t1, t2
-	sw     t0, -168(s0)
+	lw     s7, -164(s0)
+	sw     s7, -168(s0)
 	lw     s7, -36(s0)
 	lw     s5, -168(s0)
 	ld      s6, -24(s0)
@@ -614,22 +676,27 @@ L51:
 	sw     t0, -176(s0)
 	lw     s7, -176(s0)
 	sw     s7, -68(s0)
-	j       L49
-L50:
-L38:
-L36:
+	lw     t3, -60(s0)
+	lw     t4, -68(s0)
+	blt     t3, t4, L70
+L96:
+	j       L69
+L69:
+L52:
+L49:
 	lw     t3, -76(s0)
 	li      t4, 0
-	ble     t4, t3, L54
-	j       L52
-L54:
+	blt     t4, t3, L74
+L75:
+	j       L72
+L74:
 	lw     t1, -76(s0)
 	li      t2, 1
 	subw     t0, t1, t2
 	sw     t0, -180(s0)
 	lw     t1, -180(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -184(s0)
 	lw     s3, -184(s0)
 	la      s4, GVAR0
@@ -640,20 +707,21 @@ L54:
 	sw     t0, -188(s0)
 	lw     t3, -52(s0)
 	lw     t4, -188(s0)
-	blt     t3, t4, L53
-	j       L52
-L53:
+	blt     t3, t4, L73
+L76:
+	j       L72
+L73:
 	lw     t1, -76(s0)
 	li      t2, 1
 	subw     t0, t1, t2
 	sw     t0, -192(s0)
 	lw     t1, -192(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -196(s0)
 	lw     t1, -76(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -200(s0)
 	ld      a0, -24(s0)
 	lw     s3, -196(s0)
@@ -673,16 +741,17 @@ L53:
 	sw     t0, -204(s0)
 	lw     s7, -204(s0)
 	sw     s7, -76(s0)
-L52:
-L55:
+L72:
+L77:
 	lw     t3, -76(s0)
 	li      t4, 0
-	ble     t4, t3, L57
-	j       L56
-L57:
+	blt     t4, t3, L79
+L80:
+	j       L78
+L79:
 	lw     t1, -76(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -208(s0)
 	lw     t1, -52(s0)
 	lw     s3, -208(s0)
@@ -692,22 +761,18 @@ L57:
 	subw     t0, t1, t2
 	sw     t0, -212(s0)
 	lw     t1, -212(s0)
-	li      t2, 2
-	mul     t0, t1, t2
+	li      t2, 1
+	sll     t0, t1, t2
 	sw     t0, -216(s0)
-	lw     t1, -76(s0)
-	li      t2, 4
-	mul     t0, t1, t2
-	sw     t0, -220(s0)
 	lw     t1, -76(s0)
 	li      t2, 1
 	subw     t0, t1, t2
 	sw     t0, -224(s0)
 	lw     t1, -224(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -228(s0)
-	lw     s3, -220(s0)
+	lw     s3, -208(s0)
 	la      s4, GVAR0
 	add     s4, s4, s3
 	lw     t1, 0(s4)
@@ -719,22 +784,21 @@ L57:
 	sw     t0, -232(s0)
 	lw     t3, -216(s0)
 	lw     t4, -232(s0)
-	ble     t3, t4, L59
-	j       L58
-L59:
-	j       L56
-L58:
+	ble     t3, t4, L78
+L83:
+	j       L81
+L81:
 	lw     t1, -76(s0)
 	li      t2, 1
 	subw     t0, t1, t2
 	sw     t0, -236(s0)
 	lw     t1, -236(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -240(s0)
 	lw     t1, -76(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -244(s0)
 	ld      a0, -24(s0)
 	lw     s3, -240(s0)
@@ -754,37 +818,46 @@ L58:
 	sw     t0, -248(s0)
 	lw     s7, -248(s0)
 	sw     s7, -76(s0)
-	j       L55
-L56:
+	lw     t3, -76(s0)
+	li      t4, 0
+	blt     t4, t3, L79
+L94:
+	j       L78
+L78:
 	lw     t1, -76(s0)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -252(s0)
 	lw     s7, -252(s0)
 	sw     s7, -76(s0)
-	j       L33
-L34:
-L60:
+	lw     t3, -52(s0)
+	lw     t4, -28(s0)
+	blt     t3, t4, L47
+L100:
+	j       L46
+L46:
+L84:
 	lw     t3, -76(s0)
 	li      t4, 1
-	ble     t4, t3, L62
-	j       L61
-L62:
+	blt     t4, t3, L86
+L87:
+	j       L85
+L86:
 	lw     t1, -76(s0)
 	li      t2, 2
 	subw     t0, t1, t2
 	sw     t0, -256(s0)
 	lw     t1, -256(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -260(s0)
 	lw     t1, -76(s0)
 	li      t2, 1
 	subw     t0, t1, t2
 	sw     t0, -264(s0)
 	lw     t1, -264(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -268(s0)
 	ld      a0, -24(s0)
 	lw     s3, -260(s0)
@@ -804,8 +877,12 @@ L62:
 	sw     t0, -272(s0)
 	lw     s7, -272(s0)
 	sw     s7, -76(s0)
-	j       L60
-L61:
+	lw     t3, -76(s0)
+	li      t4, 1
+	blt     t4, t3, L86
+L93:
+	j       L85
+L85:
 	ld      ra, 264(sp)
 	ld      s0, 256(sp)
 	addi    sp, sp, 272
@@ -832,15 +909,16 @@ main:
 	lw     a1, -32(s0)
 	call    simplified_tim_sort
 	nop
-L63:
+L88:
 	lw     t3, -24(s0)
 	lw     t4, -32(s0)
-	ble     t3, t4, L65
-	j       L64
-L65:
+	ble     t3, t4, L90
+L91:
+	j       L89
+L90:
 	lw     t1, -24(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -40(s0)
 	lw     s3, -40(s0)
 	la      s4, GVAR2
@@ -854,8 +932,12 @@ L65:
 	sw     t0, -44(s0)
 	lw     s7, -44(s0)
 	sw     s7, -24(s0)
-	j       L63
-L64:
+	lw     t3, -24(s0)
+	lw     t4, -32(s0)
+	ble     t3, t4, L90
+L92:
+	j       L89
+L89:
 	li      a0, 0
 	ld      ra, 40(sp)
 	ld      s0, 32(sp)

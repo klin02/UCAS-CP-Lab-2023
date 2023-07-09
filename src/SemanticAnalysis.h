@@ -84,21 +84,6 @@ class SemanticAnalysis: public CACTListener {
         void enterStmt(T1 *ctx);
         template <typename T1>
         void exitStmt(T1 *ctx);
-
-        void printIRC(std::ofstream &outfile){
-            outfile << std::setw(10) << "IRop"   << '|' 
-                    << std::setw(10) << "Basety" << '|' 
-                    << std::setw(10) << "result" << '|' 
-                    << std::setw(10) << "arg1"   << '|' 
-                    << std::setw(10) << "arg2"   << '|' << std::endl;
-            for(auto IRC = IRC_array.begin(); IRC!= IRC_array.end(); IRC++) {
-                outfile << std::setw(10) << (typeutils.IRop_to_str)[IRC->IRop]      << '|' 
-                        << std::setw(10) << (typeutils.basety_to_str)[IRC->basety]  << '|' 
-                        << std::setw(10) << IRC->result << '|' 
-                        << std::setw(10) << IRC->arg1   << '|' 
-                        << std::setw(10) << IRC->arg2   << '|'<< std::endl;
-            }
-        }
         #endif
 
         //添加内联函数声明

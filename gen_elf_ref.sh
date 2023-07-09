@@ -10,5 +10,11 @@ do
     base=${file##*/}
     base=${base%.*}
     elf=${elf_dir}/${base}
-    riscv64-unknown-elf-gcc -o $elf $file -L./libcact -lcactio
+    if [ "$1" == "io" ]
+    then
+        LIB=./libcact
+    else
+        LIB=./cactio/${base}
+    fi
+    riscv64-unknown-elf-gcc -o $elf $file -L$LIB -lcactio
 done

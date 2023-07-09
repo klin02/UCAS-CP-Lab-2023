@@ -881,9 +881,6 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
         }
 
         #ifdef IR_gen
-        //统计字节偏移量，使用临时变量
-        std::string byte_offset = newTemp(BTY_INT);
-        addIRC(IR_L_ALLOC,BTY_INT,byte_offset);
         //单位元素的字节偏移，语义分析不出现PTR，只有IR传参的时候可能使用
         int base_size;
         switch(iter_type.basety){
@@ -897,27 +894,31 @@ void SemanticAnalysis::exitLVal(CACTParser::LValContext *ctx){
                 break;
         }
 
-        int subproduct = 1; //后续维度乘积，注意这里不能用总维度除以首维度，因为首维度允许隐式声明
-        //单独把layer=1的情况提取出来，节省一条指令
-        for(int j=1;j<dim_size;j++){
-            subproduct *= iter_type.arrdims[j];
-        }
-        std::string times = IMM_PREFIX + std::to_string(subproduct * base_size);
-        addIRC(IR_MUL,BTY_INT,byte_offset,exp_list[0]->result_name,times);
-        
-        if(layer>1){ //a[i][j]
-            std::string index_offset = newTemp(BTY_INT); //当前维度的字节偏移
+        //为了充分利用公共子表达式对维度的计算，每个计算结果都用新的变量名存储，防止result和arg相同
+        std::string index_offset; //当前维度的字节偏移
+        std::string old_offset;//之前累加
+        std::string byte_offset;//本轮后累加
+        for(int i=0;i<layer;i++){
+            int subproduct = 1;
+            for(int j=i+1;j<dim_size;j++){
+                subproduct *= iter_type.arrdims[j];
+            }
+            std::string times = IMM_PREFIX + std::to_string(subproduct*base_size);
+            index_offset = newTemp(BTY_INT);
             addIRC(IR_L_ALLOC,BTY_INT,index_offset);
-            for(int i=1;i<layer;i++){
-                int subproduct = 1;
-                for(int j=i+1;j<dim_size;j++){
-                    subproduct *= iter_type.arrdims[j];
-                }
-                std::string times = IMM_PREFIX + std::to_string(subproduct*base_size);
-                addIRC(IR_MUL,BTY_INT,index_offset,exp_list[i]->result_name,times);
-                addIRC(IR_ADD,BTY_INT,byte_offset,byte_offset,index_offset);
+            addIRC(IR_MUL,BTY_INT,index_offset,exp_list[i]->result_name,times);
+            if(i==0){
+                byte_offset = index_offset;
+            }
+            else{
+                old_offset = byte_offset;
+                byte_offset = newTemp(BTY_INT);
+                addIRC(IR_L_ALLOC,BTY_INT,byte_offset);
+                addIRC(IR_ADD,BTY_INT,byte_offset,old_offset,index_offset);
             }
         }
+        
+
         #endif
 
         //建立结构体
@@ -1256,6 +1257,11 @@ void SemanticAnalysis::exitRelExp(CACTParser::RelExpContext *ctx){
                     ctx->true_label,
                     ctx->addExp()->result_name,
                     IMM_PREFIX+std::to_string(0));
+            //在每个条件跳转后加label，方便控制流优化
+            std::string cond_label = newLabel();
+            addIRC( IR_LABEL,
+                    BTY_UNKNOWN,
+                    cond_label);
             addIRC( IR_J,
                     BTY_UNKNOWN,
                     ctx->false_label);
@@ -1274,6 +1280,11 @@ void SemanticAnalysis::exitRelExp(CACTParser::RelExpContext *ctx){
                     ctx->true_label,
                     ctx->relExp()->result_name,
                     ctx->addExp()->result_name);
+            //在每个条件跳转后加label，方便控制流优化
+            std::string cond_label = newLabel();
+            addIRC( IR_LABEL,
+                    BTY_UNKNOWN,
+                    cond_label);
             addIRC( IR_J,
                     BTY_UNKNOWN,
                     ctx->false_label);
@@ -1315,6 +1326,11 @@ void SemanticAnalysis::exitEqExp(CACTParser::EqExpContext *ctx){
                 ctx->true_label,
                 ctx->eqExp()->result_name,
                 ctx->relExp()->result_name);
+        //在每个条件跳转后加label，方便控制流优化
+        std::string cond_label = newLabel();
+        addIRC( IR_LABEL,
+                BTY_UNKNOWN,
+                cond_label);
         addIRC( IR_J,
                 BTY_UNKNOWN,
                 ctx->false_label);

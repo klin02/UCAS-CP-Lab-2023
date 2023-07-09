@@ -13,133 +13,143 @@ Func Begin|   unknown|matrix_multiply|          |          |
     ASSIGN|       int|        ^3|        #0|          |
      Label|   unknown|        L0|          |          |
        BLT|       int|        L2|        ^3|        ^0|
+     Label|   unknown|        L3|          |          |
          J|   unknown|        L1|          |          |
      Label|   unknown|        L2|          |          |
     ASSIGN|       int|        ^5|        #0|          |
-     Label|   unknown|        L3|          |          |
-       BLT|       int|        L5|        ^5|        ^2|
-         J|   unknown|        L4|          |          |
-     Label|   unknown|        L5|          |          |
-    ASSIGN|       int|        ^4|        #0|          |
-     Label|   unknown|        L6|          |          |
-       BLT|       int|        L8|        ^4|        ^1|
-         J|   unknown|        L7|          |          |
-     Label|   unknown|        L8|          |          |
-   L_Alloc|       int|        %0|          |          |
-       MUL|       int|        %0|        ^3|      #128|
-   L_Alloc|       int|        %1|          |          |
-       MUL|       int|        %1|        ^4|        #4|
-       ADD|       int|        %0|        %0|        %1|
-   L_Alloc|       int|        %2|          |          |
-       MUL|       int|        %2|        ^3|      #128|
-   L_Alloc|       int|        %3|          |          |
-       MUL|       int|        %3|        ^4|        #4|
-       ADD|       int|        %2|        %2|        %3|
-   L_Alloc|       int|        %4|          |          |
-       MUL|       int|        %4|        ^3|      #256|
-   L_Alloc|       int|        %5|          |          |
-       MUL|       int|        %5|        ^5|        #4|
-       ADD|       int|        %4|        %4|        %5|
-   L_Alloc|       int|        %6|          |          |
-       MUL|       int|        %6|        ^5|      #128|
-   L_Alloc|       int|        %7|          |          |
-       MUL|       int|        %7|        ^4|        #4|
-       ADD|       int|        %6|        %6|        %7|
-   L_Alloc|     float|        %8|          |          |
-       MUL|     float|        %8|     @0<%4|     @1<%6|
-   L_Alloc|     float|        %9|          |          |
-       ADD|     float|        %9|     @2<%2|        %8|
-    ASSIGN|     float|     @2<%0|        %9|          |
-   L_Alloc|       int|       %10|          |          |
-       ADD|       int|       %10|        ^4|        #1|
-    ASSIGN|       int|        ^4|       %10|          |
-         J|   unknown|        L6|          |          |
-     Label|   unknown|        L7|          |          |
-   L_Alloc|       int|       %11|          |          |
-       ADD|       int|       %11|        ^5|        #1|
-    ASSIGN|       int|        ^5|       %11|          |
-         J|   unknown|        L3|          |          |
      Label|   unknown|        L4|          |          |
-   L_Alloc|       int|       %12|          |          |
-       ADD|       int|       %12|        ^3|        #1|
-    ASSIGN|       int|        ^3|       %12|          |
-         J|   unknown|        L0|          |          |
+       BLT|       int|        L6|        ^5|        ^2|
+     Label|   unknown|        L7|          |          |
+         J|   unknown|        L5|          |          |
+     Label|   unknown|        L6|          |          |
+    ASSIGN|       int|        ^4|        #0|          |
+     Label|   unknown|        L8|          |          |
+       BLT|       int|       L10|        ^4|        ^1|
+     Label|   unknown|       L11|          |          |
+         J|   unknown|        L9|          |          |
+     Label|   unknown|       L10|          |          |
+   L_Alloc|       int|        %0|          |          |
+       SLL|       int|        %0|        ^3|        #7|
+   L_Alloc|       int|        %1|          |          |
+       SLL|       int|        %1|        ^4|        #2|
+   L_Alloc|       int|        %2|          |          |
+       ADD|       int|        %2|        %0|        %1|
+   L_Alloc|       int|        %3|          |          |
+   L_Alloc|       int|        %4|          |          |
+   L_Alloc|       int|        %5|          |          |
+   L_Alloc|       int|        %6|          |          |
+       SLL|       int|        %6|        ^3|        #8|
+   L_Alloc|       int|        %7|          |          |
+       SLL|       int|        %7|        ^5|        #2|
+   L_Alloc|       int|        %8|          |          |
+       ADD|       int|        %8|        %6|        %7|
+   L_Alloc|       int|        %9|          |          |
+       SLL|       int|        %9|        ^5|        #7|
+   L_Alloc|       int|       %10|          |          |
+   L_Alloc|       int|       %11|          |          |
+       ADD|       int|       %11|        %9|        %1|
+   L_Alloc|     float|       %12|          |          |
+       MUL|     float|       %12|     @0<%8|    @1<%11|
+   L_Alloc|     float|       %13|          |          |
+       ADD|     float|       %13|     @2<%2|       %12|
+    ASSIGN|     float|     @2<%2|       %13|          |
+   L_Alloc|       int|       %14|          |          |
+       ADD|       int|       %14|        ^4|        #1|
+    ASSIGN|       int|        ^4|       %14|          |
+       BLT|       int|       L10|        ^4|        ^1|
+     Label|   unknown|       L26|          |          |
+         J|   unknown|        L9|          |          |
+     Label|   unknown|        L9|          |          |
+   L_Alloc|       int|       %15|          |          |
+       ADD|       int|       %15|        ^5|        #1|
+    ASSIGN|       int|        ^5|       %15|          |
+       BLT|       int|        L6|        ^5|        ^2|
+     Label|   unknown|       L27|          |          |
+         J|   unknown|        L5|          |          |
+     Label|   unknown|        L5|          |          |
+   L_Alloc|       int|       %16|          |          |
+       ADD|       int|       %16|        ^3|        #1|
+    ASSIGN|       int|        ^3|       %16|          |
+       BLT|       int|        L2|        ^3|        ^0|
+     Label|   unknown|       L25|          |          |
+         J|   unknown|        L1|          |          |
      Label|   unknown|        L1|          |          |
   Func End|   unknown|matrix_multiply|          |          |
 Func Begin|   unknown|matrix_stencil|          |          |
    L_Alloc|       int|        ^8|          |          |
    L_Alloc|       int|        ^9|          |          |
     ASSIGN|       int|        ^8|        #1|          |
-     Label|   unknown|        L9|          |          |
-   L_Alloc|       int|       %13|          |          |
-       SUB|       int|       %13|        ^6|        #1|
-       BLT|       int|       L11|        ^8|       %13|
-         J|   unknown|       L10|          |          |
-     Label|   unknown|       L11|          |          |
-    ASSIGN|       int|        ^9|        #1|          |
      Label|   unknown|       L12|          |          |
-   L_Alloc|       int|       %14|          |          |
-       SUB|       int|       %14|        ^7|        #1|
-       BLT|       int|       L14|        ^9|       %14|
+   L_Alloc|       int|       %17|          |          |
+       SUB|       int|       %17|        ^6|        #1|
+       BLT|       int|       L14|        ^8|       %17|
+     Label|   unknown|       L15|          |          |
          J|   unknown|       L13|          |          |
      Label|   unknown|       L14|          |          |
-   L_Alloc|       int|       %15|          |          |
-       MUL|       int|       %15|        ^8|      #256|
-   L_Alloc|       int|       %16|          |          |
-       MUL|       int|       %16|        ^9|        #8|
-       ADD|       int|       %15|       %15|       %16|
-   L_Alloc|       int|       %17|          |          |
-       MUL|       int|       %17|        ^8|      #256|
+    ASSIGN|       int|        ^9|        #1|          |
+     Label|   unknown|       L16|          |          |
    L_Alloc|       int|       %18|          |          |
-       MUL|       int|       %18|        ^9|        #8|
-       ADD|       int|       %17|       %17|       %18|
+       SUB|       int|       %18|        ^7|        #1|
+       BLT|       int|       L18|        ^9|       %18|
+     Label|   unknown|       L19|          |          |
+         J|   unknown|       L17|          |          |
+     Label|   unknown|       L18|          |          |
    L_Alloc|       int|       %19|          |          |
-       SUB|       int|       %19|        ^9|        #1|
+       SLL|       int|       %19|        ^8|        #8|
    L_Alloc|       int|       %20|          |          |
-       MUL|       int|       %20|        ^8|      #256|
+       SLL|       int|       %20|        ^9|        #3|
    L_Alloc|       int|       %21|          |          |
-       MUL|       int|       %21|       %19|        #8|
-       ADD|       int|       %20|       %20|       %21|
-   L_Alloc|    double|       %22|          |          |
-       ADD|    double|       %22|    @3<%17|    @3<%20|
+       ADD|       int|       %21|       %19|       %20|
+   L_Alloc|       int|       %22|          |          |
    L_Alloc|       int|       %23|          |          |
-       ADD|       int|       %23|        ^9|        #1|
    L_Alloc|       int|       %24|          |          |
-       MUL|       int|       %24|        ^8|      #256|
    L_Alloc|       int|       %25|          |          |
-       MUL|       int|       %25|       %23|        #8|
-       ADD|       int|       %24|       %24|       %25|
-   L_Alloc|    double|       %26|          |          |
-       ADD|    double|       %26|       %22|    @3<%24|
+       SUB|       int|       %25|        ^9|        #1|
+   L_Alloc|       int|       %26|          |          |
    L_Alloc|       int|       %27|          |          |
-       SUB|       int|       %27|        ^8|        #1|
+       SLL|       int|       %27|       %25|        #3|
    L_Alloc|       int|       %28|          |          |
-       MUL|       int|       %28|       %27|      #256|
-   L_Alloc|       int|       %29|          |          |
-       MUL|       int|       %29|        ^9|        #8|
-       ADD|       int|       %28|       %28|       %29|
-   L_Alloc|    double|       %30|          |          |
-       ADD|    double|       %30|       %26|    @3<%28|
+       ADD|       int|       %28|       %19|       %27|
+   L_Alloc|    double|       %29|          |          |
+       ADD|    double|       %29|    @3<%21|    @3<%28|
+   L_Alloc|       int|       %30|          |          |
+       ADD|       int|       %30|        ^9|        #1|
    L_Alloc|       int|       %31|          |          |
-       ADD|       int|       %31|        ^8|        #1|
    L_Alloc|       int|       %32|          |          |
-       MUL|       int|       %32|       %31|      #256|
+       SLL|       int|       %32|       %30|        #3|
    L_Alloc|       int|       %33|          |          |
-       MUL|       int|       %33|        ^9|        #8|
-       ADD|       int|       %32|       %32|       %33|
+       ADD|       int|       %33|       %19|       %32|
    L_Alloc|    double|       %34|          |          |
-       ADD|    double|       %34|       %30|    @3<%32|
-    ASSIGN|    double|    @4<%15|       %34|          |
+       ADD|    double|       %34|       %29|    @3<%33|
    L_Alloc|       int|       %35|          |          |
-       ADD|       int|       %35|        ^9|        #1|
-    ASSIGN|       int|        ^9|       %35|          |
+       SUB|       int|       %35|        ^8|        #1|
+   L_Alloc|       int|       %36|          |          |
+       SLL|       int|       %36|       %35|        #8|
+   L_Alloc|       int|       %37|          |          |
+   L_Alloc|       int|       %38|          |          |
+       ADD|       int|       %38|       %36|       %20|
+   L_Alloc|    double|       %39|          |          |
+       ADD|    double|       %39|       %34|    @3<%38|
+   L_Alloc|       int|       %40|          |          |
+       ADD|       int|       %40|        ^8|        #1|
+   L_Alloc|       int|       %41|          |          |
+       SLL|       int|       %41|       %40|        #8|
+   L_Alloc|       int|       %42|          |          |
+   L_Alloc|       int|       %43|          |          |
+       ADD|       int|       %43|       %41|       %20|
+   L_Alloc|    double|       %44|          |          |
+       ADD|    double|       %44|       %39|    @3<%43|
+    ASSIGN|    double|    @4<%21|       %44|          |
+   L_Alloc|       int|       %45|          |          |
+    ASSIGN|       int|       %45|       %30|          |
+    ASSIGN|       int|        ^9|       %45|          |
+         J|   unknown|       L16|          |          |
+     Label|   unknown|       L17|          |          |
+   L_Alloc|       int|       %46|          |          |
+       ADD|       int|       %46|        ^8|        #1|
+    ASSIGN|       int|        ^8|       %46|          |
          J|   unknown|       L12|          |          |
      Label|   unknown|       L13|          |          |
-   L_Alloc|       int|       %36|          |          |
-       ADD|       int|       %36|        ^8|        #1|
-    ASSIGN|       int|        ^8|       %36|          |
-         J|   unknown|        L9|          |          |
-     Label|   unknown|       L10|          |          |
   Func End|   unknown|matrix_stencil|          |          |
 Func Begin|   unknown|      main|          |          |
    L_Alloc|       int|       ^10|          |          |
@@ -149,18 +159,18 @@ Func Begin|   unknown|      main|          |          |
    L_Alloc|       int|       ^14|          |          |
    L_Alloc|       int|       ^15|          |          |
    L_Alloc|     float|       ^16|          |          |
-   L_Alloc|       int|       %37|          |          |
-      Call|       int|   get_int|       %37|          |
-    ASSIGN|       int|       ^10|       %37|          |
-   L_Alloc|       int|       %38|          |          |
-      Call|       int|   get_int|       %38|          |
-    ASSIGN|       int|       ^11|       %38|          |
-   L_Alloc|       int|       %39|          |          |
-      Call|       int|   get_int|       %39|          |
-    ASSIGN|       int|       ^12|       %39|          |
-   L_Alloc|       int|       %40|          |          |
-      Call|       int|   get_int|       %40|          |
-    ASSIGN|       int|       ^13|       %40|          |
+   L_Alloc|       int|       %47|          |          |
+      Call|       int|   get_int|       %47|          |
+    ASSIGN|       int|       ^10|       %47|          |
+   L_Alloc|       int|       %48|          |          |
+      Call|       int|   get_int|       %48|          |
+    ASSIGN|       int|       ^11|       %48|          |
+   L_Alloc|       int|       %49|          |          |
+      Call|       int|   get_int|       %49|          |
+    ASSIGN|       int|       ^12|       %49|          |
+   L_Alloc|       int|       %50|          |          |
+      Call|       int|   get_int|       %50|          |
+    ASSIGN|       int|       ^13|       %50|          |
      Param|       int|       ^10|          |          |
      Param|       int|       ^11|          |          |
      Param|       int|       ^12|          |          |
@@ -169,37 +179,40 @@ Func Begin|   unknown|      main|          |          |
      Param|       int|       ^11|          |          |
       Call|      void|matrix_stencil|          |          |
     ASSIGN|       int|       ^14|        #0|          |
-     Label|   unknown|       L15|          |          |
-       BLT|       int|       L17|       ^14|       ^13|
-         J|   unknown|       L16|          |          |
-     Label|   unknown|       L17|          |          |
-   L_Alloc|       int|       %41|          |          |
-       MUL|       int|       %41|       ^14|        #4|
-   L_Alloc|       int|       %42|          |          |
-       MUL|       int|       %42|       ^14|        #4|
-   L_Alloc|       int|       %43|          |          |
-       MUL|       int|       %43|    @5<%41|      #128|
-   L_Alloc|       int|       %44|          |          |
-       MUL|       int|       %44|    @6<%42|        #4|
-       ADD|       int|       %43|       %43|       %44|
-    ASSIGN|     float|       ^16|    @2<%43|          |
+     Label|   unknown|       L20|          |          |
+       BLT|       int|       L22|       ^14|       ^13|
+     Label|   unknown|       L23|          |          |
+         J|   unknown|       L21|          |          |
+     Label|   unknown|       L22|          |          |
+   L_Alloc|       int|       %51|          |          |
+       SLL|       int|       %51|       ^14|        #2|
+   L_Alloc|       int|       %52|          |          |
+   L_Alloc|       int|       %53|          |          |
+       SLL|       int|       %53|    @5<%51|        #7|
+   L_Alloc|       int|       %54|          |          |
+       SLL|       int|       %54|    @6<%51|        #2|
+   L_Alloc|       int|       %55|          |          |
+       ADD|       int|       %55|       %53|       %54|
+    ASSIGN|     float|       ^16|    @2<%55|          |
      Param|     float|       ^16|          |          |
       Call|      void|print_float|          |          |
-   L_Alloc|       int|       %45|          |          |
-       MUL|       int|       %45|       ^14|        #4|
-   L_Alloc|       int|       %46|          |          |
-       MUL|       int|       %46|       ^14|        #4|
-   L_Alloc|       int|       %47|          |          |
-       MUL|       int|       %47|    @5<%45|      #256|
-   L_Alloc|       int|       %48|          |          |
-       MUL|       int|       %48|    @6<%46|        #8|
-       ADD|       int|       %47|       %47|       %48|
-     Param|    double|    @4<%47|          |          |
+   L_Alloc|       int|       %56|          |          |
+       SLL|       int|       %56|       ^14|        #2|
+   L_Alloc|       int|       %57|          |          |
+   L_Alloc|       int|       %58|          |          |
+       SLL|       int|       %58|    @5<%56|        #8|
+   L_Alloc|       int|       %59|          |          |
+       SLL|       int|       %59|    @6<%56|        #3|
+   L_Alloc|       int|       %60|          |          |
+       ADD|       int|       %60|       %58|       %59|
+     Param|    double|    @4<%60|          |          |
       Call|      void|print_double|          |          |
-   L_Alloc|       int|       %49|          |          |
-       ADD|       int|       %49|       ^14|        #1|
-    ASSIGN|       int|       ^14|       %49|          |
-         J|   unknown|       L15|          |          |
-     Label|   unknown|       L16|          |          |
+   L_Alloc|       int|       %61|          |          |
+       ADD|       int|       %61|       ^14|        #1|
+    ASSIGN|       int|       ^14|       %61|          |
+       BLT|       int|       L22|       ^14|       ^13|
+     Label|   unknown|       L24|          |          |
+         J|   unknown|       L21|          |          |
+     Label|   unknown|       L21|          |          |
     Return|       int|        #0|          |          |
   Func End|   unknown|      main|          |          |

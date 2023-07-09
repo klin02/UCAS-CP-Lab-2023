@@ -9,10 +9,10 @@
 	.globl   lenLongestFibSubseq
 	.type    lenLongestFibSubseq, @function
 lenLongestFibSubseq:
-	addi    sp, sp, -208
-	sd      ra, 200(sp)
-	sd      s0, 192(sp)
-	addi    s0, sp, 208
+	addi    sp, sp, -240
+	sd      ra, 232(sp)
+	sd      s0, 224(sp)
+	addi    s0, sp, 240
 	sw      a0, -20(s0)
 	li      s1, 1
 	sw      s1, -28(s0)
@@ -22,6 +22,7 @@ L0:
 	lw     t3, -28(s0)
 	lw     t4, -20(s0)
 	blt     t3, t4, L2
+L3:
 	j       L1
 L2:
 	lw     t1, -28(s0)
@@ -30,44 +31,44 @@ L2:
 	sw     t0, -48(s0)
 	lw     s7, -48(s0)
 	sw     s7, -44(s0)
-L3:
+L4:
 	lw     t3, -44(s0)
 	lw     t4, -20(s0)
-	blt     t3, t4, L5
-	j       L4
-L5:
+	blt     t3, t4, L6
+L7:
+	j       L5
+L6:
 	lw     t1, -44(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -52(s0)
 	lw     t1, -28(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -56(s0)
-	li      t1, 2
 	lw     s3, -56(s0)
 	la      s4, GVAR1
 	add     s4, s4, s3
-	lw     t2, 0(s4)
-	mul     t0, t1, t2
+	lw     t1, 0(s4)
+	li      t2, 1
+	sll     t0, t1, t2
 	sw     t0, -60(s0)
 	lw     s3, -52(s0)
 	la      s4, GVAR1
 	add     s4, s4, s3
 	lw     t3, 0(s4)
 	lw     t4, -60(s0)
-	ble     t4, t3, L7
-	j       L6
-L7:
-	j       L4
-L6:
+	blt     t4, t3, L5
+L10:
+	j       L8
+L8:
 	lw     t1, -44(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -104(s0)
 	lw     t1, -28(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -108(s0)
 	lw     s3, -104(s0)
 	la      s4, GVAR1
@@ -91,19 +92,24 @@ L6:
 	sw     s7, -84(s0)
 	li      s7, -1
 	sw     s7, -92(s0)
-L8:
+L11:
 	lw     t3, -76(s0)
 	lw     t4, -84(s0)
-	ble     t3, t4, L10
-	j       L9
-L10:
+	ble     t3, t4, L13
+L14:
+	lw     t3, -92(s0)
+	li      t4, 0
+	ble     t4, t3, L24
+L33:
+	j       L23
+L13:
 	lw     t1, -84(s0)
 	lw     t2, -76(s0)
 	subw     t0, t1, t2
 	sw     t0, -120(s0)
 	lw     t1, -120(s0)
-	li      t2, 2
-	div     t0, t1, t2
+	li      t2, 1
+	sra     t0, t1, t2
 	sw     t0, -124(s0)
 	lw     t1, -124(s0)
 	lw     t2, -76(s0)
@@ -112,190 +118,207 @@ L10:
 	lw     s7, -128(s0)
 	sw     s7, -100(s0)
 	lw     t1, -100(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -132(s0)
 	lw     s3, -132(s0)
 	la      s4, GVAR1
 	add     s4, s4, s3
 	lw     t3, 0(s4)
 	lw     t4, -68(s0)
-	beq     t3, t4, L12
-	j       L13
-L12:
+	beq     t3, t4, L16
+L18:
+	j       L17
+L16:
 	lw     s7, -100(s0)
 	sw     s7, -92(s0)
-	j       L9
-	j       L11
-L13:
+	lw     t3, -92(s0)
+	li      t4, 0
+	ble     t4, t3, L24
+L34:
+	j       L23
+	lw     t3, -76(s0)
+	lw     t4, -84(s0)
+	ble     t3, t4, L13
+L38:
+	lw     t3, -92(s0)
+	li      t4, 0
+	ble     t4, t3, L24
+L39:
+	j       L23
+L17:
 	lw     t1, -100(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -136(s0)
 	lw     s3, -136(s0)
 	la      s4, GVAR1
 	add     s4, s4, s3
 	lw     t3, 0(s4)
 	lw     t4, -68(s0)
-	blt     t3, t4, L15
-	j       L16
-L15:
+	blt     t3, t4, L20
+L22:
+	j       L21
+L20:
 	lw     t1, -100(s0)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -140(s0)
 	lw     s7, -140(s0)
 	sw     s7, -76(s0)
-	j       L14
-L16:
+	j       L19
+L21:
 	lw     t1, -100(s0)
 	li      t2, 1
 	subw     t0, t1, t2
 	sw     t0, -144(s0)
 	lw     s7, -144(s0)
 	sw     s7, -84(s0)
-L14:
-L11:
-	j       L8
-L9:
+L19:
+L15:
+	lw     t3, -76(s0)
+	lw     t4, -84(s0)
+	ble     t3, t4, L13
+L32:
 	lw     t3, -92(s0)
 	li      t4, 0
-	blt     t4, t3, L18
-	j       L17
-L18:
+	ble     t4, t3, L24
+L37:
+	j       L23
+L24:
 	lw     t1, -28(s0)
-	li      t2, 1064
-	mul     t0, t1, t2
+	li      t2, 10
+	sll     t0, t1, t2
 	sw     t0, -148(s0)
 	lw     t1, -44(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -152(s0)
 	lw     t1, -148(s0)
 	lw     t2, -152(s0)
 	addw     t0, t1, t2
-	sw     t0, -148(s0)
+	sw     t0, -156(s0)
 	lw     t1, -92(s0)
-	li      t2, 1064
-	mul     t0, t1, t2
-	sw     t0, -156(s0)
-	lw     t1, -28(s0)
-	li      t2, 4
-	mul     t0, t1, t2
+	li      t2, 10
+	sll     t0, t1, t2
 	sw     t0, -160(s0)
-	lw     t1, -156(s0)
-	lw     t2, -160(s0)
-	addw     t0, t1, t2
-	sw     t0, -156(s0)
-	lw     s3, -156(s0)
-	la      s4, GVAR0
-	add     s4, s4, s3
-	lw     t1, 0(s4)
-	li      t2, 1
-	addw     t0, t1, t2
-	sw     t0, -164(s0)
-	lw     s7, -164(s0)
-	lw     s5, -148(s0)
-	la      s6, GVAR0
-	add     s6, s6, s5
-	sw     s7, 0(s6)
 	lw     t1, -28(s0)
-	li      t2, 1064
-	mul     t0, t1, t2
-	sw     t0, -168(s0)
-	lw     t1, -44(s0)
-	li      t2, 4
-	mul     t0, t1, t2
-	sw     t0, -172(s0)
-	lw     t1, -168(s0)
-	lw     t2, -172(s0)
+	li      t2, 2
+	sll     t0, t1, t2
+	sw     t0, -164(s0)
+	lw     t1, -160(s0)
+	lw     t2, -164(s0)
 	addw     t0, t1, t2
 	sw     t0, -168(s0)
 	lw     s3, -168(s0)
 	la      s4, GVAR0
 	add     s4, s4, s3
-	lw     t3, 0(s4)
-	li      t4, 3
-	blt     t3, t4, L20
-	j       L19
-L20:
-	lw     t1, -28(s0)
-	li      t2, 1064
-	mul     t0, t1, t2
-	sw     t0, -176(s0)
-	lw     t1, -44(s0)
-	li      t2, 4
-	mul     t0, t1, t2
-	sw     t0, -180(s0)
-	lw     t1, -176(s0)
-	lw     t2, -180(s0)
+	lw     t1, 0(s4)
+	li      t2, 1
 	addw     t0, t1, t2
-	sw     t0, -176(s0)
-	li      s7, 3
-	lw     s5, -176(s0)
+	sw     t0, -172(s0)
+	lw     s7, -172(s0)
+	lw     s5, -156(s0)
 	la      s6, GVAR0
 	add     s6, s6, s5
 	sw     s7, 0(s6)
-L19:
-	lw     t1, -28(s0)
-	li      t2, 1064
-	mul     t0, t1, t2
-	sw     t0, -184(s0)
-	lw     t1, -44(s0)
-	li      t2, 4
-	mul     t0, t1, t2
-	sw     t0, -188(s0)
-	lw     t1, -184(s0)
-	lw     t2, -188(s0)
-	addw     t0, t1, t2
-	sw     t0, -184(s0)
+	lw     s7, -156(s0)
+	sw     s7, -184(s0)
 	lw     s3, -184(s0)
 	la      s4, GVAR0
 	add     s4, s4, s3
 	lw     t3, 0(s4)
-	lw     t4, -36(s0)
-	ble     t4, t3, L22
-	j       L21
-L22:
+	li      t4, 3
+	blt     t3, t4, L27
+L28:
+	j       L26
+L27:
 	lw     t1, -28(s0)
-	li      t2, 1064
-	mul     t0, t1, t2
-	sw     t0, -192(s0)
+	li      t2, 10
+	sll     t0, t1, t2
+	sw     t0, -188(s0)
 	lw     t1, -44(s0)
-	li      t2, 4
-	mul     t0, t1, t2
-	sw     t0, -196(s0)
-	lw     t1, -192(s0)
-	lw     t2, -196(s0)
-	addw     t0, t1, t2
+	li      t2, 2
+	sll     t0, t1, t2
 	sw     t0, -192(s0)
-	lw     s3, -192(s0)
+	lw     t1, -188(s0)
+	lw     t2, -192(s0)
+	addw     t0, t1, t2
+	sw     t0, -196(s0)
+	li      s7, 3
+	lw     s5, -196(s0)
+	la      s6, GVAR0
+	add     s6, s6, s5
+	sw     s7, 0(s6)
+L26:
+	lw     t1, -28(s0)
+	li      t2, 10
+	sll     t0, t1, t2
+	sw     t0, -200(s0)
+	lw     t1, -44(s0)
+	li      t2, 2
+	sll     t0, t1, t2
+	sw     t0, -204(s0)
+	lw     t1, -200(s0)
+	lw     t2, -204(s0)
+	addw     t0, t1, t2
+	sw     t0, -208(s0)
+	lw     s3, -208(s0)
+	la      s4, GVAR0
+	add     s4, s4, s3
+	lw     t3, 0(s4)
+	lw     t4, -36(s0)
+	blt     t4, t3, L30
+L31:
+	j       L29
+L30:
+	lw     t1, -28(s0)
+	li      t2, 10
+	sll     t0, t1, t2
+	sw     t0, -212(s0)
+	lw     t1, -44(s0)
+	li      t2, 2
+	sll     t0, t1, t2
+	sw     t0, -216(s0)
+	lw     t1, -212(s0)
+	lw     t2, -216(s0)
+	addw     t0, t1, t2
+	sw     t0, -220(s0)
+	lw     s3, -220(s0)
 	la      s4, GVAR0
 	add     s4, s4, s3
 	lw     s7, 0(s4)
 	sw     s7, -36(s0)
-L21:
-L17:
+L29:
+L23:
 	lw     t1, -44(s0)
 	li      t2, 1
 	addw     t0, t1, t2
-	sw     t0, -200(s0)
-	lw     s7, -200(s0)
+	sw     t0, -224(s0)
+	lw     s7, -224(s0)
 	sw     s7, -44(s0)
-	j       L3
-L4:
+	lw     t3, -44(s0)
+	lw     t4, -20(s0)
+	blt     t3, t4, L6
+L35:
+	j       L5
+L5:
 	lw     t1, -28(s0)
 	li      t2, 1
 	addw     t0, t1, t2
-	sw     t0, -204(s0)
-	lw     s7, -204(s0)
+	sw     t0, -228(s0)
+	lw     s7, -228(s0)
 	sw     s7, -28(s0)
-	j       L0
+	lw     t3, -28(s0)
+	lw     t4, -20(s0)
+	blt     t3, t4, L2
+L36:
+	j       L1
 L1:
 	lw     a0, -36(s0)
-	ld      ra, 200(sp)
-	ld      s0, 192(sp)
-	addi    sp, sp, 208
+	ld      ra, 232(sp)
+	ld      s0, 224(sp)
+	addi    sp, sp, 240
 	jr      ra
 	.size   lenLongestFibSubseq, .-lenLongestFibSubseq
 	

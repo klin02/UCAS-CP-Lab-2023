@@ -4,150 +4,14 @@
 	.attribute unaligned_access, 0
 	.attribute stack_align, 16
 	.text
-	.align	1
-	.globl	lenLongestFibSubseq
-	.type	lenLongestFibSubseq, @function
-lenLongestFibSubseq:
-	li	a5,1
-	ble	a0,a5,.L14
-	addi	sp,sp,-96
-	sd	s0,88(sp)
-	sd	s1,80(sp)
-	sd	s2,72(sp)
-	sd	s3,64(sp)
-	sd	s4,56(sp)
-	sd	s5,48(sp)
-	sd	s6,40(sp)
-	sd	s7,32(sp)
-	sd	s8,24(sp)
-	sd	s9,16(sp)
-	sd	s10,8(sp)
-	sd	s11,0(sp)
-	mv	s7,a0
-	la	s2,arr
-	addi	s2,s2,8
-	la	s3,dp
-	addi	s3,s3,1072
-	li	t1,0
-	li	a0,0
-	li	t0,1
-	addiw	s9,s7,-1
-	la	a1,arr
-	mv	s8,s2
-	li	t6,0
-	la	s1,dp
-	li	s0,266
-	li	t2,2
-	li	s6,3
-	j	.L13
-.L6:
-	addiw	a3,a5,-1
-.L7:
-	blt	a3,a4,.L4
-.L8:
-	subw	s10,a3,a4
-	srliw	a5,s10,31
-	addw	a5,a5,s10
-	sraiw	a5,a5,1
-	addw	a5,a5,a4
-	sext.w	s11,a5
-	slli	s10,s11,2
-	add	s10,a1,s10
-	lw	s10,0(s10)
-	beq	s10,a2,.L5
-	bge	s10,a2,.L6
-	addiw	a4,a5,1
-	j	.L7
-.L5:
-	blt	s11,zero,.L4
-	mul	a5,s11,s0
-	add	a5,a5,t0
-	slli	a5,a5,2
-	add	a5,s1,a5
-	lw	a5,0(a5)
-	addiw	a5,a5,1
-	sext.w	a4,a5
-	ble	a4,t2,.L9
-	sw	a5,0(a7)
-.L10:
-	lw	a5,0(a7)
-	sext.w	a4,a5
-	bge	a4,a0,.L11
-	mv	a5,a0
-.L11:
-	sext.w	a0,a5
-.L4:
-	addi	a6,a6,4
-	addi	a7,a7,4
-	beq	a6,t3,.L3
-.L12:
-	lw	a2,0(a6)
-	bgt	a2,t5,.L3
-	subw	a2,a2,t4
-	mv	a3,t1
-	blt	t1,zero,.L4
-	mv	a4,t6
-	j	.L8
-.L9:
-	sw	s6,0(a7)
-	j	.L10
-.L14:
-	li	a0,0
-	ret
-.L3:
-	addi	s2,s2,4
-	addi	s3,s3,1068
-	mv	t1,s5
-	mv	t0,s4
-.L13:
-	addiw	a5,t0,1
-	sext.w	s4,a5
-	beq	s7,s4,.L15
-	lw	t4,-4(s2)
-	slliw	t5,t4,1
-	addi	s5,t1,1
-	subw	t3,s9,a5
-	slli	t3,t3,32
-	srli	t3,t3,32
-	add	t3,t3,s5
-	slli	t3,t3,2
-	add	t3,t3,s8
-	mv	a7,s3
-	mv	a6,s2
-	sext.w	t1,t1
-	j	.L12
-.L15:
-	ld	s0,88(sp)
-	ld	s1,80(sp)
-	ld	s2,72(sp)
-	ld	s3,64(sp)
-	ld	s4,56(sp)
-	ld	s5,48(sp)
-	ld	s6,40(sp)
-	ld	s7,32(sp)
-	ld	s8,24(sp)
-	ld	s9,16(sp)
-	ld	s10,8(sp)
-	ld	s11,0(sp)
-	addi	sp,sp,96
-	jr	ra
-	.size	lenLongestFibSubseq, .-lenLongestFibSubseq
-	.align	1
-	.globl	main
-	.type	main, @function
-main:
-	addi	sp,sp,-16
-	sd	ra,8(sp)
-	call	get_int@plt
-	call	lenLongestFibSubseq@plt
-	call	print_int@plt
-	li	a0,0
-	ld	ra,8(sp)
-	addi	sp,sp,16
-	jr	ra
-	.size	main, .-main
-	.globl	arr
 	.globl	dp
+	.bss
+	.align	3
+	.type	dp, @object
+	.size	dp, 283024
+dp:
+	.zero	283024
+	.globl	arr
 	.data
 	.align	3
 	.type	arr, @object
@@ -419,10 +283,227 @@ arr:
 	.word	793
 	.word	796
 	.word	797
-	.bss
-	.align	3
-	.type	dp, @object
-	.size	dp, 283024
-dp:
-	.zero	283024
+	.text
+	.align	1
+	.globl	lenLongestFibSubseq
+	.type	lenLongestFibSubseq, @function
+lenLongestFibSubseq:
+	addi	sp,sp,-64
+	sd	s0,56(sp)
+	addi	s0,sp,64
+	mv	a5,a0
+	sw	a5,-52(s0)
+	li	a5,1
+	sw	a5,-20(s0)
+	sw	zero,-24(s0)
+	j	.L2
+.L14:
+	lw	a5,-20(s0)
+	addiw	a5,a5,1
+	sw	a5,-28(s0)
+	j	.L3
+.L13:
+	la	a4,arr
+	lw	a5,-28(s0)
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a3,0(a5)
+	la	a4,arr
+	lw	a5,-20(s0)
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	slliw	a5,a5,1
+	sext.w	a5,a5
+	mv	a4,a3
+	bgt	a4,a5,.L16
+	la	a4,arr
+	lw	a5,-28(s0)
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a4,0(a5)
+	la	a3,arr
+	lw	a5,-20(s0)
+	slli	a5,a5,2
+	add	a5,a3,a5
+	lw	a5,0(a5)
+	subw	a5,a4,a5
+	sw	a5,-44(s0)
+	sw	zero,-32(s0)
+	lw	a5,-20(s0)
+	addiw	a5,a5,-1
+	sw	a5,-36(s0)
+	li	a5,-1
+	sw	a5,-40(s0)
+	j	.L6
+.L10:
+	lw	a4,-36(s0)
+	lw	a5,-32(s0)
+	subw	a5,a4,a5
+	sext.w	a5,a5
+	srliw	a4,a5,31
+	addw	a5,a4,a5
+	sraiw	a5,a5,1
+	sext.w	a5,a5
+	lw	a4,-32(s0)
+	addw	a5,a4,a5
+	sw	a5,-48(s0)
+	la	a4,arr
+	lw	a5,-48(s0)
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a4,0(a5)
+	lw	a5,-44(s0)
+	sext.w	a5,a5
+	bne	a5,a4,.L7
+	lw	a5,-48(s0)
+	sw	a5,-40(s0)
+	j	.L8
+.L7:
+	la	a4,arr
+	lw	a5,-48(s0)
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a4,0(a5)
+	lw	a5,-44(s0)
+	sext.w	a5,a5
+	ble	a5,a4,.L9
+	lw	a5,-48(s0)
+	addiw	a5,a5,1
+	sw	a5,-32(s0)
+	j	.L6
+.L9:
+	lw	a5,-48(s0)
+	addiw	a5,a5,-1
+	sw	a5,-36(s0)
+.L6:
+	lw	a4,-32(s0)
+	lw	a5,-36(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	ble	a4,a5,.L10
+.L8:
+	lw	a5,-40(s0)
+	sext.w	a5,a5
+	blt	a5,zero,.L11
+	la	a4,dp
+	lw	a5,-20(s0)
+	lw	a2,-40(s0)
+	li	a3,266
+	mul	a3,a2,a3
+	add	a5,a3,a5
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	addiw	a5,a5,1
+	sext.w	a4,a5
+	la	a3,dp
+	lw	a5,-28(s0)
+	lw	a1,-20(s0)
+	li	a2,266
+	mul	a2,a1,a2
+	add	a5,a2,a5
+	slli	a5,a5,2
+	add	a5,a3,a5
+	sw	a4,0(a5)
+	la	a4,dp
+	lw	a5,-28(s0)
+	lw	a2,-20(s0)
+	li	a3,266
+	mul	a3,a2,a3
+	add	a5,a3,a5
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	mv	a4,a5
+	li	a5,2
+	bgt	a4,a5,.L12
+	la	a4,dp
+	lw	a5,-28(s0)
+	lw	a2,-20(s0)
+	li	a3,266
+	mul	a3,a2,a3
+	add	a5,a3,a5
+	slli	a5,a5,2
+	add	a5,a4,a5
+	li	a4,3
+	sw	a4,0(a5)
+.L12:
+	la	a4,dp
+	lw	a5,-28(s0)
+	lw	a2,-20(s0)
+	li	a3,266
+	mul	a3,a2,a3
+	add	a5,a3,a5
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a4,0(a5)
+	lw	a5,-24(s0)
+	sext.w	a5,a5
+	bge	a5,a4,.L11
+	la	a4,dp
+	lw	a5,-28(s0)
+	lw	a2,-20(s0)
+	li	a3,266
+	mul	a3,a2,a3
+	add	a5,a3,a5
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	sw	a5,-24(s0)
+.L11:
+	lw	a5,-28(s0)
+	addiw	a5,a5,1
+	sw	a5,-28(s0)
+.L3:
+	lw	a4,-28(s0)
+	lw	a5,-52(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	blt	a4,a5,.L13
+	j	.L5
+.L16:
+	nop
+.L5:
+	lw	a5,-20(s0)
+	addiw	a5,a5,1
+	sw	a5,-20(s0)
+.L2:
+	lw	a4,-20(s0)
+	lw	a5,-52(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	blt	a4,a5,.L14
+	lw	a5,-24(s0)
+	mv	a0,a5
+	ld	s0,56(sp)
+	addi	sp,sp,64
+	jr	ra
+	.size	lenLongestFibSubseq, .-lenLongestFibSubseq
+	.align	1
+	.globl	main
+	.type	main, @function
+main:
+	addi	sp,sp,-32
+	sd	ra,24(sp)
+	sd	s0,16(sp)
+	addi	s0,sp,32
+	call	get_int@plt
+	mv	a5,a0
+	sw	a5,-20(s0)
+	lw	a5,-20(s0)
+	mv	a0,a5
+	call	lenLongestFibSubseq@plt
+	mv	a5,a0
+	sw	a5,-24(s0)
+	lw	a5,-24(s0)
+	mv	a0,a5
+	call	print_int@plt
+	li	a5,0
+	mv	a0,a5
+	ld	ra,24(sp)
+	ld	s0,16(sp)
+	addi	sp,sp,32
+	jr	ra
+	.size	main, .-main
 	.ident	"GCC: (GNU) 10.2.0"

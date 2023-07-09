@@ -4,8 +4,11 @@
 #include "cact_types.h"
 #include "SymbolTable.h"
 #include "SemanticAnalysis.h"
+#include "IROptim.h"
 
 extern SemanticAnalysis semantic_analysis;
+extern IROptim          ir_optim;
+
 #ifdef ASM_gen
 class RiscvGen{
     public:

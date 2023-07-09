@@ -4,377 +4,20 @@
 	.attribute unaligned_access, 0
 	.attribute stack_align, 16
 	.text
-	.align	1
-	.globl	binary_insert
-	.type	binary_insert, @function
-binary_insert:
-	bgt	a2,a3,.L1
-	slli	t1,a2,2
-	add	t1,a0,t1
-	addiw	a7,a2,-1
-	sext.w	t4,a3
-	j	.L9
-.L5:
-	addiw	a2,a5,1
-.L6:
-	blt	a6,a2,.L14
-.L7:
-	subw	a3,a6,a2
-	srliw	a5,a3,31
-	addw	a5,a5,a3
-	sraiw	a5,a5,1
-	addw	a5,a5,a2
-	sext.w	a3,a5
-	slli	a3,a3,2
-	add	a3,a0,a3
-	lw	a3,0(a3)
-	ble	a3,t3,.L5
-	addiw	a6,a5,-1
-	j	.L6
-.L14:
-	blt	a4,a2,.L4
-	slli	a5,a4,2
-	add	a5,a0,a5
-	addi	a3,t1,-8
-	subw	a4,a7,a2
-	slli	a6,a4,32
-	srli	a4,a6,30
-	sub	a3,a3,a4
-.L8:
-	lw	a4,0(a5)
-	sw	a4,4(a5)
-	addi	a5,a5,-4
-	bne	a5,a3,.L8
-.L4:
-	slli	a2,a2,2
-	add	a2,a0,a2
-	sw	t3,0(a2)
-.L3:
-	addi	t1,t1,4
-	addiw	a7,a7,1
-	beq	a7,t4,.L1
-.L9:
-	lw	t3,0(t1)
-	sext.w	a4,a7
-	lw	a5,-4(t1)
-	ble	a5,t3,.L3
-	bgt	a1,a4,.L10
-	mv	a6,a4
-	mv	a2,a1
-	j	.L7
-.L10:
-	mv	a2,a1
-	j	.L4
-.L1:
-	ret
-	.size	binary_insert, .-binary_insert
-	.align	1
-	.globl	merge_sort
-	.type	merge_sort, @function
-merge_sort:
-	bge	a1,a2,.L29
-	bgt	a2,a3,.L30
-	la	t3,swap
-	mv	a6,a2
-	mv	t1,a1
-	li	a5,0
-	j	.L20
-.L18:
-	addiw	a6,a6,1
-	mv	a7,a4
-.L19:
-	sw	a7,0(t3)
-	addiw	a5,a5,1
-	bge	t1,a2,.L28
-	addi	t3,t3,4
-	bgt	a6,a3,.L17
-.L20:
-	slli	a4,t1,2
-	add	a4,a0,a4
-	lw	a7,0(a4)
-	slli	a4,a6,2
-	add	a4,a0,a4
-	lw	a4,0(a4)
-	bgt	a7,a4,.L18
-	addiw	t1,t1,1
-	j	.L19
-.L30:
-	mv	a6,a2
-	mv	t1,a1
-	li	a5,0
-.L17:
-	slli	a7,t1,2
-	add	a7,a0,a7
-	slli	a4,a5,2
-	la	t3,swap
-	add	a4,a4,t3
-	mv	t3,t1
-.L21:
-	lw	t4,0(a7)
-	sw	t4,0(a4)
-	addiw	t3,t3,1
-	addi	a7,a7,4
-	addi	a4,a4,4
-	bgt	a2,t3,.L21
-	addiw	a5,a5,1
-	li	a4,0
-	ble	a2,t1,.L23
-	addiw	a2,a2,-1
-	subw	a4,a2,t1
-.L23:
-	addw	a5,a4,a5
-.L28:
-	blt	a3,a6,.L24
-	slli	a4,a6,2
-	add	a4,a0,a4
-	slli	a5,a5,2
-	la	a2,swap
-	add	a5,a5,a2
-	subw	a2,a3,a6
-	slli	a2,a2,32
-	srli	a2,a2,32
-	add	a6,a2,a6
-	slli	a6,a6,2
-	addi	a2,a0,4
-	add	a6,a6,a2
-.L25:
-	lw	a2,0(a4)
-	sw	a2,0(a5)
-	addi	a4,a4,4
-	addi	a5,a5,4
-	bne	a4,a6,.L25
-.L24:
-	bgt	a1,a3,.L15
-	la	a5,swap
-	slli	a4,a1,2
-	add	a0,a0,a4
-	subw	a3,a3,a1
-	slli	a4,a3,32
-	srli	a3,a4,30
-	addi	a1,a5,4
-	add	a3,a3,a1
-.L27:
-	lw	a4,0(a5)
-	sw	a4,0(a0)
-	addi	a5,a5,4
-	addi	a0,a0,4
-	bne	a5,a3,.L27
-	ret
-.L29:
-	mv	a6,a2
-	li	a5,0
-	j	.L28
-.L15:
-	ret
-	.size	merge_sort, .-merge_sort
-	.align	1
-	.globl	simplified_tim_sort
-	.type	simplified_tim_sort, @function
-simplified_tim_sort:
-	addi	sp,sp,-64
-	sd	ra,56(sp)
-	sd	s0,48(sp)
-	sd	s1,40(sp)
-	sd	s2,32(sp)
-	sd	s3,24(sp)
-	sd	s4,16(sp)
-	sd	s5,8(sp)
-	sd	s6,0(sp)
-	mv	s3,a0
-	mv	s5,a1
-	addiw	s4,a1,1
-	li	a5,64
-	ble	s4,a5,.L36
-	li	a3,129
-.L37:
-	mv	a5,s4
-	srliw	a4,s4,31
-	addw	s4,a4,s4
-	sraiw	s4,s4,1
-	bgt	a5,a3,.L37
-.L36:
-	addiw	s4,s4,1
-	blt	s5,zero,.L35
-	li	a3,0
-	li	s2,-1
-	la	s6,stack
-	j	.L49
-.L40:
-	mv	a2,a4
-.L44:
-	mv	a7,a2
-	addiw	a2,a2,1
-	beq	s5,a2,.L43
-	lw	a0,0(a5)
-	addi	a5,a5,4
-	lw	a6,0(a5)
-	blt	a6,a0,.L44
-.L43:
-	bge	s2,a7,.L56
-	add	a1,s3,a1
-	slli	a0,a2,2
-	add	a0,s3,a0
-.L45:
-	lw	a5,0(a1)
-	lw	a6,0(a0)
-	sw	a6,0(a1)
-	sw	a5,0(a0)
-	mv	a5,a4
-	addiw	a4,a4,1
-	addi	a1,a1,4
-	addi	a0,a0,-4
-	subw	a5,s2,a5
-	addw	a5,a5,a2
-	bgt	a5,a4,.L45
-	mv	s2,a2
-.L42:
-	ble	a3,zero,.L46
-	j	.L52
-.L56:
-	mv	s2,a2
-	j	.L42
-.L70:
-	slli	a3,a3,2
-	add	a5,s6,a3
-	mv	a3,s2
-	lw	a2,0(a5)
-	mv	a0,s3
-	call	binary_insert@plt
-	ble	s0,zero,.L68
-.L47:
-	slli	s1,s0,2
-	add	s1,s1,s6
-.L48:
-	lw	a2,0(s1)
-	mv	a3,s0
-	addiw	s0,s0,-1
-	lw	a1,-4(s1)
-	subw	a5,s2,a2
-	slliw	a5,a5,1
-	subw	a4,a2,a1
-	ble	a5,a4,.L46
-	mv	a3,s2
-	mv	a0,s3
-	call	merge_sort@plt
-	addi	s1,s1,-4
-	bgt	s0,zero,.L48
-	mv	a3,s0
-.L46:
-	addiw	a3,a3,1
-	bge	s2,s5,.L51
-.L49:
-	addiw	a2,s2,1
-	sext.w	a4,a2
-	slli	a5,a3,2
-	add	a5,s6,a5
-	sw	a2,0(a5)
-	ble	s5,a4,.L54
-	slli	a1,a4,2
-	addi	a5,a1,4
-	add	a5,s3,a5
-	add	a2,s3,a1
-	lw	a0,0(a2)
-	lw	a2,0(a5)
-	bgt	a0,a2,.L40
-.L41:
-	addiw	a4,a4,1
-	beq	s5,a4,.L55
-	lw	a2,0(a5)
-	addi	a5,a5,4
-	lw	a1,0(a5)
-	bge	a1,a2,.L41
-	mv	s2,a4
-	j	.L42
-.L68:
-	mv	a3,s0
-	j	.L46
-.L69:
-	addiw	a3,a3,1
-.L51:
-	li	a5,1
-	ble	a3,a5,.L35
-	slli	s0,a3,2
-	addi	s0,s0,-8
-	la	a5,stack
-	add	s0,s0,a5
-	addiw	s1,a3,-2
-	slli	s1,s1,32
-	srli	s1,s1,32
-	sub	s1,a3,s1
-	slli	s1,s1,2
-	addi	a5,a5,-12
-	add	s1,s1,a5
-.L50:
-	mv	a3,s2
-	lw	a2,4(s0)
-	lw	a1,0(s0)
-	mv	a0,s3
-	call	merge_sort@plt
-	addi	s0,s0,-4
-	bne	s1,s0,.L50
-.L35:
-	ld	ra,56(sp)
-	ld	s0,48(sp)
-	ld	s1,40(sp)
-	ld	s2,32(sp)
-	ld	s3,24(sp)
-	ld	s4,16(sp)
-	ld	s5,8(sp)
-	ld	s6,0(sp)
-	addi	sp,sp,64
-	jr	ra
-.L54:
-	mv	s2,a4
-.L39:
-	ble	a3,zero,.L69
-.L52:
-	addiw	s0,a3,-1
-	slli	a5,s0,2
-	add	a5,s6,a5
-	lw	a1,0(a5)
-	addw	a5,a1,s4
-	bgt	a5,s2,.L70
-	mv	s0,a3
-	j	.L47
-.L55:
-	mv	s2,a4
-	j	.L39
-	.size	simplified_tim_sort, .-simplified_tim_sort
-	.align	1
-	.globl	main
-	.type	main, @function
-main:
-	addi	sp,sp,-32
-	sd	ra,24(sp)
-	sd	s0,16(sp)
-	sd	s1,8(sp)
-	sd	s2,0(sp)
-	call	get_int@plt
-	mv	s2,a0
-	mv	a1,a0
-	la	a0,array
-	call	simplified_tim_sort@plt
-	blt	s2,zero,.L72
-	la	s1,array
-	li	s0,0
-.L73:
-	lw	a0,0(s1)
-	call	print_int@plt
-	addiw	s0,s0,1
-	addi	s1,s1,4
-	bge	s2,s0,.L73
-.L72:
-	li	a0,0
-	ld	ra,24(sp)
-	ld	s0,16(sp)
-	ld	s1,8(sp)
-	ld	s2,0(sp)
-	addi	sp,sp,32
-	jr	ra
-	.size	main, .-main
-	.globl	array
-	.globl	swap
 	.globl	stack
+	.bss
+	.align	3
+	.type	stack, @object
+	.size	stack, 20040
+stack:
+	.zero	20040
+	.globl	swap
+	.align	3
+	.type	swap, @object
+	.size	swap, 20040
+swap:
+	.zero	20040
+	.globl	array
 	.data
 	.align	3
 	.type	array, @object
@@ -5380,14 +5023,627 @@ array:
 	.word	-548
 	.word	713
 	.word	1348
-	.bss
-	.align	3
-	.type	swap, @object
-	.size	swap, 20040
-swap:
-	.zero	20040
-	.type	stack, @object
-	.size	stack, 20040
-stack:
-	.zero	20040
+	.text
+	.align	1
+	.globl	binary_insert
+	.type	binary_insert, @function
+binary_insert:
+	addi	sp,sp,-80
+	sd	s0,72(sp)
+	addi	s0,sp,80
+	sd	a0,-56(s0)
+	mv	a5,a1
+	mv	a4,a3
+	sw	a5,-60(s0)
+	mv	a5,a2
+	sw	a5,-64(s0)
+	mv	a5,a4
+	sw	a5,-68(s0)
+	lw	a5,-64(s0)
+	sw	a5,-20(s0)
+	j	.L2
+.L9:
+	lw	a5,-20(s0)
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	sw	a5,-36(s0)
+	lw	a5,-60(s0)
+	sw	a5,-28(s0)
+	lw	a5,-20(s0)
+	addiw	a5,a5,-1
+	sw	a5,-32(s0)
+	lw	a5,-32(s0)
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a5,a4,a5
+	lw	a4,0(a5)
+	lw	a5,-36(s0)
+	sext.w	a5,a5
+	bge	a5,a4,.L3
+	j	.L4
+.L6:
+	lw	a4,-32(s0)
+	lw	a5,-28(s0)
+	subw	a5,a4,a5
+	sext.w	a5,a5
+	srliw	a4,a5,31
+	addw	a5,a4,a5
+	sraiw	a5,a5,1
+	sext.w	a5,a5
+	lw	a4,-28(s0)
+	addw	a5,a4,a5
+	sw	a5,-40(s0)
+	lw	a5,-40(s0)
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a5,a4,a5
+	lw	a4,0(a5)
+	lw	a5,-36(s0)
+	sext.w	a5,a5
+	bge	a5,a4,.L5
+	lw	a5,-40(s0)
+	addiw	a5,a5,-1
+	sw	a5,-32(s0)
+	j	.L4
+.L5:
+	lw	a5,-40(s0)
+	addiw	a5,a5,1
+	sw	a5,-28(s0)
+.L4:
+	lw	a4,-28(s0)
+	lw	a5,-32(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	ble	a4,a5,.L6
+	lw	a5,-20(s0)
+	addiw	a5,a5,-1
+	sw	a5,-24(s0)
+	j	.L7
+.L8:
+	lw	a5,-24(s0)
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a4,a4,a5
+	lw	a5,-24(s0)
+	addi	a5,a5,1
+	slli	a5,a5,2
+	ld	a3,-56(s0)
+	add	a5,a3,a5
+	lw	a4,0(a4)
+	sw	a4,0(a5)
+	lw	a5,-24(s0)
+	addiw	a5,a5,-1
+	sw	a5,-24(s0)
+.L7:
+	lw	a4,-24(s0)
+	lw	a5,-28(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	bge	a4,a5,.L8
+	lw	a5,-28(s0)
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a5,a4,a5
+	lw	a4,-36(s0)
+	sw	a4,0(a5)
+.L3:
+	lw	a5,-20(s0)
+	addiw	a5,a5,1
+	sw	a5,-20(s0)
+.L2:
+	lw	a4,-20(s0)
+	lw	a5,-68(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	ble	a4,a5,.L9
+	nop
+	nop
+	ld	s0,72(sp)
+	addi	sp,sp,80
+	jr	ra
+	.size	binary_insert, .-binary_insert
+	.align	1
+	.globl	merge_sort
+	.type	merge_sort, @function
+merge_sort:
+	addi	sp,sp,-64
+	sd	s0,56(sp)
+	addi	s0,sp,64
+	sd	a0,-40(s0)
+	mv	a5,a1
+	mv	a4,a3
+	sw	a5,-44(s0)
+	mv	a5,a2
+	sw	a5,-48(s0)
+	mv	a5,a4
+	sw	a5,-52(s0)
+	lw	a5,-44(s0)
+	sw	a5,-20(s0)
+	lw	a5,-48(s0)
+	sw	a5,-24(s0)
+	sw	zero,-28(s0)
+	j	.L11
+.L15:
+	lw	a5,-20(s0)
+	slli	a5,a5,2
+	ld	a4,-40(s0)
+	add	a5,a4,a5
+	lw	a3,0(a5)
+	lw	a5,-24(s0)
+	slli	a5,a5,2
+	ld	a4,-40(s0)
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	mv	a4,a3
+	bgt	a4,a5,.L12
+	lw	a5,-20(s0)
+	slli	a5,a5,2
+	ld	a4,-40(s0)
+	add	a5,a4,a5
+	lw	a4,0(a5)
+	la	a3,swap
+	lw	a5,-28(s0)
+	slli	a5,a5,2
+	add	a5,a3,a5
+	sw	a4,0(a5)
+	lw	a5,-20(s0)
+	addiw	a5,a5,1
+	sw	a5,-20(s0)
+	j	.L13
+.L12:
+	lw	a5,-24(s0)
+	slli	a5,a5,2
+	ld	a4,-40(s0)
+	add	a5,a4,a5
+	lw	a4,0(a5)
+	la	a3,swap
+	lw	a5,-28(s0)
+	slli	a5,a5,2
+	add	a5,a3,a5
+	sw	a4,0(a5)
+	lw	a5,-24(s0)
+	addiw	a5,a5,1
+	sw	a5,-24(s0)
+.L13:
+	lw	a5,-28(s0)
+	addiw	a5,a5,1
+	sw	a5,-28(s0)
+.L11:
+	lw	a4,-20(s0)
+	lw	a5,-48(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	bge	a4,a5,.L16
+	lw	a4,-24(s0)
+	lw	a5,-52(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	ble	a4,a5,.L15
+	j	.L16
+.L17:
+	lw	a5,-20(s0)
+	slli	a5,a5,2
+	ld	a4,-40(s0)
+	add	a5,a4,a5
+	lw	a4,0(a5)
+	la	a3,swap
+	lw	a5,-28(s0)
+	slli	a5,a5,2
+	add	a5,a3,a5
+	sw	a4,0(a5)
+	lw	a5,-20(s0)
+	addiw	a5,a5,1
+	sw	a5,-20(s0)
+	lw	a5,-28(s0)
+	addiw	a5,a5,1
+	sw	a5,-28(s0)
+.L16:
+	lw	a4,-20(s0)
+	lw	a5,-48(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	blt	a4,a5,.L17
+	j	.L18
+.L19:
+	lw	a5,-24(s0)
+	slli	a5,a5,2
+	ld	a4,-40(s0)
+	add	a5,a4,a5
+	lw	a4,0(a5)
+	la	a3,swap
+	lw	a5,-28(s0)
+	slli	a5,a5,2
+	add	a5,a3,a5
+	sw	a4,0(a5)
+	lw	a5,-24(s0)
+	addiw	a5,a5,1
+	sw	a5,-24(s0)
+	lw	a5,-28(s0)
+	addiw	a5,a5,1
+	sw	a5,-28(s0)
+.L18:
+	lw	a4,-24(s0)
+	lw	a5,-52(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	ble	a4,a5,.L19
+	lw	a5,-44(s0)
+	sw	a5,-20(s0)
+	j	.L20
+.L21:
+	lw	a4,-20(s0)
+	lw	a5,-44(s0)
+	subw	a5,a4,a5
+	sext.w	a4,a5
+	lw	a5,-20(s0)
+	slli	a5,a5,2
+	ld	a3,-40(s0)
+	add	a5,a3,a5
+	la	a3,swap
+	slli	a4,a4,2
+	add	a4,a3,a4
+	lw	a4,0(a4)
+	sw	a4,0(a5)
+	lw	a5,-20(s0)
+	addiw	a5,a5,1
+	sw	a5,-20(s0)
+.L20:
+	lw	a4,-20(s0)
+	lw	a5,-52(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	ble	a4,a5,.L21
+	nop
+	nop
+	ld	s0,56(sp)
+	addi	sp,sp,64
+	jr	ra
+	.size	merge_sort, .-merge_sort
+	.align	1
+	.globl	simplified_tim_sort
+	.type	simplified_tim_sort, @function
+simplified_tim_sort:
+	addi	sp,sp,-64
+	sd	ra,56(sp)
+	sd	s0,48(sp)
+	addi	s0,sp,64
+	sd	a0,-56(s0)
+	mv	a5,a1
+	sw	a5,-60(s0)
+	lw	a5,-60(s0)
+	addiw	a5,a5,1
+	sw	a5,-20(s0)
+	j	.L23
+.L24:
+	lw	a5,-20(s0)
+	srliw	a4,a5,31
+	addw	a5,a4,a5
+	sraiw	a5,a5,1
+	sw	a5,-20(s0)
+.L23:
+	lw	a5,-20(s0)
+	sext.w	a4,a5
+	li	a5,64
+	bgt	a4,a5,.L24
+	lw	a5,-20(s0)
+	addiw	a5,a5,1
+	sw	a5,-20(s0)
+	li	a5,-1
+	sw	a5,-24(s0)
+	sw	zero,-36(s0)
+	j	.L25
+.L40:
+	lw	a5,-24(s0)
+	addiw	a5,a5,1
+	sw	a5,-24(s0)
+	la	a4,stack
+	lw	a5,-36(s0)
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a4,-24(s0)
+	sw	a4,0(a5)
+	lw	a4,-24(s0)
+	lw	a5,-60(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	bge	a4,a5,.L26
+	lw	a5,-24(s0)
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a5,a4,a5
+	lw	a3,0(a5)
+	lw	a5,-24(s0)
+	addi	a5,a5,1
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	mv	a4,a3
+	bgt	a4,a5,.L30
+	j	.L28
+.L29:
+	lw	a5,-24(s0)
+	addiw	a5,a5,1
+	sw	a5,-24(s0)
+.L28:
+	lw	a4,-24(s0)
+	lw	a5,-60(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	bge	a4,a5,.L26
+	lw	a5,-24(s0)
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a5,a4,a5
+	lw	a3,0(a5)
+	lw	a5,-24(s0)
+	addi	a5,a5,1
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	mv	a4,a3
+	ble	a4,a5,.L29
+	j	.L26
+.L32:
+	lw	a5,-24(s0)
+	addiw	a5,a5,1
+	sw	a5,-24(s0)
+.L30:
+	lw	a4,-24(s0)
+	lw	a5,-60(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	bge	a4,a5,.L31
+	lw	a5,-24(s0)
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a5,a4,a5
+	lw	a3,0(a5)
+	lw	a5,-24(s0)
+	addi	a5,a5,1
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	mv	a4,a3
+	bgt	a4,a5,.L32
+.L31:
+	la	a4,stack
+	lw	a5,-36(s0)
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	sw	a5,-28(s0)
+	lw	a5,-24(s0)
+	sw	a5,-32(s0)
+	j	.L33
+.L34:
+	lw	a5,-28(s0)
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	sw	a5,-40(s0)
+	lw	a5,-32(s0)
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a4,a4,a5
+	lw	a5,-28(s0)
+	slli	a5,a5,2
+	ld	a3,-56(s0)
+	add	a5,a3,a5
+	lw	a4,0(a4)
+	sw	a4,0(a5)
+	lw	a5,-32(s0)
+	slli	a5,a5,2
+	ld	a4,-56(s0)
+	add	a5,a4,a5
+	lw	a4,-40(s0)
+	sw	a4,0(a5)
+	lw	a5,-28(s0)
+	addiw	a5,a5,1
+	sw	a5,-28(s0)
+	lw	a5,-32(s0)
+	addiw	a5,a5,-1
+	sw	a5,-32(s0)
+.L33:
+	lw	a4,-28(s0)
+	lw	a5,-32(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	blt	a4,a5,.L34
+.L26:
+	li	a0,3
+	call	print_int@plt
+	la	a5,array
+	lw	a5,4(a5)
+	mv	a0,a5
+	call	print_int@plt
+	lw	a5,-36(s0)
+	sext.w	a5,a5
+	ble	a5,zero,.L36
+	lw	a5,-36(s0)
+	addiw	a5,a5,-1
+	sext.w	a5,a5
+	la	a4,stack
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	lw	a4,-20(s0)
+	addw	a5,a4,a5
+	sext.w	a4,a5
+	lw	a5,-24(s0)
+	sext.w	a5,a5
+	bge	a5,a4,.L36
+	lw	a5,-36(s0)
+	addiw	a5,a5,-1
+	sext.w	a5,a5
+	la	a4,stack
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a1,0(a5)
+	la	a4,stack
+	lw	a5,-36(s0)
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	lw	a4,-24(s0)
+	mv	a3,a4
+	mv	a2,a5
+	ld	a0,-56(s0)
+	call	binary_insert@plt
+	li	a0,4
+	call	print_int@plt
+	la	a5,array
+	lw	a5,4(a5)
+	mv	a0,a5
+	call	print_int@plt
+	lw	a5,-36(s0)
+	addiw	a5,a5,-1
+	sw	a5,-36(s0)
+	j	.L36
+.L39:
+	la	a4,stack
+	lw	a5,-36(s0)
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	lw	a4,-24(s0)
+	subw	a5,a4,a5
+	sext.w	a5,a5
+	slliw	a5,a5,1
+	sext.w	a2,a5
+	la	a4,stack
+	lw	a5,-36(s0)
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a4,0(a5)
+	lw	a5,-36(s0)
+	addiw	a5,a5,-1
+	sext.w	a5,a5
+	la	a3,stack
+	slli	a5,a5,2
+	add	a5,a3,a5
+	lw	a5,0(a5)
+	subw	a5,a4,a5
+	sext.w	a5,a5
+	mv	a4,a2
+	ble	a4,a5,.L43
+	lw	a5,-36(s0)
+	addiw	a5,a5,-1
+	sext.w	a5,a5
+	la	a4,stack
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a1,0(a5)
+	la	a4,stack
+	lw	a5,-36(s0)
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	lw	a4,-24(s0)
+	mv	a3,a4
+	mv	a2,a5
+	ld	a0,-56(s0)
+	call	merge_sort@plt
+	lw	a5,-36(s0)
+	addiw	a5,a5,-1
+	sw	a5,-36(s0)
+.L36:
+	lw	a5,-36(s0)
+	sext.w	a5,a5
+	bgt	a5,zero,.L39
+	j	.L38
+.L43:
+	nop
+.L38:
+	lw	a5,-36(s0)
+	addiw	a5,a5,1
+	sw	a5,-36(s0)
+.L25:
+	lw	a4,-24(s0)
+	lw	a5,-60(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	blt	a4,a5,.L40
+	j	.L41
+.L42:
+	lw	a5,-36(s0)
+	addiw	a5,a5,-2
+	sext.w	a5,a5
+	la	a4,stack
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a1,0(a5)
+	lw	a5,-36(s0)
+	addiw	a5,a5,-1
+	sext.w	a5,a5
+	la	a4,stack
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	lw	a4,-24(s0)
+	mv	a3,a4
+	mv	a2,a5
+	ld	a0,-56(s0)
+	call	merge_sort@plt
+	lw	a5,-36(s0)
+	addiw	a5,a5,-1
+	sw	a5,-36(s0)
+.L41:
+	lw	a5,-36(s0)
+	sext.w	a4,a5
+	li	a5,1
+	bgt	a4,a5,.L42
+	nop
+	nop
+	ld	ra,56(sp)
+	ld	s0,48(sp)
+	addi	sp,sp,64
+	jr	ra
+	.size	simplified_tim_sort, .-simplified_tim_sort
+	.align	1
+	.globl	main
+	.type	main, @function
+main:
+	addi	sp,sp,-32
+	sd	ra,24(sp)
+	sd	s0,16(sp)
+	addi	s0,sp,32
+	sw	zero,-20(s0)
+	call	get_int@plt
+	mv	a5,a0
+	sw	a5,-24(s0)
+	lw	a5,-24(s0)
+	mv	a1,a5
+	la	a0,array
+	call	simplified_tim_sort@plt
+	j	.L45
+.L46:
+	la	a4,array
+	lw	a5,-20(s0)
+	slli	a5,a5,2
+	add	a5,a4,a5
+	lw	a5,0(a5)
+	mv	a0,a5
+	call	print_int@plt
+	lw	a5,-20(s0)
+	addiw	a5,a5,1
+	sw	a5,-20(s0)
+.L45:
+	lw	a4,-20(s0)
+	lw	a5,-24(s0)
+	sext.w	a4,a4
+	sext.w	a5,a5
+	ble	a4,a5,.L46
+	li	a5,0
+	mv	a0,a5
+	ld	ra,24(sp)
+	ld	s0,16(sp)
+	addi	sp,sp,32
+	jr	ra
+	.size	main, .-main
 	.ident	"GCC: (GNU) 10.2.0"

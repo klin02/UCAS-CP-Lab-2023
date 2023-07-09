@@ -4,6 +4,7 @@ Func Begin|   unknown|      main|          |          |
    L_Alloc|       int|        ^1|       #0,|          |
      Label|   unknown|        L0|          |          |
        BLT|       int|        L2|        ^0|        #3|
+     Label|   unknown|        L3|          |          |
          J|   unknown|        L1|          |          |
      Label|   unknown|        L2|          |          |
    L_Alloc|       int|        ^2|       #1,|          |

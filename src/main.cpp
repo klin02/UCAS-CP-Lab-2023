@@ -10,6 +10,7 @@
 #include "SyntaxAnalysis.h"
 #include "SymbolTable.h"
 #include "SemanticAnalysis.h"
+#include "IROptim.h"
 #include "RiscvGen.h"
 
 using namespace antlr4;
@@ -20,6 +21,7 @@ SyntaxAnalysis      syntax_analysis;
 SymbolTable         symbol_table;
 TypeUtils           typeutils;
 SemanticAnalysis    semantic_analysis;
+IROptim             ir_optim;
 RiscvGen            riscv_gen;
 
 int main(int argc, const char* argv[]) {
@@ -33,9 +35,9 @@ int main(int argc, const char* argv[]) {
     else{
         if(strcmp(argv[1],"-O0")==0)
             OPTIM_LEVEL = 0;
-        else if(argv[1]=="-O1")
+        else if(strcmp(argv[1],"-O1")==0)
             OPTIM_LEVEL = 1;
-        else if(argv[1]=="-O2")
+        else if(strcmp(argv[1],"-O2")==0)
             OPTIM_LEVEL = 2;
         else{
             std::cout << "Illegal optim arg: " << argv[1] << std::endl;
@@ -62,18 +64,16 @@ int main(int argc, const char* argv[]) {
     tree::ParseTreeWalker::DEFAULT.walk(&semantic_analysis, tree);
 
     #ifdef IR_gen
-    //substr(start_pos,len)
-    std::string file_name = cact_path.substr(cact_path.rfind('/')+1,cact_path.rfind('.')-cact_path.rfind('/')-1) + ".S";
-
-    // std::cout << "----------------------------IR Code: ------------------------------" << std::endl;
-    // std::cout <<file_name <<" " <<file_name2 << cact_path.find('.cact')<< std::endl;
+    ir_optim.optim();
+    std::string file_name = cact_path.substr(cact_path.rfind('/')+1,cact_path.rfind('.')-cact_path.rfind('/')-1);
     std::string irc_path = std::string("IRC/")+file_name+std::string(".txt");
     std::ofstream irc_stream;
     irc_stream.open(irc_path);
-    semantic_analysis.printIRC(irc_stream);
+    ir_optim.printIRC(irc_stream);
 
     #ifdef ASM_gen
-    riscv_gen.Gen_All(file_name);
+    std::string asm_name = file_name + ".S";
+    riscv_gen.Gen_All(asm_name);
     #endif
 
     #endif

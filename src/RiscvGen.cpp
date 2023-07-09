@@ -203,8 +203,9 @@ void RiscvGen:: var_to_reg(std::string var_name,std::string reg_name){
         ASM_array.push_back(op+"     "+reg_name+", "+stack_offset+"(s0)");
     }
     else if(is_imm){
-        bool is_float = var_name.find("f") != -1;
-        bool is_double = var_name.find(".")!=-1 && !is_float;
+        bool has_prefd = var_name.find(".")!=-1 || var_name.find("E")!=-1 || var_name.find("e")!=-1;
+        bool is_float = has_prefd && (var_name.find("f") != -1 || var_name.find("F")!=-1);
+        bool is_double = has_prefd && !is_float;
         if(is_float || is_double){
             std::string stack_label = "IMM" + std::to_string(imm_cnt);
             //常量声明
@@ -339,8 +340,8 @@ void RiscvGen:: Gen_All(std::string asm_name){
 
     bool rescan = false; //false时，除Galloc均跳过
     int rescan_loc; //重新开始扫描的位置，当func_end将rescan由false变为true时跳回
-    for(int i=0;i<semantic_analysis.IRC_array.size();i++){
-        IR_code_t irc = semantic_analysis.IRC_array[i];
+    for(int i=0;i<ir_optim.IRC_array.size();i++){
+        IR_code_t irc = ir_optim.IRC_array[i];
         if(rescan){
             switch(irc.IRop){
                 case IR_G_ALLOC:
@@ -373,6 +374,7 @@ void RiscvGen:: Gen_All(std::string asm_name){
                     Gen_Assign(irc);
                     break;
                 case IR_ADD: case IR_SUB: case IR_MUL: case IR_DIV: 
+                case IR_SLL: case IR_SRA:
                 case IR_MOD: case IR_AND: case IR_OR: 
                 case IR_NEG: case IR_NOT:
                     Gen_Operation(irc);
@@ -584,6 +586,8 @@ void RiscvGen:: Gen_Operation(IR_code_t &irc){
         case IR_SUB: op = is_float ? "fsub.s" : is_double ? "fsub.d" : "subw"; break;
         case IR_MUL: op = is_float ? "fmul.s" : is_double ? "fmul.d" : "mul" ; break;
         case IR_DIV: op = is_float ? "fdiv.s" : is_double ? "fdiv.d" : "div" ; break;
+        case IR_SLL: op = "sll"; break;
+        case IR_SRA: op = "sra"; break;
         case IR_MOD: op = "rem"; break;
         case IR_AND: op = "and"; break;
         case IR_OR:  op = "or" ; break;
@@ -636,8 +640,8 @@ void RiscvGen:: Gen_Branch(IR_code_t &irc){
         case IR_BNE: op = is_float ? "feq.s" : is_double ? "feq.d" : "bne" ; break;
         case IR_BLT: op = is_float ? "flt.s" : is_double ? "flt.d" : "blt" ; break;
         case IR_BLE: op = is_float ? "fle.s" : is_double ? "fle.d" : "ble" ; break;
-        case IR_BGT: op = is_float ? "fle.s" : is_double ? "fle.d" : "ble" ; reverse = true; break;
-        case IR_BGE: op = is_float ? "flt.s" : is_double ? "flt.d" : "blt" ; reverse = true; break;
+        case IR_BGT: op = is_float ? "flt.s" : is_double ? "flt.d" : "blt" ; reverse = true; break;
+        case IR_BGE: op = is_float ? "fle.s" : is_double ? "fle.d" : "ble" ; reverse = true; break;
         default: break;
     }
     if(is_float || is_double){

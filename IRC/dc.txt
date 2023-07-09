@@ -1,0 +1,4 @@
+      IRop|    Basety|    result|      arg1|      arg2|
+Func Begin|   unknown|      main|          |          |
+    Return|       int|        #0|          |          |
+  Func End|   unknown|      main|          |          |
