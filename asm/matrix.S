@@ -18,29 +18,23 @@ matrix_multiply:
 	sw      a2, -28(s0)
 	li      s7, 0
 	sw     s7, -36(s0)
-L0:
-	lw     t3, -36(s0)
-	lw     t4, -20(s0)
+	mv      t3, s7
+	mv      t4, a0
 	blt     t3, t4, L2
-L3:
 	j       L1
 L2:
 	li      s7, 0
 	sw     s7, -52(s0)
-L4:
-	lw     t3, -52(s0)
+	mv      t3, s7
 	lw     t4, -28(s0)
 	blt     t3, t4, L6
-L7:
 	j       L5
 L6:
 	li      s7, 0
 	sw     s7, -44(s0)
-L8:
-	lw     t3, -44(s0)
+	mv      t3, s7
 	lw     t4, -24(s0)
 	blt     t3, t4, L10
-L11:
 	j       L9
 L10:
 	lw     t1, -36(s0)
@@ -52,7 +46,7 @@ L10:
 	sll     t0, t1, t2
 	sw     t0, -60(s0)
 	lw     t1, -56(s0)
-	lw     t2, -60(s0)
+	mv      t2, t0
 	addw     t0, t1, t2
 	sw     t0, -64(s0)
 	lw     t1, -36(s0)
@@ -64,14 +58,14 @@ L10:
 	sll     t0, t1, t2
 	sw     t0, -84(s0)
 	lw     t1, -80(s0)
-	lw     t2, -84(s0)
+	mv      t2, t0
 	addw     t0, t1, t2
 	sw     t0, -88(s0)
 	lw     t1, -52(s0)
 	li      t2, 7
 	sll     t0, t1, t2
 	sw     t0, -92(s0)
-	lw     t1, -92(s0)
+	mv      t1, t0
 	lw     t2, -60(s0)
 	addw     t0, t1, t2
 	sw     t0, -100(s0)
@@ -79,7 +73,7 @@ L10:
 	la      s4, GVAR0
 	add     s4, s4, s3
 	flw     ft1, 0(s4)
-	lw     s3, -100(s0)
+	mv      s3, t0
 	la      s4, GVAR1
 	add     s4, s4, s3
 	flw     ft2, 0(s4)
@@ -89,10 +83,10 @@ L10:
 	la      s4, GVAR2
 	add     s4, s4, s3
 	flw     ft1, 0(s4)
-	flw     ft2, -104(s0)
+	fmv.s      ft2, ft0
 	fadd.s     ft0, ft1, ft2
 	fsw     ft0, -108(s0)
-	flw     fs7, -108(s0)
+	fmv.s      fs7, ft0
 	lw     s5, -64(s0)
 	la      s6, GVAR2
 	add     s6, s6, s5
@@ -101,36 +95,33 @@ L10:
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -112(s0)
-	lw     s7, -112(s0)
+	mv      s7, t0
 	sw     s7, -44(s0)
-	lw     t3, -44(s0)
+	mv      t3, s7
 	lw     t4, -24(s0)
 	blt     t3, t4, L10
-L26:
 	j       L9
 L9:
 	lw     t1, -52(s0)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -116(s0)
-	lw     s7, -116(s0)
+	mv      s7, t0
 	sw     s7, -52(s0)
-	lw     t3, -52(s0)
+	mv      t3, s7
 	lw     t4, -28(s0)
 	blt     t3, t4, L6
-L27:
 	j       L5
 L5:
 	lw     t1, -36(s0)
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -120(s0)
-	lw     s7, -120(s0)
+	mv      s7, t0
 	sw     s7, -36(s0)
-	lw     t3, -36(s0)
+	mv      t3, s7
 	lw     t4, -20(s0)
 	blt     t3, t4, L2
-L25:
 	j       L1
 L1:
 	ld      ra, 120(sp)
@@ -158,9 +149,8 @@ L12:
 	subw     t0, t1, t2
 	sw     t0, -44(s0)
 	lw     t3, -32(s0)
-	lw     t4, -44(s0)
+	mv      t4, t0
 	blt     t3, t4, L14
-L15:
 	j       L13
 L14:
 	li      s7, 1
@@ -171,9 +161,8 @@ L16:
 	subw     t0, t1, t2
 	sw     t0, -48(s0)
 	lw     t3, -40(s0)
-	lw     t4, -48(s0)
+	mv      t4, t0
 	blt     t3, t4, L18
-L19:
 	j       L17
 L18:
 	lw     t1, -32(s0)
@@ -185,26 +174,26 @@ L18:
 	sll     t0, t1, t2
 	sw     t0, -56(s0)
 	lw     t1, -52(s0)
-	lw     t2, -56(s0)
+	mv      t2, t0
 	addw     t0, t1, t2
 	sw     t0, -60(s0)
 	lw     t1, -40(s0)
 	li      t2, 1
 	subw     t0, t1, t2
 	sw     t0, -76(s0)
-	lw     t1, -76(s0)
+	mv      t1, t0
 	li      t2, 3
 	sll     t0, t1, t2
 	sw     t0, -84(s0)
 	lw     t1, -52(s0)
-	lw     t2, -84(s0)
+	mv      t2, t0
 	addw     t0, t1, t2
 	sw     t0, -88(s0)
 	lw     s3, -60(s0)
 	la      s4, GVAR3
 	add     s4, s4, s3
 	fld     ft1, 0(s4)
-	lw     s3, -88(s0)
+	mv      s3, t0
 	la      s4, GVAR3
 	add     s4, s4, s3
 	fld     ft2, 0(s4)
@@ -214,16 +203,16 @@ L18:
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -100(s0)
-	lw     t1, -100(s0)
+	mv      t1, t0
 	li      t2, 3
 	sll     t0, t1, t2
 	sw     t0, -108(s0)
 	lw     t1, -52(s0)
-	lw     t2, -108(s0)
+	mv      t2, t0
 	addw     t0, t1, t2
 	sw     t0, -112(s0)
-	fld     ft1, -96(s0)
-	lw     s3, -112(s0)
+	fmv.d      ft1, ft0
+	mv      s3, t0
 	la      s4, GVAR3
 	add     s4, s4, s3
 	fld     ft2, 0(s4)
@@ -233,16 +222,16 @@ L18:
 	li      t2, 1
 	subw     t0, t1, t2
 	sw     t0, -124(s0)
-	lw     t1, -124(s0)
+	mv      t1, t0
 	li      t2, 8
 	sll     t0, t1, t2
 	sw     t0, -128(s0)
-	lw     t1, -128(s0)
+	mv      t1, t0
 	lw     t2, -56(s0)
 	addw     t0, t1, t2
 	sw     t0, -136(s0)
-	fld     ft1, -120(s0)
-	lw     s3, -136(s0)
+	fmv.d      ft1, ft0
+	mv      s3, t0
 	la      s4, GVAR3
 	add     s4, s4, s3
 	fld     ft2, 0(s4)
@@ -252,29 +241,29 @@ L18:
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -148(s0)
-	lw     t1, -148(s0)
+	mv      t1, t0
 	li      t2, 8
 	sll     t0, t1, t2
 	sw     t0, -152(s0)
-	lw     t1, -152(s0)
+	mv      t1, t0
 	lw     t2, -56(s0)
 	addw     t0, t1, t2
 	sw     t0, -160(s0)
-	fld     ft1, -144(s0)
-	lw     s3, -160(s0)
+	fmv.d      ft1, ft0
+	mv      s3, t0
 	la      s4, GVAR3
 	add     s4, s4, s3
 	fld     ft2, 0(s4)
 	fadd.d     ft0, ft1, ft2
 	fsd     ft0, -168(s0)
-	fld     fs7, -168(s0)
+	fmv.d      fs7, ft0
 	lw     s5, -60(s0)
 	la      s6, GVAR4
 	add     s6, s6, s5
 	fsd     fs7, 0(s6)
 	lw     s7, -100(s0)
 	sw     s7, -172(s0)
-	lw     s7, -172(s0)
+	mv      s7, s7
 	sw     s7, -40(s0)
 	j       L16
 L17:
@@ -282,7 +271,7 @@ L17:
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -176(s0)
-	lw     s7, -176(s0)
+	mv      s7, t0
 	sw     s7, -32(s0)
 	j       L12
 L13:
@@ -304,22 +293,22 @@ main:
 	call    get_int
 	nop
 	sw     a0, -84(s0)
-	lw     s7, -84(s0)
+	mv      s7, a0
 	sw     s7, -24(s0)
 	call    get_int
 	nop
 	sw     a0, -88(s0)
-	lw     s7, -88(s0)
+	mv      s7, a0
 	sw     s7, -32(s0)
 	call    get_int
 	nop
 	sw     a0, -92(s0)
-	lw     s7, -92(s0)
+	mv      s7, a0
 	sw     s7, -40(s0)
 	call    get_int
 	nop
 	sw     a0, -96(s0)
-	lw     s7, -96(s0)
+	mv      s7, a0
 	sw     s7, -48(s0)
 	lw     a0, -24(s0)
 	lw     a1, -32(s0)
@@ -332,18 +321,16 @@ main:
 	nop
 	li      s7, 0
 	sw     s7, -56(s0)
-L20:
-	lw     t3, -56(s0)
+	mv      t3, s7
 	lw     t4, -48(s0)
 	blt     t3, t4, L22
-L23:
 	j       L21
 L22:
 	lw     t1, -56(s0)
 	li      t2, 2
 	sll     t0, t1, t2
 	sw     t0, -100(s0)
-	lw     s3, -100(s0)
+	mv      s3, t0
 	la      s4, GVAR5
 	add     s4, s4, s3
 	lw     t1, 0(s4)
@@ -358,22 +345,22 @@ L22:
 	sll     t0, t1, t2
 	sw     t0, -112(s0)
 	lw     t1, -108(s0)
-	lw     t2, -112(s0)
+	mv      t2, t0
 	addw     t0, t1, t2
 	sw     t0, -116(s0)
-	lw     s3, -116(s0)
+	mv      s3, t0
 	la      s4, GVAR2
 	add     s4, s4, s3
 	flw     fs7, 0(s4)
 	fsw     fs7, -80(s0)
-	flw     fa0, -80(s0)
+	fmv.s      fa0, fs7
 	call    print_float
 	nop
 	lw     t1, -56(s0)
 	li      t2, 2
 	sll     t0, t1, t2
 	sw     t0, -120(s0)
-	lw     s3, -120(s0)
+	mv      s3, t0
 	la      s4, GVAR5
 	add     s4, s4, s3
 	lw     t1, 0(s4)
@@ -388,10 +375,10 @@ L22:
 	sll     t0, t1, t2
 	sw     t0, -132(s0)
 	lw     t1, -128(s0)
-	lw     t2, -132(s0)
+	mv      t2, t0
 	addw     t0, t1, t2
 	sw     t0, -136(s0)
-	lw     s3, -136(s0)
+	mv      s3, t0
 	la      s4, GVAR4
 	add     s4, s4, s3
 	fld     fa0, 0(s4)
@@ -401,12 +388,11 @@ L22:
 	li      t2, 1
 	addw     t0, t1, t2
 	sw     t0, -140(s0)
-	lw     s7, -140(s0)
+	mv      s7, t0
 	sw     s7, -56(s0)
-	lw     t3, -56(s0)
+	mv      t3, s7
 	lw     t4, -48(s0)
 	blt     t3, t4, L22
-L24:
 	j       L21
 L21:
 	li      a0, 0

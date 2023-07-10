@@ -94,7 +94,7 @@ class IROptim{
         void dag();
         void deadcode();
         void algebrasimplify();
-
+        void kill_label();
         //是2的幂次返回指数，否则返回-1
         int get2power(std::string arg);
 };

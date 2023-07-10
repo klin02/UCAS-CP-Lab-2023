@@ -3,6 +3,136 @@
 #include "RiscvGen.h"
 
 #ifdef ASM_gen
+void RiscvGen:: asm_optim(){
+    std::vector<std::string> vec;
+    for(int i=ASM_array.size()-1;i>=0;i--){
+        get_vec(ASM_array[i],vec);
+        if(vec.size()==3){
+            // std::cout << vec[0] << " " << vec[1] << " " << vec[2] << std::endl;
+            //可能为lw，进一步考虑
+            std::string mv;
+            std::string op = vec[0];
+            std::string var = vec[1];
+            std::string offset = vec[2];
+            std::string tar; //寻找目标
+            if(op=="fld"){
+                tar="fsd";
+                mv = "fmv.d";
+            }
+            else if(op=="flw"){
+                tar="fsw";
+                mv = "fmv.s";
+            }
+            else if(op=="lw"){
+                tar="sw";
+                mv = "mv";
+            }
+            else if(op=="lb"){
+                tar="sb";
+                mv = "mv";
+            }
+            else{
+                continue;
+            }
+            std::set<std::string> def_set;
+            for(int j=i-1;j>=0;j--){
+                //碰到某些语句不继续查找了
+                if(blk_end(ASM_array[j]))
+                    break;
+                get_vec(ASM_array[j],vec);
+                // std::cout << vec[0] << " " << vec[1] << " " << vec[2] << std::endl;
+                // std::cout << op << " " << var << " " << offset << std::endl;
+                if(vec.size()==3 && vec[0]==tar && def_set.find(vec[1])==def_set.end() && vec[2]==offset){
+                    ASM_array[i] = mv+"      "+var+", "+vec[1];
+                    break;
+                }
+                if(vec.size()!=0 && var_def(vec[0]))
+                    def_set.insert(vec[1]);
+            }
+        }
+    }
+}
+void RiscvGen:: get_vec(std::string sm,std::vector<std::string> &vec){
+    vec.clear();
+    //只考虑给定的命令,load store 以及定值指令（包括load）
+    // std::string list[8] = {"fld","flw","lw","lb","fsd","fsw","sw","sb"};
+    std::vector<std::string> list = 
+        {
+            "fld","flw","lw","lb","fsd","fsw","sw","sb",
+            "li", "la", "add","addi",
+            "fadd.s", "fadd.d", "addw",
+            "fsub.s", "fsub.d", "subw",
+            "fmul.s", "fmul.d", "mul",
+            "fdiv.s", "fdiv.d", "div",
+            "fneg.s", "fneg.d", "neg",
+            "sll", "sra", "rem", "and", "or",
+        };
+    int rt_flag = true;
+    int op_end = sm.find_first_of(" ");
+    std::string sm_op;
+    if(op_end == -1)
+        return ;
+    else{
+        sm_op = sm.substr(0,op_end);
+        sm=sm.substr(op_end,sm.size()-op_end);
+        sm = sm.substr(sm.find_first_not_of(" "));
+    }
+    for(auto op: list){
+        if(sm_op == op){
+            rt_flag = false;
+            vec.push_back(op);
+            break;
+        }
+    }
+    if(rt_flag)
+        return ;
+    // int first_blk = sm.find_first_of(" ");
+    // vec.push_back(sm.substr(0,first_blk));
+    // sm = sm.substr(first_blk,sm.size()-first_blk);
+    // std::cout<<1;
+    // sm = sm.substr(sm.find(" "));
+    // std::cout<<2;
+    
+    // std::cout<<3;
+    // sm = sm.substr(no_blk,sm.size()-no_blk);
+    int comma = sm.find(",");
+    if(comma==-1){
+        vec.push_back(sm);
+        // std::cout<<4<<std::endl;
+    }
+    else{
+        vec.push_back(sm.substr(0,comma));
+        vec.push_back(sm.substr(comma+2,sm.size()-comma-2));
+        // std::cout<<4<<std::endl;
+    }
+
+}
+bool RiscvGen:: blk_end(std::string sm){
+    std::vector<std::string> end_list = {":","blt","ble","beq","bne","call"};
+    for(auto end: end_list){
+        if(sm.find(end)!=-1)
+            return true;
+    }
+    return false;
+}
+bool RiscvGen:: var_def(std::string op){
+    std::vector<std::string> def_list = 
+        {
+            "fld","flw","lw","lb",
+            "li", "la", "add","addi",
+            "fadd.s", "fadd.d", "addw",
+            "fsub.s", "fsub.d", "subw",
+            "fmul.s", "fmul.d", "mul",
+            "fdiv.s", "fdiv.d", "div",
+            "fneg.s", "fneg.d", "neg",
+            "sll", "sra", "rem", "and", "or",
+        };
+    for(auto def: def_list){
+        if(def == op)
+            return true;
+    }
+    return false;
+}
 void RiscvGen:: stack_initval(std::string initval_str, cact_basety_t basety, int len){
     size_t base_size = (typeutils.basety_to_size)[basety];
     //将初始值字符串拆分
@@ -21,7 +151,7 @@ void RiscvGen:: stack_initval(std::string initval_str, cact_basety_t basety, int
             initval_str = initval_str.substr(loc+1);
         }
     }
-
+    
     //将每个初始值转到对应位置，注意占位符
     size_t zero_size = 0 ;
     for(std::string initval: initval_array){
@@ -31,7 +161,7 @@ void RiscvGen:: stack_initval(std::string initval_str, cact_basety_t basety, int
         else{
             if(zero_size!=0){
                 Const_Stack.push_back(".zero   "+std::to_string(zero_size));
-                zero_size == 0;
+                zero_size = 0;
             }
 
             //此处用switch case语句会出现crosses initialization
@@ -62,7 +192,7 @@ void RiscvGen:: stack_initval(std::string initval_str, cact_basety_t basety, int
     }
     if(zero_size!=0){
         Const_Stack.push_back(".zero   "+std::to_string(zero_size));
-        zero_size == 0;
+        zero_size = 0;
     }
 }
 
@@ -419,6 +549,8 @@ void RiscvGen:: Gen_All(std::string asm_name){
         }
     }
 
+    if(OPTIM_LEVEL !=0)
+        asm_optim();
     //结尾将全部信息输入到文件
     std::ofstream outfile;
     outfile.open(asm_name);

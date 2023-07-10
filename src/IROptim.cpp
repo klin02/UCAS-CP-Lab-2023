@@ -362,6 +362,21 @@ void IROptim::optim(){
     deadcode();
     merge();
     algebrasimplify();
+
+    //最后杀死所有没用的标签，方便汇编的窥孔优化
+    kill_label();
+}
+void IROptim::kill_label(){
+    get_head_label();
+    for(auto pair:label_loc){
+        auto label = pair.first;
+        auto loc = pair.second;
+        //如果没用到，就删除
+        if(label_use.find(label)==label_use.end()){
+            erase_set.insert(loc);
+        }
+    }
+    update_irc();
 }
 void IROptim::dag(){
     for(auto &blk: blk_list){
@@ -370,9 +385,7 @@ void IROptim::dag(){
 }
 void IROptim::deadcode(){
     //首先确定每个blk的def，use，初始化in和out均为空
-    int cnt=0;
     for(auto &blk: blk_list){
-        cnt++;
         blk.init_def_use();
     }
     //迭代计算直至不变
@@ -411,29 +424,7 @@ void IROptim::deadcode(){
                 du_change = true;
             }
         }
-        // std::cout << ">>>live in " <<std::endl;
-        // for(auto li:blk_list[37].live_in)
-        //     std::cout << li << std::endl;
-        // std::cout << ">>>live out " <<std::endl;
-        // for(auto lo:blk_list[37].live_out)
-        //     std::cout << lo << std::endl;
     }
-
-    // std::cout << ">>>pre" <<std::endl;
-    // for(auto nb:blk_list[37].next_list)
-    //     std::cout << nb->order <<std::endl;
-    // std::cout << ">>>>use "<<std::endl;
-    // for(auto ue:blk_list[37].use)
-    //     std::cout << ue << std::endl;
-    // std::cout << ">>>def" <<std::endl;
-    // for(auto df:blk_list[37].use)
-    //     std::cout << df << std::endl;
-    // std::cout << ">>>live in " <<std::endl;
-    // for(auto li:blk_list[37].live_in)
-    //     std::cout << li << std::endl;
-    // std::cout << ">>>live out " <<std::endl;
-    // for(auto lo:blk_list[37].live_out)
-    //     std::cout << lo << std::endl;
 
     //每个基本块消除死代码
     for(auto &blk: blk_list){

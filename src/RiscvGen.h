@@ -6,6 +6,7 @@
 #include "SemanticAnalysis.h"
 #include "IROptim.h"
 
+extern int              OPTIM_LEVEL;
 extern SemanticAnalysis semantic_analysis;
 extern IROptim          ir_optim;
 
@@ -31,6 +32,11 @@ class RiscvGen{
             base = (mod==0)? base : (div+1)*align;
         }
 
+        //窥孔优化，将load转为move
+        void asm_optim();
+        void get_vec(std::string sm,std::vector<std::string> &vec);
+        bool blk_end(std::string sm);
+        bool var_def(std::string op);
         //传入basety,初始值长度和字符串，将其解析并写入Const_Stack
         void stack_initval(std::string initval_str, cact_basety_t basety, int len);
 

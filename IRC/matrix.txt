@@ -11,21 +11,15 @@ Func Begin|   unknown|matrix_multiply|          |          |
    L_Alloc|       int|        ^4|          |          |
    L_Alloc|       int|        ^5|          |          |
     ASSIGN|       int|        ^3|        #0|          |
-     Label|   unknown|        L0|          |          |
        BLT|       int|        L2|        ^3|        ^0|
-     Label|   unknown|        L3|          |          |
          J|   unknown|        L1|          |          |
      Label|   unknown|        L2|          |          |
     ASSIGN|       int|        ^5|        #0|          |
-     Label|   unknown|        L4|          |          |
        BLT|       int|        L6|        ^5|        ^2|
-     Label|   unknown|        L7|          |          |
          J|   unknown|        L5|          |          |
      Label|   unknown|        L6|          |          |
     ASSIGN|       int|        ^4|        #0|          |
-     Label|   unknown|        L8|          |          |
        BLT|       int|       L10|        ^4|        ^1|
-     Label|   unknown|       L11|          |          |
          J|   unknown|        L9|          |          |
      Label|   unknown|       L10|          |          |
    L_Alloc|       int|        %0|          |          |
@@ -57,21 +51,18 @@ Func Begin|   unknown|matrix_multiply|          |          |
        ADD|       int|       %14|        ^4|        #1|
     ASSIGN|       int|        ^4|       %14|          |
        BLT|       int|       L10|        ^4|        ^1|
-     Label|   unknown|       L26|          |          |
          J|   unknown|        L9|          |          |
      Label|   unknown|        L9|          |          |
    L_Alloc|       int|       %15|          |          |
        ADD|       int|       %15|        ^5|        #1|
     ASSIGN|       int|        ^5|       %15|          |
        BLT|       int|        L6|        ^5|        ^2|
-     Label|   unknown|       L27|          |          |
          J|   unknown|        L5|          |          |
      Label|   unknown|        L5|          |          |
    L_Alloc|       int|       %16|          |          |
        ADD|       int|       %16|        ^3|        #1|
     ASSIGN|       int|        ^3|       %16|          |
        BLT|       int|        L2|        ^3|        ^0|
-     Label|   unknown|       L25|          |          |
          J|   unknown|        L1|          |          |
      Label|   unknown|        L1|          |          |
   Func End|   unknown|matrix_multiply|          |          |
@@ -83,7 +74,6 @@ Func Begin|   unknown|matrix_stencil|          |          |
    L_Alloc|       int|       %17|          |          |
        SUB|       int|       %17|        ^6|        #1|
        BLT|       int|       L14|        ^8|       %17|
-     Label|   unknown|       L15|          |          |
          J|   unknown|       L13|          |          |
      Label|   unknown|       L14|          |          |
     ASSIGN|       int|        ^9|        #1|          |
@@ -91,7 +81,6 @@ Func Begin|   unknown|matrix_stencil|          |          |
    L_Alloc|       int|       %18|          |          |
        SUB|       int|       %18|        ^7|        #1|
        BLT|       int|       L18|        ^9|       %18|
-     Label|   unknown|       L19|          |          |
          J|   unknown|       L17|          |          |
      Label|   unknown|       L18|          |          |
    L_Alloc|       int|       %19|          |          |
@@ -179,9 +168,7 @@ Func Begin|   unknown|      main|          |          |
      Param|       int|       ^11|          |          |
       Call|      void|matrix_stencil|          |          |
     ASSIGN|       int|       ^14|        #0|          |
-     Label|   unknown|       L20|          |          |
        BLT|       int|       L22|       ^14|       ^13|
-     Label|   unknown|       L23|          |          |
          J|   unknown|       L21|          |          |
      Label|   unknown|       L22|          |          |
    L_Alloc|       int|       %51|          |          |
@@ -211,7 +198,6 @@ Func Begin|   unknown|      main|          |          |
        ADD|       int|       %61|       ^14|        #1|
     ASSIGN|       int|       ^14|       %61|          |
        BLT|       int|       L22|       ^14|       ^13|
-     Label|   unknown|       L24|          |          |
          J|   unknown|       L21|          |          |
      Label|   unknown|       L21|          |          |
     Return|       int|        #0|          |          |

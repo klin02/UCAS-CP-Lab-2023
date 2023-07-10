@@ -10,9 +10,7 @@ Func Begin|   unknown|binary_insert|          |          |
    L_Alloc|       int|        ^8|          |          |
    L_Alloc|       int|        ^9|          |          |
     ASSIGN|       int|        ^4|        ^2|          |
-     Label|   unknown|        L0|          |          |
        BLE|       int|        L2|        ^4|        ^3|
-     Label|   unknown|        L3|          |          |
          J|   unknown|        L1|          |          |
      Label|   unknown|        L2|          |          |
    L_Alloc|       int|        %0|          |          |
@@ -25,12 +23,9 @@ Func Begin|   unknown|binary_insert|          |          |
    L_Alloc|       int|        %2|          |          |
        SLL|       int|        %2|        ^7|        #2|
        BLT|       int|        L5|        ^9|     ^0<%2|
-     Label|   unknown|        L6|          |          |
          J|   unknown|        L4|          |          |
      Label|   unknown|        L5|          |          |
-     Label|   unknown|        L7|          |          |
        BLE|       int|        L9|        ^6|        ^7|
-     Label|   unknown|       L10|          |          |
          J|   unknown|        L8|          |          |
      Label|   unknown|        L9|          |          |
    L_Alloc|       int|        %3|          |          |
@@ -43,30 +38,24 @@ Func Begin|   unknown|binary_insert|          |          |
    L_Alloc|       int|        %6|          |          |
        SLL|       int|        %6|        ^8|        #2|
        BLT|       int|       L12|        ^9|     ^0<%6|
-     Label|   unknown|       L14|          |          |
          J|   unknown|       L13|          |          |
      Label|   unknown|       L12|          |          |
    L_Alloc|       int|        %7|          |          |
        SUB|       int|        %7|        ^8|        #1|
     ASSIGN|       int|        ^7|        %7|          |
        BLE|       int|        L9|        ^6|        ^7|
-     Label|   unknown|      L108|          |          |
          J|   unknown|        L8|          |          |
      Label|   unknown|       L13|          |          |
    L_Alloc|       int|        %8|          |          |
        ADD|       int|        %8|        ^8|        #1|
     ASSIGN|       int|        ^6|        %8|          |
-     Label|   unknown|       L11|          |          |
        BLE|       int|        L9|        ^6|        ^7|
-     Label|   unknown|      L104|          |          |
          J|   unknown|        L8|          |          |
      Label|   unknown|        L8|          |          |
    L_Alloc|       int|        %9|          |          |
        SUB|       int|        %9|        ^4|        #1|
     ASSIGN|       int|        ^5|        %9|          |
-     Label|   unknown|       L15|          |          |
        BGE|       int|       L17|        ^5|        ^6|
-     Label|   unknown|       L18|          |          |
          J|   unknown|       L16|          |          |
      Label|   unknown|       L17|          |          |
    L_Alloc|       int|       %10|          |          |
@@ -80,7 +69,6 @@ Func Begin|   unknown|binary_insert|          |          |
        SUB|       int|       %13|        ^5|        #1|
     ASSIGN|       int|        ^5|       %13|          |
        BGE|       int|       L17|        ^5|        ^6|
-     Label|   unknown|      L103|          |          |
          J|   unknown|       L16|          |          |
      Label|   unknown|       L16|          |          |
    L_Alloc|       int|       %14|          |          |
@@ -91,7 +79,6 @@ Func Begin|   unknown|binary_insert|          |          |
        ADD|       int|       %15|        ^4|        #1|
     ASSIGN|       int|        ^4|       %15|          |
        BLE|       int|        L2|        ^4|        ^3|
-     Label|   unknown|      L105|          |          |
          J|   unknown|        L1|          |          |
      Label|   unknown|        L1|          |          |
   Func End|   unknown|binary_insert|          |          |
@@ -102,13 +89,10 @@ Func Begin|   unknown|merge_sort|          |          |
     ASSIGN|       int|       ^14|       ^11|          |
     ASSIGN|       int|       ^15|       ^12|          |
     ASSIGN|       int|       ^16|        #0|          |
-     Label|   unknown|       L19|          |          |
        BLT|       int|       L22|       ^14|       ^12|
-     Label|   unknown|       L23|          |          |
          J|   unknown|       L20|          |          |
      Label|   unknown|       L22|          |          |
        BLE|       int|       L21|       ^15|       ^13|
-     Label|   unknown|       L24|          |          |
          J|   unknown|       L20|          |          |
      Label|   unknown|       L21|          |          |
    L_Alloc|       int|       %16|          |          |
@@ -116,7 +100,6 @@ Func Begin|   unknown|merge_sort|          |          |
    L_Alloc|       int|       %17|          |          |
        SLL|       int|       %17|       ^15|        #2|
        BLE|       int|       L26|   ^10<%16|   ^10<%17|
-     Label|   unknown|       L28|          |          |
          J|   unknown|       L27|          |          |
      Label|   unknown|       L26|          |          |
    L_Alloc|       int|       %18|          |          |
@@ -142,12 +125,9 @@ Func Begin|   unknown|merge_sort|          |          |
        ADD|       int|       %24|       ^16|        #1|
     ASSIGN|       int|       ^16|       %24|          |
        BLT|       int|       L22|       ^14|       ^12|
-     Label|   unknown|      L107|          |          |
          J|   unknown|       L20|          |          |
      Label|   unknown|       L20|          |          |
-     Label|   unknown|       L29|          |          |
        BLT|       int|       L31|       ^14|       ^12|
-     Label|   unknown|       L32|          |          |
          J|   unknown|       L30|          |          |
      Label|   unknown|       L31|          |          |
    L_Alloc|       int|       %25|          |          |
@@ -162,12 +142,9 @@ Func Begin|   unknown|merge_sort|          |          |
        ADD|       int|       %28|       ^16|        #1|
     ASSIGN|       int|       ^16|       %28|          |
        BLT|       int|       L31|       ^14|       ^12|
-     Label|   unknown|       L98|          |          |
          J|   unknown|       L30|          |          |
      Label|   unknown|       L30|          |          |
-     Label|   unknown|       L33|          |          |
        BLE|       int|       L35|       ^15|       ^13|
-     Label|   unknown|       L36|          |          |
          J|   unknown|       L34|          |          |
      Label|   unknown|       L35|          |          |
    L_Alloc|       int|       %29|          |          |
@@ -182,13 +159,10 @@ Func Begin|   unknown|merge_sort|          |          |
        ADD|       int|       %32|       ^16|        #1|
     ASSIGN|       int|       ^16|       %32|          |
        BLE|       int|       L35|       ^15|       ^13|
-     Label|   unknown|      L106|          |          |
          J|   unknown|       L34|          |          |
      Label|   unknown|       L34|          |          |
     ASSIGN|       int|       ^14|       ^11|          |
-     Label|   unknown|       L37|          |          |
        BLE|       int|       L39|       ^14|       ^13|
-     Label|   unknown|       L40|          |          |
          J|   unknown|       L38|          |          |
      Label|   unknown|       L39|          |          |
    L_Alloc|       int|       %33|          |          |
@@ -202,7 +176,6 @@ Func Begin|   unknown|merge_sort|          |          |
        ADD|       int|       %36|       ^14|        #1|
     ASSIGN|       int|       ^14|       %36|          |
        BLE|       int|       L39|       ^14|       ^13|
-     Label|   unknown|      L102|          |          |
          J|   unknown|       L38|          |          |
      Label|   unknown|       L38|          |          |
   Func End|   unknown|merge_sort|          |          |
@@ -217,16 +190,13 @@ Func Begin|   unknown|simplified_tim_sort|          |          |
    L_Alloc|       int|       %37|          |          |
        ADD|       int|       %37|       ^18|        #1|
     ASSIGN|       int|       ^20|       %37|          |
-     Label|   unknown|       L41|          |          |
        BGT|       int|       L43|       ^20|       #64|
-     Label|   unknown|       L44|          |          |
          J|   unknown|       L42|          |          |
      Label|   unknown|       L43|          |          |
    L_Alloc|       int|       %38|          |          |
        SRA|       int|       %38|       ^20|        #1|
     ASSIGN|       int|       ^20|       %38|          |
        BGT|       int|       L43|       ^20|       #64|
-     Label|   unknown|       L99|          |          |
          J|   unknown|       L42|          |          |
      Label|   unknown|       L42|          |          |
    L_Alloc|       int|       %39|          |          |
@@ -234,9 +204,7 @@ Func Begin|   unknown|simplified_tim_sort|          |          |
     ASSIGN|       int|       ^20|       %39|          |
     ASSIGN|       int|       ^21|       #-1|          |
     ASSIGN|       int|       ^24|        #0|          |
-     Label|   unknown|       L45|          |          |
        BLT|       int|       L47|       ^21|       ^18|
-     Label|   unknown|       L48|          |          |
          J|   unknown|       L46|          |          |
      Label|   unknown|       L47|          |          |
    L_Alloc|       int|       %40|          |          |
@@ -246,9 +214,7 @@ Func Begin|   unknown|simplified_tim_sort|          |          |
        SLL|       int|       %41|       ^24|        #2|
     ASSIGN|       int|    @0<%41|       ^21|          |
        BLT|       int|       L50|       ^21|       ^18|
-     Label|   unknown|       L51|          |          |
        BGT|       int|       L74|       ^24|        #0|
-     Label|   unknown|       L95|          |          |
          J|   unknown|       L72|          |          |
      Label|   unknown|       L50|          |          |
    L_Alloc|       int|       %42|          |          |
@@ -258,12 +224,9 @@ Func Begin|   unknown|simplified_tim_sort|          |          |
    L_Alloc|       int|       %44|          |          |
        SLL|       int|       %44|       %43|        #2|
        BLE|       int|       L53|   ^17<%42|   ^17<%44|
-     Label|   unknown|       L55|          |          |
          J|   unknown|       L54|          |          |
      Label|   unknown|       L53|          |          |
-     Label|   unknown|       L56|          |          |
        BLT|       int|       L59|       ^21|       ^18|
-     Label|   unknown|       L60|          |          |
          J|   unknown|       L52|          |          |
      Label|   unknown|       L59|          |          |
    L_Alloc|       int|       %45|          |          |
@@ -273,19 +236,15 @@ Func Begin|   unknown|simplified_tim_sort|          |          |
    L_Alloc|       int|       %47|          |          |
        SLL|       int|       %47|       %46|        #2|
        BLE|       int|       L58|   ^17<%45|   ^17<%47|
-     Label|   unknown|       L61|          |          |
          J|   unknown|       L52|          |          |
      Label|   unknown|       L58|          |          |
    L_Alloc|       int|       %48|          |          |
        ADD|       int|       %48|       ^21|        #1|
     ASSIGN|       int|       ^21|       %48|          |
        BLT|       int|       L59|       ^21|       ^18|
-     Label|   unknown|       L97|          |          |
          J|   unknown|       L52|          |          |
      Label|   unknown|       L54|          |          |
-     Label|   unknown|       L62|          |          |
        BLT|       int|       L65|       ^21|       ^18|
-     Label|   unknown|       L66|          |          |
          J|   unknown|       L63|          |          |
      Label|   unknown|       L65|          |          |
    L_Alloc|       int|       %49|          |          |
@@ -295,23 +254,19 @@ Func Begin|   unknown|simplified_tim_sort|          |          |
    L_Alloc|       int|       %51|          |          |
        SLL|       int|       %51|       %50|        #2|
        BGT|       int|       L64|   ^17<%49|   ^17<%51|
-     Label|   unknown|       L67|          |          |
          J|   unknown|       L63|          |          |
      Label|   unknown|       L64|          |          |
    L_Alloc|       int|       %52|          |          |
        ADD|       int|       %52|       ^21|        #1|
     ASSIGN|       int|       ^21|       %52|          |
        BLT|       int|       L65|       ^21|       ^18|
-     Label|   unknown|      L101|          |          |
          J|   unknown|       L63|          |          |
      Label|   unknown|       L63|          |          |
    L_Alloc|       int|       %53|          |          |
        SLL|       int|       %53|       ^24|        #2|
     ASSIGN|       int|       ^22|    @0<%53|          |
     ASSIGN|       int|       ^23|       ^21|          |
-     Label|   unknown|       L68|          |          |
        BLT|       int|       L70|       ^22|       ^23|
-     Label|   unknown|       L71|          |          |
          J|   unknown|       L69|          |          |
      Label|   unknown|       L70|          |          |
    L_Alloc|       int|       %54|          |          |
@@ -332,13 +287,10 @@ Func Begin|   unknown|simplified_tim_sort|          |          |
        SUB|       int|       %59|       ^23|        #1|
     ASSIGN|       int|       ^23|       %59|          |
        BLT|       int|       L70|       ^22|       ^23|
-     Label|   unknown|       L96|          |          |
          J|   unknown|       L69|          |          |
      Label|   unknown|       L69|          |          |
      Label|   unknown|       L52|          |          |
-     Label|   unknown|       L49|          |          |
        BGT|       int|       L74|       ^24|        #0|
-     Label|   unknown|       L75|          |          |
          J|   unknown|       L72|          |          |
      Label|   unknown|       L74|          |          |
    L_Alloc|       int|       %60|          |          |
@@ -348,7 +300,6 @@ Func Begin|   unknown|simplified_tim_sort|          |          |
    L_Alloc|       int|       %62|          |          |
        ADD|       int|       %62|    @0<%61|       ^20|
        BLT|       int|       L73|       ^21|       %62|
-     Label|   unknown|       L76|          |          |
          J|   unknown|       L72|          |          |
      Label|   unknown|       L73|          |          |
    L_Alloc|       int|       %63|          |          |
@@ -366,9 +317,7 @@ Func Begin|   unknown|simplified_tim_sort|          |          |
        SUB|       int|       %66|       ^24|        #1|
     ASSIGN|       int|       ^24|       %66|          |
      Label|   unknown|       L72|          |          |
-     Label|   unknown|       L77|          |          |
        BGT|       int|       L79|       ^24|        #0|
-     Label|   unknown|       L80|          |          |
          J|   unknown|       L78|          |          |
      Label|   unknown|       L79|          |          |
    L_Alloc|       int|       %67|          |          |
@@ -385,7 +334,6 @@ Func Begin|   unknown|simplified_tim_sort|          |          |
    L_Alloc|       int|       %73|          |          |
        SUB|       int|       %73|    @0<%67|    @0<%72|
        BLE|       int|       L78|       %69|       %73|
-     Label|   unknown|       L83|          |          |
          J|   unknown|       L81|          |          |
      Label|   unknown|       L81|          |          |
    L_Alloc|       int|       %74|          |          |
@@ -403,19 +351,15 @@ Func Begin|   unknown|simplified_tim_sort|          |          |
        SUB|       int|       %77|       ^24|        #1|
     ASSIGN|       int|       ^24|       %77|          |
        BGT|       int|       L79|       ^24|        #0|
-     Label|   unknown|       L94|          |          |
          J|   unknown|       L78|          |          |
      Label|   unknown|       L78|          |          |
    L_Alloc|       int|       %78|          |          |
        ADD|       int|       %78|       ^24|        #1|
     ASSIGN|       int|       ^24|       %78|          |
        BLT|       int|       L47|       ^21|       ^18|
-     Label|   unknown|      L100|          |          |
          J|   unknown|       L46|          |          |
      Label|   unknown|       L46|          |          |
-     Label|   unknown|       L84|          |          |
        BGT|       int|       L86|       ^24|        #1|
-     Label|   unknown|       L87|          |          |
          J|   unknown|       L85|          |          |
      Label|   unknown|       L86|          |          |
    L_Alloc|       int|       %79|          |          |
@@ -435,7 +379,6 @@ Func Begin|   unknown|simplified_tim_sort|          |          |
        SUB|       int|       %83|       ^24|        #1|
     ASSIGN|       int|       ^24|       %83|          |
        BGT|       int|       L86|       ^24|        #1|
-     Label|   unknown|       L93|          |          |
          J|   unknown|       L85|          |          |
      Label|   unknown|       L85|          |          |
   Func End|   unknown|simplified_tim_sort|          |          |
@@ -448,9 +391,7 @@ Func Begin|   unknown|      main|          |          |
      Param|   int_ptr|        @2|          |          |
      Param|       int|       ^27|          |          |
       Call|      void|simplified_tim_sort|          |          |
-     Label|   unknown|       L88|          |          |
        BLE|       int|       L90|       ^26|       ^27|
-     Label|   unknown|       L91|          |          |
          J|   unknown|       L89|          |          |
      Label|   unknown|       L90|          |          |
    L_Alloc|       int|       %85|          |          |
@@ -461,7 +402,6 @@ Func Begin|   unknown|      main|          |          |
        ADD|       int|       %86|       ^26|        #1|
     ASSIGN|       int|       ^26|       %86|          |
        BLE|       int|       L90|       ^26|       ^27|
-     Label|   unknown|       L92|          |          |
          J|   unknown|       L89|          |          |
      Label|   unknown|       L89|          |          |
     Return|       int|        #0|          |          |
